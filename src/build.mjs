@@ -27,6 +27,7 @@ const assetUrl = async (path) => {
   await writeFile(join(root, "public/assets/css/signal.css"), css);
 }
 const assets = {
+  og: await assetUrl("assets/brand/og-image.png"),
   signal: await assetUrl("assets/css/signal.css"),
   css: await assetUrl("assets/css/site.css"),
   site: await assetUrl("assets/js/site.js"),
@@ -215,7 +216,7 @@ function contactSection(t, selected = -1) {
 function shell(t, ctx, body) {
   const other = t.lang === "ar" ? langs.en : langs.ar;
   const u = t.ui;
-  const ogImg = `${site}/assets/brand/og-image.png`;
+  const ogImg = `${site}${assets.og}`;
   const social = Object.entries(cfg.social).filter(([, v]) => v);
   return `<!doctype html>
 <html lang="${t.lang}" dir="${t.dir}">
