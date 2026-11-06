@@ -123,8 +123,7 @@ html:not(.js) .boot { display: none; }
 /* ---------- Header ---------- */
 .header {
   position: sticky; inset-block-start: 0; z-index: 50;
-  background: color-mix(in srgb, var(--bg) 82%, transparent);
-  backdrop-filter: saturate(1.4) blur(12px);
+  background: var(--bg);
   border-block-end: 1px solid transparent; transition: border-color 0.3s;
 }
 .header.is-scrolled { border-block-end-color: var(--line); }
