@@ -121,13 +121,18 @@ const logoFile = ["svg", "png", "webp"].map((x) => `assets/clients/joy-zone.${x}
 const jzLogoRemote = "https://joy-zone.net/assets/logo_320.png";
 const jzLogo = `<img src="${logoFile ? `/${logoFile}` : jzLogoRemote}" alt="" width="64" height="64" loading="lazy">`;
 
+// Every client shown on the site. Logo: a real image URL, or null for an initials tile.
+const clientList = (t) => [
+  { name: t.work.joyZone.client, kind: t.work.joyZone.kind, summary: t.work.joyZone.summary, delivered: t.work.joyZone.delivered, visit: t.work.joyZone.visit, url: cfg.caseStudies.joyZoneUrl, logo: jzLogo },
+  { name: t.work.melkadi.client, kind: t.work.melkadi.kind, summary: t.work.melkadi.summary, delivered: t.work.melkadi.delivered, visit: t.work.melkadi.visit, url: cfg.caseStudies.melkadiUrl, logo: `<span aria-hidden="true">ME</span>` },
+];
+
 const clientsBlock = (t, ctx) => {
-  const jz = t.work.joyZone;
   const st = t.work.strip;
   const contactHref = `${ctx.isHome ? "" : t.path}#contact`;
   const items = (hidden) => {
     const tab = hidden ? ' tabindex="-1"' : "";
-    const one = `<li class="client"><a href="${cfg.caseStudies.joyZoneUrl}" target="_blank" rel="noopener"${tab}><span class="client__logo">${jzLogo}</span><span class="client__text"><strong>${esc(jz.client)}</strong><small>${esc(jz.kind)}</small></span></a></li>`;
+    const one = clientList(t).map((c) => `<li class="client"><a href="${c.url}" target="_blank" rel="noopener"${tab}><span class="client__logo">${c.logo}</span><span class="client__text"><strong>${esc(c.name)}</strong><small>${esc(c.kind)}</small></span></a></li>`).join("");
     const slot = `<li class="client client--slot"><a href="${contactHref}"${tab}><span class="client__logo">${markSvg("client__mark")}</span><span class="client__text"><strong>${esc(st.slotName)}</strong><small>${esc(st.slotKind)}</small></span></a></li>`;
     return (one + slot).repeat(3);
   };
@@ -161,7 +166,7 @@ function contactSection(t, selected = -1) {
   const wa = waLink();
   const options = f.serviceOptions.map((o, i) => `<option${i === selected ? " selected" : ""}>${esc(o)}</option>`).join("");
   const field = (id, label, input) => `<div class="field"><label for="${id}">${esc(label)}</label>${input}<span class="err" aria-live="polite"></span></div>`;
-  return `  <section id="contact" class="contact" aria-labelledby="contact-h">
+  return `  <section id="contact" class="contact stage" aria-labelledby="contact-h">
     <div class="wrap contact__grid">
       <div>
         <div class="head"><h2 id="contact-h">${esc(t.contact.title)}</h2><p>${esc(t.contact.intro)}</p></div>
@@ -239,7 +244,7 @@ function shell(t, ctx, body) {
 <div class="boot" role="status" aria-live="polite"><div class="boot__stack"><div class="boot__mark" aria-hidden="true"><i class="r"></i><i class="r r2"></i><i class="r r3"></i><i class="d"></i></div><span class="boot__label">${spinner("", "")}${esc(u.loading)}</span></div></div>
 <div class="progress" role="presentation"></div>
 
-<header class="header${ctx.isHome ? " header--stage" : ""}">
+<header class="header${ctx.section ? " header--stage" : ""}">
   <div class="wrap header__row">
     <a class="brand" href="${t.path}" aria-label="${esc(u.home)}">${markSvg()}<span class="brand__name">${t.lang === "ar" ? "إيكو تك" : "ECHO TECH"}</span></a>
     <nav class="nav" id="nav" aria-label="${esc(u.menu)}">
@@ -256,7 +261,7 @@ function shell(t, ctx, body) {
 
 <main id="main">${body}</main>
 
-<footer class="footer">
+<footer class="footer stage">
   <div class="wrap">
     <div class="footer__row">
       <div><a class="brand" href="${t.path}" aria-label="${esc(u.home)}">${markSvg()}<span class="brand__name">${t.lang === "ar" ? "إيكو تك" : "ECHO TECH"}</span></a><p>${esc(t.footer.tagline)}</p></div>
@@ -406,7 +411,7 @@ function servicePage(t, s, idx) {
   const needs = s.page.needs.map((n) => `<li>${esc(n)}</li>`).join("");
   const others = t.services.items.filter((o) => o.id !== s.id).map((o) => `<li><a href="${svcPath(t, o.id)}">${iconSvg(o.id)}<span><strong>${esc(o.name)}</strong><small>${esc(o.summary)}</small></span></a></li>`).join("");
   const body = `
-  <section class="phero" aria-labelledby="page-h">
+  <section class="phero stage" aria-labelledby="page-h">
     <div class="wrap">
       ${crumbs(t, trail.map(([n, h], i) => [n, i === trail.length - 1 ? "" : h]))}
       <div class="phero__title">${iconSvg(s.id, "phero__icon")}<h1 id="page-h">${esc(s.name)}</h1></div>
@@ -460,7 +465,7 @@ function workPage(t) {
     ? `<div class="quotes">${t.work.testimonials.map((q) => `<figure class="quote"><blockquote><p>${esc(q.text)}</p></blockquote><footer>${esc(q.name)}${q.role ? `، ${esc(q.role)}` : ""}</footer></figure>`).join("")}</div>`
     : "";
   const body = `
-  <section class="phero" aria-labelledby="page-h">
+  <section class="phero stage" aria-labelledby="page-h">
     <div class="wrap">
       ${crumbs(t, trail)}
       <h1 id="page-h">${esc(pg.workH1)}</h1>
@@ -472,12 +477,12 @@ function workPage(t) {
     <div class="wrap">
       ${clientsBlock(t, ctx)}
       <h2 class="sr-only" id="projects-h">${esc(pg.workList)}</h2>
-      <article class="project">
-        <div class="project__head"><span class="client__logo">${jzLogo}</span><div><h3>${esc(jz.client)}</h3><p class="project__kind">${esc(jz.kind)}</p></div></div>
-        <p class="project__text">${esc(jz.summary)}</p>
-        <div class="project__meta"><p>${esc(pg.delivered)}</p><ul class="case__list">${jz.delivered.map((d) => `<li>${esc(d)}</li>`).join("")}</ul></div>
-        <a class="btn btn--ghost" href="${cfg.caseStudies.joyZoneUrl}" rel="noopener" target="_blank">${esc(jz.visit)}</a>
-      </article>
+      ${clientList(t).map((c) => `<article class="project">
+        <div class="project__head"><span class="client__logo">${c.logo}</span><div><h3>${esc(c.name)}</h3><p class="project__kind">${esc(c.kind)}</p></div></div>
+        <p class="project__text">${esc(c.summary)}</p>
+        <div class="project__meta"><p>${esc(pg.delivered)}</p><ul class="case__list">${c.delivered.map((d) => `<li>${esc(d)}</li>`).join("")}</ul></div>
+        <a class="btn btn--ghost" href="${c.url}" rel="noopener" target="_blank">${esc(c.visit)}</a>
+      </article>`).join("\n      ")}
       <article class="project project--slot">
         <div class="project__head"><span class="client__logo">${markSvg("client__mark")}</span><div><h3>${esc(t.work.strip.slotName)}</h3><p class="project__kind">${esc(t.work.strip.slotKind)}</p></div></div>
         <p class="project__text">${esc(pg.slotText)}</p>

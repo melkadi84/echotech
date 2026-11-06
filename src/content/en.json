@@ -275,6 +275,16 @@
       "slotName": "Your business",
       "slotKind": "Our next project",
       "more": "Project details"
+    },
+    "melkadi": {
+      "client": "Mohamed Elkadi",
+      "kind": "Executive portfolio for an IT professional, Cairo",
+      "summary": "An executive portfolio website showing the owner's experience and projects, with a contact form that runs on Cloudflare.",
+      "delivered": [
+        "Portfolio website",
+        "Contact form"
+      ],
+      "visit": "Visit melkadi.website"
     }
   },
   "process": {
