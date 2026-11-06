@@ -149,7 +149,7 @@ html.boot-skip .boot { display: none; }
 .menu-btn { display: none; }
 
 @media (max-width: 880px) {
-  .menu-btn { display: inline-grid; margin-inline-start: auto; }
+  .menu-btn { display: inline-grid; }
   .nav {
     position: fixed; inset: 4.25rem 0 auto 0; flex-direction: column; align-items: stretch; gap: 0;
     background: var(--bg); padding: 1rem var(--gutter) 1.5rem; border-block-end: 1px solid var(--line);
@@ -159,7 +159,7 @@ html.boot-skip .boot { display: none; }
   .nav.is-open { transform: none; opacity: 1; visibility: visible; }
   .nav a.nav__link { padding: 0.9rem 0; border-radius: 0; border-block-end: 1px solid var(--line); font-size: 1.05rem; }
   .nav .btn { margin-block-start: 1rem; justify-content: center; }
-  .tools { margin-inline-start: 0; }
+  .tools { margin-inline-start: auto; }
 }
 
 /* ---------- Buttons ---------- */
