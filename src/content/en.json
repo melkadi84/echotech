@@ -58,7 +58,35 @@
           "Routers, switches and firewalls",
           "VPN and secure remote access",
           "DNS, Cloudflare and traffic protection"
-        ]
+        ],
+        "page": {
+          "title": "Network infrastructure for offices, shops and sites",
+          "description": "Echo Tech plans, installs and documents wired and wireless networks: cabling, Wi-Fi, routers, firewalls and secure remote access.",
+          "lead": "We plan, install and document wired and wireless networks, so your team and your systems stay connected without daily firefighting.",
+          "included": [
+            {
+              "title": "Cabling and racks",
+              "text": "Structured cabling, patch panels and a tidy rack, labelled so anyone can follow it later."
+            },
+            {
+              "title": "Wi-Fi that covers the space",
+              "text": "We survey the site, place access points where people actually work and test coverage before we leave."
+            },
+            {
+              "title": "Routing, switching and security",
+              "text": "Routers, switches and firewalls configured for your size, with separate networks for staff, guests and devices."
+            },
+            {
+              "title": "Remote access and protection",
+              "text": "A VPN for secure access from outside, plus DNS and Cloudflare protection for your public services."
+            }
+          ],
+          "needs": [
+            "A floor plan or photos of the site",
+            "How many people and devices will connect",
+            "Your existing equipment and internet provider"
+          ]
+        }
       },
       {
         "id": "cctv",
@@ -69,7 +97,35 @@
           "IP cameras, recorders and storage sizing",
           "Remote viewing on phone and desktop",
           "Maintenance and health checks"
-        ]
+        ],
+        "page": {
+          "title": "CCTV systems: design, installation and remote viewing",
+          "description": "Echo Tech designs and installs IP camera systems with reliable recording and remote viewing on phone and desktop.",
+          "lead": "We design and install camera systems that cover what matters, record reliably and can be watched from your phone.",
+          "included": [
+            {
+              "title": "Site survey and placement",
+              "text": "We walk the site, mark where each camera goes and what it needs to see, day and night."
+            },
+            {
+              "title": "Cameras, recorders and storage",
+              "text": "IP cameras and recorders sized for the number of cameras and how long you want to keep footage."
+            },
+            {
+              "title": "Remote viewing",
+              "text": "Live view and playback on phone and desktop, with access limited to the people you choose."
+            },
+            {
+              "title": "Maintenance",
+              "text": "Regular health checks, so a failed camera or a full disk is found before you need the footage."
+            }
+          ],
+          "needs": [
+            "Which areas need coverage, and why",
+            "How long footage should be kept",
+            "Who should be able to view it"
+          ]
+        }
       },
       {
         "id": "web",
@@ -81,7 +137,39 @@
           "Hosting and security on Cloudflare",
           "Search visibility and analytics",
           "Forms connected to your inbox or CRM"
-        ]
+        ],
+        "page": {
+          "title": "Website design and development in Arabic and English",
+          "description": "Echo Tech builds fast bilingual websites hosted on Cloudflare, with search-ready markup and forms that reach your inbox or CRM.",
+          "lead": "We design and build fast websites in Arabic and English, hosted on Cloudflare, that make it easy for visitors to contact you.",
+          "included": [
+            {
+              "title": "Design and development",
+              "text": "A clear design built around your content and brand, responsive from phone to desktop."
+            },
+            {
+              "title": "Arabic and English",
+              "text": "Right-to-left layouts built properly rather than mirrored afterwards, with both languages kept in sync."
+            },
+            {
+              "title": "Hosting and security",
+              "text": "Hosting on Cloudflare with HTTPS, security headers and spam protection on forms."
+            },
+            {
+              "title": "Search and measurement",
+              "text": "Titles, descriptions and structured data for search engines, and analytics that respect privacy."
+            },
+            {
+              "title": "Forms connected to you",
+              "text": "Enquiry forms delivered to your inbox or your CRM."
+            }
+          ],
+          "needs": [
+            "Your logo, colours and any existing content",
+            "The pages you need and what visitors should do",
+            "Your domain name and who manages it"
+          ]
+        }
       },
       {
         "id": "apps",
@@ -92,7 +180,35 @@
           "iOS and Android builds",
           "APIs and databases",
           "Store publishing and updates"
-        ]
+        ],
+        "page": {
+          "title": "Mobile app development for iOS and Android",
+          "description": "Echo Tech scopes, designs and builds iOS and Android apps together with the APIs and databases they depend on.",
+          "lead": "We scope, design and build iOS and Android apps together with the server side they depend on.",
+          "included": [
+            {
+              "title": "Scoping and design",
+              "text": "We turn your idea into a short list of screens and features, then design the interface before we build."
+            },
+            {
+              "title": "iOS and Android",
+              "text": "Apps for both platforms, built from one agreed plan."
+            },
+            {
+              "title": "Backend and data",
+              "text": "APIs and a database that fit the app, with sensible access control."
+            },
+            {
+              "title": "Publishing and updates",
+              "text": "We prepare the store listings, submit the app and ship updates after launch."
+            }
+          ],
+          "needs": [
+            "What the app should let people do",
+            "Who will use it and on which devices",
+            "Any systems it must connect to"
+          ]
+        }
       },
       {
         "id": "systems",
@@ -103,7 +219,35 @@
           "Dashboards and reports",
           "Integrations with the tools you use",
           "Training and handover"
-        ]
+        ],
+        "page": {
+          "title": "CRMs and internal business systems",
+          "description": "Echo Tech builds CRMs, booking systems and internal tools shaped around how your team already works.",
+          "lead": "We build CRMs and internal tools around the way your team already works, so people use them instead of working around them.",
+          "included": [
+            {
+              "title": "Customers and bookings",
+              "text": "Records, bookings and follow-ups in one place instead of spread across chats and sheets."
+            },
+            {
+              "title": "Dashboards and reports",
+              "text": "The numbers you check every week, ready when you open the system."
+            },
+            {
+              "title": "Integrations",
+              "text": "Connections to the tools you already use, such as email, payments or your website."
+            },
+            {
+              "title": "Training and handover",
+              "text": "We train your team and hand over documentation."
+            }
+          ],
+          "needs": [
+            "A walk-through of how work flows today",
+            "Who needs to see and change what",
+            "The tools it must work with"
+          ]
+        }
       }
     ],
     "pick": "Choose a service",
@@ -237,5 +381,31 @@
     "tagline": "Networks, CCTV, websites and apps.",
     "rights": "All rights reserved."
   },
-  "faqTitleSchema": "Frequently asked questions"
+  "faqTitleSchema": "Frequently asked questions",
+  "pages": {
+    "home": "Home",
+    "services": "Services",
+    "included": "What's included",
+    "process": "How we work",
+    "needs": "What we need from you to start",
+    "others": "Other services",
+    "learn": "Learn more",
+    "allWork": "See all work",
+    "quote": "Request a quote for this service",
+    "allServices": "All services",
+    "viewAll": "Compare all services",
+    "ctaTitle": "Have a project in mind?",
+    "ctaText": "Tell us what you need and we will reply with questions or a quote.",
+    "whatsapp": "Chat on WhatsApp",
+    "menuHint": "Our services",
+    "workTitle": "Work",
+    "workH1": "Our work",
+    "workDescription": "Projects by Echo Tech: bilingual websites and internal systems for local businesses, starting with Joy Zone in Alexandria.",
+    "workIntro": "Our first projects are with local businesses. Here is the one we can show today.",
+    "workList": "Projects",
+    "slotText": "Your project could be the next one on this page.",
+    "client": "Client",
+    "delivered": "What we delivered",
+    "crumbs": "Breadcrumb"
+  }
 }

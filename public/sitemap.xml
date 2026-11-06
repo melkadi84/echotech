@@ -14,4 +14,88 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://echo-tech.website/en/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://echo-tech.website/"/>
   </url>
+  <url>
+    <loc>https://echo-tech.website/work/</loc>
+    <lastmod>2026-11-06</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://echo-tech.website/work/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://echo-tech.website/en/work/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://echo-tech.website/work/"/>
+  </url>
+  <url>
+    <loc>https://echo-tech.website/en/work/</loc>
+    <lastmod>2026-11-06</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://echo-tech.website/work/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://echo-tech.website/en/work/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://echo-tech.website/work/"/>
+  </url>
+  <url>
+    <loc>https://echo-tech.website/services/network/</loc>
+    <lastmod>2026-11-06</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://echo-tech.website/services/network/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://echo-tech.website/en/services/network/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://echo-tech.website/services/network/"/>
+  </url>
+  <url>
+    <loc>https://echo-tech.website/en/services/network/</loc>
+    <lastmod>2026-11-06</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://echo-tech.website/services/network/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://echo-tech.website/en/services/network/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://echo-tech.website/services/network/"/>
+  </url>
+  <url>
+    <loc>https://echo-tech.website/services/cctv/</loc>
+    <lastmod>2026-11-06</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://echo-tech.website/services/cctv/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://echo-tech.website/en/services/cctv/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://echo-tech.website/services/cctv/"/>
+  </url>
+  <url>
+    <loc>https://echo-tech.website/en/services/cctv/</loc>
+    <lastmod>2026-11-06</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://echo-tech.website/services/cctv/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://echo-tech.website/en/services/cctv/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://echo-tech.website/services/cctv/"/>
+  </url>
+  <url>
+    <loc>https://echo-tech.website/services/web/</loc>
+    <lastmod>2026-11-06</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://echo-tech.website/services/web/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://echo-tech.website/en/services/web/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://echo-tech.website/services/web/"/>
+  </url>
+  <url>
+    <loc>https://echo-tech.website/en/services/web/</loc>
+    <lastmod>2026-11-06</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://echo-tech.website/services/web/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://echo-tech.website/en/services/web/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://echo-tech.website/services/web/"/>
+  </url>
+  <url>
+    <loc>https://echo-tech.website/services/apps/</loc>
+    <lastmod>2026-11-06</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://echo-tech.website/services/apps/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://echo-tech.website/en/services/apps/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://echo-tech.website/services/apps/"/>
+  </url>
+  <url>
+    <loc>https://echo-tech.website/en/services/apps/</loc>
+    <lastmod>2026-11-06</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://echo-tech.website/services/apps/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://echo-tech.website/en/services/apps/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://echo-tech.website/services/apps/"/>
+  </url>
+  <url>
+    <loc>https://echo-tech.website/services/systems/</loc>
+    <lastmod>2026-11-06</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://echo-tech.website/services/systems/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://echo-tech.website/en/services/systems/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://echo-tech.website/services/systems/"/>
+  </url>
+  <url>
+    <loc>https://echo-tech.website/en/services/systems/</loc>
+    <lastmod>2026-11-06</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://echo-tech.website/services/systems/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://echo-tech.website/en/services/systems/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://echo-tech.website/services/systems/"/>
+  </url>
 </urlset>

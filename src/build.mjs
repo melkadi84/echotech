@@ -40,9 +40,20 @@ const sunIcon = `<svg class="sun" viewBox="0 0 24 24" fill="none" stroke="curren
 const moonIcon = `<svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z"/></svg>`;
 const menuIcon = `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>`;
 
-const url = (t) => site + t.path;
+const icons = {
+  network: '<circle cx="12" cy="5" r="2.2"/><circle cx="5" cy="19" r="2.2"/><circle cx="19" cy="19" r="2.2"/><path d="M12 7.2v4.3M12 11.5 6.2 17.2M12 11.5l5.8 5.7"/>',
+  cctv: '<path d="M3 8.5 15 5l1.6 5.2L4.6 13.7z"/><path d="m9 12.2-.8 4.3M6.2 20h6M8.2 16.5 7 20"/><path d="M18.5 9.5c1 .4 1.8 1.2 2.2 2.2"/>',
+  web: '<rect x="3" y="4.5" width="18" height="15" rx="2.2"/><path d="M3 9.5h18M7 7h.01M10 7h.01"/>',
+  apps: '<rect x="7" y="2.8" width="10" height="18.4" rx="2.4"/><path d="M11 18h2"/>',
+  systems: '<rect x="3.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="4.5" rx="1.6"/><rect x="13.5" y="11" width="7" height="9.5" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/>',
+};
+const iconSvg = (id, cls = "") => `<svg${cls ? ` class="${cls}"` : ""} viewBox="0 0 24 24" aria-hidden="true" focusable="false">${icons[id] || ""}</svg>`;
 
-function schema(t) {
+const url = (t) => site + t.path;
+const svcPath = (t, id) => `${t.path}services/${id}/`;
+const workPath = (t) => `${t.path}work/`;
+
+function schema(t, ctx) {
   const other = t.lang === "ar" ? langs.en : langs.ar;
   const sameAs = Object.values(cfg.social).filter(Boolean);
   const org = {
@@ -73,189 +84,82 @@ function schema(t) {
     "@graph": [
       org,
       { "@type": "WebSite", "@id": `${site}/#website`, url: site + "/", name: "Echo Tech", publisher: { "@id": `${site}/#org` }, inLanguage: ["ar", "en"] },
-      { "@type": "WebPage", "@id": url(t) + "#webpage", url: url(t), name: t.title, description: t.description, inLanguage: t.lang, isPartOf: { "@id": `${site}/#website` }, about: { "@id": `${site}/#org` }, primaryImageOfPage: `${site}/assets/brand/og-image.png`, translationOfWork: { "@id": url(other) + "#webpage" } },
-      { "@type": "FAQPage", "@id": url(t) + "#faq", inLanguage: t.lang, name: t.faqTitleSchema, mainEntity: t.faq.items.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) },
+      { "@type": "WebPage", "@id": site + ctx.path + "#webpage", url: site + ctx.path, name: ctx.title, description: ctx.description, inLanguage: t.lang, isPartOf: { "@id": `${site}/#website` }, about: { "@id": `${site}/#org` }, primaryImageOfPage: `${site}/assets/brand/og-image.png`, translationOfWork: { "@id": site + ctx.otherPath + "#webpage" } },
+      ...(ctx.isHome ? [{ "@type": "FAQPage", "@id": url(t) + "#faq", inLanguage: t.lang, name: t.faqTitleSchema, mainEntity: t.faq.items.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) }] : []),
+      ...(ctx.extra || []),
     ],
   };
 }
 
-function page(t) {
-  const other = t.lang === "ar" ? langs.en : langs.ar;
-  const u = t.ui;
-  const f = t.contact.form;
-  const wa = cfg.whatsapp ? `https://wa.me/${cfg.whatsapp.replace(/\D/g, "")}` : "";
-  const ogImg = `${site}/assets/brand/og-image.png`;
-  const social = Object.entries(cfg.social).filter(([, v]) => v);
 
-  const icons = {
-    network: '<circle cx="12" cy="5" r="2.2"/><circle cx="5" cy="19" r="2.2"/><circle cx="19" cy="19" r="2.2"/><path d="M12 7.2v4.3M12 11.5 6.2 17.2M12 11.5l5.8 5.7"/>',
-    cctv: '<path d="M3 8.5 15 5l1.6 5.2L4.6 13.7z"/><path d="m9 12.2-.8 4.3M6.2 20h6M8.2 16.5 7 20"/><path d="M18.5 9.5c1 .4 1.8 1.2 2.2 2.2"/>',
-    web: '<rect x="3" y="4.5" width="18" height="15" rx="2.2"/><path d="M3 9.5h18M7 7h.01M10 7h.01"/>',
-    apps: '<rect x="7" y="2.8" width="10" height="18.4" rx="2.4"/><path d="M11 18h2"/>',
-    systems: '<rect x="3.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="4.5" rx="1.6"/><rect x="13.5" y="11" width="7" height="9.5" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/>',
-  };
-  const tabs = t.services.items.map((s, i) => `
-          <button class="tab" type="button" role="tab" id="tab-${s.id}" aria-controls="svc-${s.id}" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}" data-index="${i}">
-            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">${icons[s.id] || ""}</svg><span>${esc(s.name)}</span>
-          </button>`).join("");
-  const services = t.services.items.map((s, i) => `
-        <article class="panel" id="svc-${s.id}" role="tabpanel" aria-labelledby="tab-${s.id}" data-index="${i}">
-          <h3>${esc(s.name)}</h3>
-          <p class="panel__summary">${esc(s.summary)}</p>
-          <ul class="svc__points">${s.points.map((p) => `<li>${esc(p)}</li>`).join("")}</ul>
-          <a class="btn" href="#contact" data-pick="${i}">${esc(t.services.cta)}</a>
-        </article>`).join("");
+const waLink = () => (cfg.whatsapp ? `https://wa.me/${cfg.whatsapp.replace(/\D/g, "")}` : "");
 
+const navHtml = (t, ctx) => {
+  const base = ctx.isHome ? "" : t.path;
+  return t.nav.map((n) => {
+    if (n.id === "services") {
+      const items = t.services.items.map((s) => `<a href="${svcPath(t, s.id)}">${iconSvg(s.id)}<span><strong>${esc(s.name)}</strong><small>${esc(s.summary)}</small></span></a>`).join("");
+      const current = ctx.section === "services" ? ' aria-current="true"' : "";
+      return `<div class="nav__group"><a class="nav__link" href="${base}#services"${current}>${esc(n.label)}</a><div class="nav__menu" role="group" aria-label="${esc(t.pages.menuHint)}">${items}</div></div>`;
+    }
+    if (n.id === "work") {
+      const current = ctx.section === "work" ? ' aria-current="page"' : "";
+      return `<a class="nav__link" href="${workPath(t)}"${current}>${esc(n.label)}</a>`;
+    }
+    return `<a class="nav__link" href="${base}#${n.id}">${esc(n.label)}</a>`;
+  }).join("\n      ");
+};
+
+const footerLinks = (t, ctx) => {
+  const base = ctx.isHome ? "" : t.path;
+  const links = t.nav.map((n) => (n.id === "work" ? `<a href="${workPath(t)}">${esc(n.label)}</a>` : `<a href="${base}#${n.id}">${esc(n.label)}</a>`));
+  return links.join("") + `<a href="${base}#contact">${esc(t.cta)}</a>`;
+};
+
+const logoFile = ["svg", "png", "webp"].map((x) => `assets/clients/joy-zone.${x}`).find((p) => existsSync(join(root, "public", p)));
+const jzLogo = logoFile ? `<img src="/${logoFile}" alt="" width="64" height="64" loading="lazy">` : `<span aria-hidden="true">JZ</span>`;
+
+const clientsBlock = (t, ctx) => {
   const jz = t.work.joyZone;
   const st = t.work.strip;
-  const logoFile = ["svg", "png", "webp"].map((x) => `assets/clients/joy-zone.${x}`).find((p) => existsSync(join(root, "public", p)));
-  const jzLogo = logoFile ? `<img src="/${logoFile}" alt="" width="64" height="64" loading="lazy">` : `<span aria-hidden="true">JZ</span>`;
-  const clientItems = (hidden) => {
+  const contactHref = `${ctx.isHome ? "" : t.path}#contact`;
+  const items = (hidden) => {
     const tab = hidden ? ' tabindex="-1"' : "";
     const one = `<li class="client"><a href="${cfg.caseStudies.joyZoneUrl}" target="_blank" rel="noopener"${tab}><span class="client__logo">${jzLogo}</span><span class="client__text"><strong>${esc(jz.client)}</strong><small>${esc(jz.kind)}</small></span></a></li>`;
-    const slot = `<li class="client client--slot"><a href="#contact"${tab}><span class="client__logo">${markSvg("client__mark")}</span><span class="client__text"><strong>${esc(st.slotName)}</strong><small>${esc(st.slotKind)}</small></span></a></li>`;
-    return one + slot + one + slot + one + slot;
+    const slot = `<li class="client client--slot"><a href="${contactHref}"${tab}><span class="client__logo">${markSvg("client__mark")}</span><span class="client__text"><strong>${esc(st.slotName)}</strong><small>${esc(st.slotKind)}</small></span></a></li>`;
+    return (one + slot).repeat(3);
   };
-  const testimonials = t.work.testimonials.length
-    ? `<div class="quotes" aria-labelledby="quotes-h"><h3 class="sr-only" id="quotes-h">${esc(t.work.testimonialsTitle)}</h3>${t.work.testimonials.map((q) => `<figure class="quote"><blockquote><p>${esc(q.text)}</p></blockquote><footer>${esc(q.name)}${q.role ? `، ${esc(q.role)}` : ""}</footer></figure>`).join("")}</div>`
-    : "";
-
-  const steps = t.process.steps.map((s) => `<li class="step"><h3>${esc(s.name)}</h3><p>${esc(s.text)}</p></li>`).join("");
-  const principles = t.principles.items.map((p) => `<div><h3>${esc(p.title)}</h3><p>${esc(p.text)}</p></div>`).join("");
-  const faq = t.faq.items.map((q) => `<details><summary>${esc(q.q)}</summary><p>${esc(q.a)}</p></details>`).join("");
-  const options = f.serviceOptions.map((o) => `<option>${esc(o)}</option>`).join("");
-
-  const field = (id, label, input) => `<div class="field"><label for="${id}">${esc(label)}</label>${input}<span class="err" aria-live="polite"></span></div>`;
-
-  return `<!doctype html>
-<html lang="${t.lang}" dir="${t.dir}">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>${esc(t.title)}</title>
-<meta name="description" content="${esc(t.description)}">
-<link rel="canonical" href="${url(t)}">
-<link rel="alternate" hreflang="${t.lang}" href="${url(t)}">
-<link rel="alternate" hreflang="${other.lang}" href="${url(other)}">
-<link rel="alternate" hreflang="x-default" href="${site}/">
-<meta name="theme-color" content="${cfg.themeColor.light}" data-light="${cfg.themeColor.light}" data-dark="${cfg.themeColor.dark}">
-<meta name="color-scheme" content="light dark">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="Echo Tech">
-<meta property="og:title" content="${esc(t.title)}">
-<meta property="og:description" content="${esc(t.description)}">
-<meta property="og:url" content="${url(t)}">
-<meta property="og:image" content="${ogImg}">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:locale" content="${t.locale}">
-<meta property="og:locale:alternate" content="${other.locale}">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="${esc(t.title)}">
-<meta name="twitter:description" content="${esc(t.description)}">
-<meta name="twitter:image" content="${ogImg}">
-<link rel="icon" href="/favicon.ico" sizes="48x48">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="manifest" href="/site.webmanifest">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300..700&display=swap">
-<script>${themeScript}</script>
-<link rel="stylesheet" href="${assets.css}">
-<noscript><style>.boot{display:none}</style></noscript>
-<script type="application/ld+json">${jsonLd(schema(t))}</script>
-</head>
-<body>
-<a class="skip" href="#main">${esc(u.skip)}</a>
-<div class="boot" role="status" aria-live="polite"><div class="boot__stack"><div class="boot__mark" aria-hidden="true"><i class="r"></i><i class="r r2"></i><i class="r r3"></i><i class="d"></i></div><span class="boot__label">${spinner("", "")}${esc(u.loading)}</span></div></div>
-<div class="progress" role="presentation"></div>
-
-<header class="header">
-  <div class="wrap header__row">
-    <a class="brand" href="${t.path}" aria-label="${esc(u.home)}">${markSvg()}<span class="brand__name">${t.lang === "ar" ? "إيكو تك" : "ECHO TECH"}</span></a>
-    <nav class="nav" id="nav" aria-label="${esc(u.menu)}">
-      ${t.nav.map((n) => `<a class="nav__link" href="#${n.id}">${esc(n.label)}</a>`).join("\n      ")}
-      <a class="btn" href="#contact">${esc(t.cta)}</a>
-    </nav>
-    <div class="tools">
-      <a class="lang" href="${other.path}" hreflang="${other.lang}" lang="${other.lang}" title="${esc(u.langName)}">${esc(u.langLabel)}</a>
-      <button class="icon-btn theme-btn" type="button" aria-label="${esc(u.theme)}">${moonIcon}${sunIcon}</button>
-      <button class="icon-btn menu-btn" type="button" aria-expanded="false" aria-controls="nav" aria-label="${esc(u.menu)}" data-open="${esc(u.menu)}" data-close="${esc(u.closeMenu)}">${menuIcon}</button>
-    </div>
-  </div>
-</header>
-
-<main id="main">
-  <section class="hero" aria-labelledby="hero-h">
-    <div class="echo" aria-hidden="true"><span class="wave"></span><span class="wave"></span><span class="wave"></span><span class="wave"></span><span class="wave"></span><span class="wave"></span><span class="core"></span></div>
-    <div class="wrap hero__content">
-      <h1 id="hero-h">${esc(t.hero.title)}</h1>
-      <p class="hero__sub">${esc(t.hero.sub)}</p>
-      <div class="hero__actions">
-        <a class="btn" href="#contact">${esc(t.hero.primary)}</a>
-        <a class="btn btn--ghost" href="#work">${esc(t.hero.secondary)}</a>
-      </div>
-      <p class="hero__jump" aria-label="${esc(t.hero.jump)}">${t.services.items.map((s) => `<a href="#svc-${s.id}">${esc(s.name)}</a>`).join("")}</p>
-    </div>
-  </section>
-
-  <section id="services" aria-labelledby="services-h">
-    <div class="wrap">
-      <div class="head"><h2 id="services-h">${esc(t.services.title)}</h2><p>${esc(t.services.intro)}</p></div>
-      <div class="picker" data-picker>
-        <div class="picker__list" role="tablist" aria-label="${esc(t.services.pick)}" aria-orientation="vertical" hidden>${tabs}
-        </div>
-        <div class="picker__panels">${services}</div>
-      </div>
-    </div>
-  </section>
-
-  <section id="work" class="work" aria-labelledby="work-h">
-    <div class="wrap">
-      <div class="head"><h2 id="work-h">${esc(t.work.title)}</h2><p>${esc(t.work.intro)}</p></div>
-      <div class="clients" role="group" aria-label="${esc(st.label)}" data-clients>
+  return `<div class="clients" role="group" aria-label="${esc(st.label)}" data-clients>
         <button class="clients__toggle" type="button" aria-pressed="false" data-pause="${esc(st.pause)}" data-play="${esc(st.play)}" hidden>${esc(st.pause)}</button>
         <div class="marquee" dir="ltr">
           <div class="marquee__track">
-            <ul class="marquee__set">${clientItems(false)}</ul>
-            <ul class="marquee__set marquee__set--copy" aria-hidden="true">${clientItems(true)}</ul>
+            <ul class="marquee__set">${items(false)}</ul>
+            <ul class="marquee__set marquee__set--copy" aria-hidden="true">${items(true)}</ul>
           </div>
         </div>
-      </div>
-      <div class="case">
-        <p class="case__kind">${esc(jz.kind)}</p>
-        <h3>${esc(jz.client)}</h3>
-        <p>${esc(jz.summary)}</p>
-        <ul class="case__list">${jz.delivered.map((d) => `<li>${esc(d)}</li>`).join("")}</ul>
-        <a class="btn btn--ghost" href="${cfg.caseStudies.joyZoneUrl}" rel="noopener" target="_blank">${esc(jz.visit)}</a>
-      </div>
-      ${testimonials}
-    </div>
-  </section>
+      </div>`;
+};
 
-  <section id="process" aria-labelledby="process-h">
-    <div class="wrap">
-      <div class="head"><h2 id="process-h">${esc(t.process.title)}</h2><p>${esc(t.process.intro)}</p></div>
-      <ol class="steps">${steps}</ol>
-    </div>
-  </section>
+const processSteps = (t) => t.process.steps.map((s) => `<li class="step"><h3>${esc(s.name)}</h3><p>${esc(s.text)}</p></li>`).join("");
 
-  <section aria-labelledby="principles-h" class="principles-sec">
-    <div class="wrap">
-      <div class="head"><h2 id="principles-h">${esc(t.principles.title)}</h2></div>
-      <div class="principles">${principles}</div>
-    </div>
-  </section>
+const crumbs = (t, trail) => `<nav class="crumbs" aria-label="${esc(t.pages.crumbs)}"><ol>${trail.map(([label, href]) => (href ? `<li><a href="${href}">${esc(label)}</a></li>` : `<li aria-current="page">${esc(label)}</li>`)).join("")}</ol></nav>`;
 
-  <section id="faq" aria-labelledby="faq-h">
-    <div class="wrap">
-      <div class="head"><h2 id="faq-h">${esc(t.faq.title)}</h2></div>
-      <div class="faq-list">${faq}</div>
+const ctaBand = (t) => {
+  const wa = waLink();
+  return `<section class="band" aria-labelledby="band-h">
+    <div class="wrap band__row">
+      <div><h2 id="band-h">${esc(t.pages.ctaTitle)}</h2><p>${esc(t.pages.ctaText)}</p></div>
+      <div class="band__actions"><a class="btn" href="${t.path}#contact">${esc(t.cta)}</a>${wa ? `<a class="btn btn--ghost" href="${wa}" rel="noopener" target="_blank">${esc(t.pages.whatsapp)}</a>` : ""}</div>
     </div>
-  </section>
+  </section>`;
+};
 
-  <section id="contact" class="contact" aria-labelledby="contact-h">
+function contactSection(t, selected = -1) {
+  const f = t.contact.form;
+  const wa = waLink();
+  const options = f.serviceOptions.map((o, i) => `<option${i === selected ? " selected" : ""}>${esc(o)}</option>`).join("");
+  const field = (id, label, input) => `<div class="field"><label for="${id}">${esc(label)}</label>${input}<span class="err" aria-live="polite"></span></div>`;
+  return `  <section id="contact" class="contact" aria-labelledby="contact-h">
     <div class="wrap contact__grid">
       <div>
         <div class="head"><h2 id="contact-h">${esc(t.contact.title)}</h2><p>${esc(t.contact.intro)}</p></div>
@@ -281,13 +185,80 @@ function page(t) {
       </form>
     </div>
   </section>
-</main>
+`;
+}
+
+function shell(t, ctx, body) {
+  const other = t.lang === "ar" ? langs.en : langs.ar;
+  const u = t.ui;
+  const ogImg = `${site}/assets/brand/og-image.png`;
+  const social = Object.entries(cfg.social).filter(([, v]) => v);
+  return `<!doctype html>
+<html lang="${t.lang}" dir="${t.dir}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>${esc(ctx.title)}</title>
+<meta name="description" content="${esc(ctx.description)}">
+<link rel="canonical" href="${site + ctx.path}">
+<link rel="alternate" hreflang="${t.lang}" href="${site + ctx.path}">
+<link rel="alternate" hreflang="${other.lang}" href="${site + ctx.otherPath}">
+<link rel="alternate" hreflang="x-default" href="${site + ctx.arPath}">
+<meta name="theme-color" content="${cfg.themeColor.light}" data-light="${cfg.themeColor.light}" data-dark="${cfg.themeColor.dark}">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Echo Tech">
+<meta property="og:title" content="${esc(ctx.title)}">
+<meta property="og:description" content="${esc(ctx.description)}">
+<meta property="og:url" content="${site + ctx.path}">
+<meta property="og:image" content="${ogImg}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="${t.locale}">
+<meta property="og:locale:alternate" content="${other.locale}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${esc(ctx.title)}">
+<meta name="twitter:description" content="${esc(ctx.description)}">
+<meta name="twitter:image" content="${ogImg}">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300..700&display=swap">
+<script>${themeScript}</script>
+<link rel="stylesheet" href="${assets.css}">
+<noscript><style>.boot{display:none}</style></noscript>
+<script type="application/ld+json">${jsonLd(schema(t, ctx))}</script>
+</head>
+<body>
+<a class="skip" href="#main">${esc(u.skip)}</a>
+<div class="boot" role="status" aria-live="polite"><div class="boot__stack"><div class="boot__mark" aria-hidden="true"><i class="r"></i><i class="r r2"></i><i class="r r3"></i><i class="d"></i></div><span class="boot__label">${spinner("", "")}${esc(u.loading)}</span></div></div>
+<div class="progress" role="presentation"></div>
+
+<header class="header">
+  <div class="wrap header__row">
+    <a class="brand" href="${t.path}" aria-label="${esc(u.home)}">${markSvg()}<span class="brand__name">${t.lang === "ar" ? "إيكو تك" : "ECHO TECH"}</span></a>
+    <nav class="nav" id="nav" aria-label="${esc(u.menu)}">
+      ${navHtml(t, ctx)}
+      <a class="btn" href="${ctx.isHome ? "" : t.path}#contact">${esc(t.cta)}</a>
+    </nav>
+    <div class="tools">
+      <a class="lang" href="${ctx.otherPath}" hreflang="${other.lang}" lang="${other.lang}" title="${esc(u.langName)}">${esc(u.langLabel)}</a>
+      <button class="icon-btn theme-btn" type="button" aria-label="${esc(u.theme)}">${moonIcon}${sunIcon}</button>
+      <button class="icon-btn menu-btn" type="button" aria-expanded="false" aria-controls="nav" aria-label="${esc(u.menu)}" data-open="${esc(u.menu)}" data-close="${esc(u.closeMenu)}">${menuIcon}</button>
+    </div>
+  </div>
+</header>
+
+<main id="main">${body}</main>
 
 <footer class="footer">
   <div class="wrap">
     <div class="footer__row">
       <div><a class="brand" href="${t.path}" aria-label="${esc(u.home)}">${markSvg()}<span class="brand__name">${t.lang === "ar" ? "إيكو تك" : "ECHO TECH"}</span></a><p>${esc(t.footer.tagline)}</p></div>
-      <nav aria-label="${esc(u.menu)}">${t.nav.map((n) => `<a href="#${n.id}">${esc(n.label)}</a>`).join("")}<a href="#contact">${esc(t.cta)}</a></nav>
+      <nav aria-label="${esc(u.menu)}">${footerLinks(t, ctx)}</nav>
       ${social.length ? `<nav aria-label="Social">${social.map(([k, v]) => `<a href="${esc(v)}" rel="noopener me" target="_blank">${esc(k)}</a>`).join("")}</nav>` : ""}
     </div>
     <p class="footer__copy">© ${new Date().getFullYear()} Echo Tech. ${esc(t.footer.rights)}</p>
@@ -302,8 +273,210 @@ ${cfg.analyticsToken ? `<script defer src="https://static.cloudflareinsights.com
 `;
 }
 
+function homeBody(t) {
+  const jz = t.work.joyZone;
+  const tabs = t.services.items.map((s, i) => `
+          <button class="tab" type="button" role="tab" id="tab-${s.id}" aria-controls="svc-${s.id}" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}" data-index="${i}">
+            ${iconSvg(s.id)}<span>${esc(s.name)}</span>
+          </button>`).join("");
+  const services = t.services.items.map((s, i) => `
+        <article class="panel" id="svc-${s.id}" role="tabpanel" aria-labelledby="tab-${s.id}" data-index="${i}">
+          <h3>${esc(s.name)}</h3>
+          <p class="panel__summary">${esc(s.summary)}</p>
+          <ul class="svc__points">${s.points.map((p) => `<li>${esc(p)}</li>`).join("")}</ul>
+          <div class="panel__actions"><a class="btn" href="#contact" data-pick="${i}">${esc(t.services.cta)}</a><a class="btn btn--ghost" href="${svcPath(t, s.id)}">${esc(t.pages.learn)}</a></div>
+        </article>`).join("");
+  const testimonials = t.work.testimonials.length
+    ? `<div class="quotes" aria-labelledby="quotes-h"><h3 class="sr-only" id="quotes-h">${esc(t.work.testimonialsTitle)}</h3>${t.work.testimonials.map((q) => `<figure class="quote"><blockquote><p>${esc(q.text)}</p></blockquote><footer>${esc(q.name)}${q.role ? `، ${esc(q.role)}` : ""}</footer></figure>`).join("")}</div>`
+    : "";
+  const steps = processSteps(t);
+  const principles = t.principles.items.map((p) => `<div><h3>${esc(p.title)}</h3><p>${esc(p.text)}</p></div>`).join("");
+  const faq = t.faq.items.map((q) => `<details><summary>${esc(q.q)}</summary><p>${esc(q.a)}</p></details>`).join("");
+  const ctx = { isHome: true };
+  return `
+  <section class="hero" aria-labelledby="hero-h">
+    <div class="echo" aria-hidden="true"><span class="wave"></span><span class="wave"></span><span class="wave"></span><span class="wave"></span><span class="wave"></span><span class="wave"></span><span class="core"></span></div>
+    <div class="wrap hero__content">
+      <h1 id="hero-h">${esc(t.hero.title)}</h1>
+      <p class="hero__sub">${esc(t.hero.sub)}</p>
+      <div class="hero__actions">
+        <a class="btn" href="#contact">${esc(t.hero.primary)}</a>
+        <a class="btn btn--ghost" href="${workPath(t)}">${esc(t.hero.secondary)}</a>
+      </div>
+      <p class="hero__jump" aria-label="${esc(t.hero.jump)}">${t.services.items.map((s) => `<a href="#svc-${s.id}">${esc(s.name)}</a>`).join("")}</p>
+    </div>
+  </section>
+
+  <section id="services" aria-labelledby="services-h">
+    <div class="wrap">
+      <div class="head"><h2 id="services-h">${esc(t.services.title)}</h2><p>${esc(t.services.intro)}</p></div>
+      <div class="picker" data-picker>
+        <div class="picker__list" role="tablist" aria-label="${esc(t.services.pick)}" aria-orientation="vertical" hidden>${tabs}
+        </div>
+        <div class="picker__panels">${services}</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="work" class="work" aria-labelledby="work-h">
+    <div class="wrap">
+      <div class="head"><h2 id="work-h">${esc(t.work.title)}</h2><p>${esc(t.work.intro)}</p></div>
+      ${clientsBlock(t, ctx)}
+      <div class="case">
+        <p class="case__kind">${esc(jz.kind)}</p>
+        <h3>${esc(jz.client)}</h3>
+        <p>${esc(jz.summary)}</p>
+        <ul class="case__list">${jz.delivered.map((d) => `<li>${esc(d)}</li>`).join("")}</ul>
+        <div class="case__actions"><a class="btn btn--ghost" href="${cfg.caseStudies.joyZoneUrl}" rel="noopener" target="_blank">${esc(jz.visit)}</a><a class="btn btn--ghost" href="${workPath(t)}">${esc(t.pages.allWork)}</a></div>
+      </div>
+      ${testimonials}
+    </div>
+  </section>
+
+  <section id="process" aria-labelledby="process-h">
+    <div class="wrap">
+      <div class="head"><h2 id="process-h">${esc(t.process.title)}</h2><p>${esc(t.process.intro)}</p></div>
+      <ol class="steps">${steps}</ol>
+    </div>
+  </section>
+
+  <section aria-labelledby="principles-h" class="principles-sec">
+    <div class="wrap">
+      <div class="head"><h2 id="principles-h">${esc(t.principles.title)}</h2></div>
+      <div class="principles">${principles}</div>
+    </div>
+  </section>
+
+  <section id="faq" aria-labelledby="faq-h">
+    <div class="wrap">
+      <div class="head"><h2 id="faq-h">${esc(t.faq.title)}</h2></div>
+      <div class="faq-list">${faq}</div>
+    </div>
+  </section>
+  ${contactSection(t)}
+`;
+}
+
+const homeCtx = (t, other) => ({ isHome: true, section: "home", path: t.path, otherPath: other.path, arPath: "/", title: t.title, description: t.description, extra: [] });
+const page = (t) => shell(t, homeCtx(t, t.lang === "ar" ? langs.en : langs.ar), homeBody(t));
+
 await out("public/index.html", page(langs.ar));
 await out("public/en/index.html", page(langs.en));
+
+
+/* ---- Sub pages: one per service, plus the work page ---- */
+const otherLang = (t) => (t.lang === "ar" ? langs.en : langs.ar);
+const crumbLd = (t, trail) => ({
+  "@type": "BreadcrumbList",
+  itemListElement: trail.map(([name, href], i) => ({ "@type": "ListItem", position: i + 1, name, ...(href ? { item: site + href } : {}) })),
+});
+
+function servicePage(t, s, idx) {
+  const path = svcPath(t, s.id);
+  const trail = [[t.pages.home, t.path], [t.pages.services, `${t.path}#services`], [s.name, ""]];
+  const ctx = {
+    isHome: false, section: "services", path, otherPath: svcPath(otherLang(t), s.id), arPath: svcPath(langs.ar, s.id),
+    title: `${s.page.title} — Echo Tech`, description: s.page.description,
+    extra: [
+      { "@type": "Service", "@id": `${site}${path}#service`, name: s.name, description: s.page.description, serviceType: s.name, url: site + path, provider: { "@id": `${site}/#org` }, areaServed: "Worldwide", inLanguage: t.lang },
+      crumbLd(t, trail.map(([n, h], i) => [n, i === trail.length - 1 ? path : h])),
+    ],
+  };
+  const included = s.page.included.map((i) => `<div class="item"><h3>${esc(i.title)}</h3><p>${esc(i.text)}</p></div>`).join("");
+  const needs = s.page.needs.map((n) => `<li>${esc(n)}</li>`).join("");
+  const others = t.services.items.filter((o) => o.id !== s.id).map((o) => `<li><a href="${svcPath(t, o.id)}">${iconSvg(o.id)}<span><strong>${esc(o.name)}</strong><small>${esc(o.summary)}</small></span></a></li>`).join("");
+  const body = `
+  <section class="phero" aria-labelledby="page-h">
+    <div class="wrap">
+      ${crumbs(t, trail.map(([n, h], i) => [n, i === trail.length - 1 ? "" : h]))}
+      <div class="phero__title">${iconSvg(s.id, "phero__icon")}<h1 id="page-h">${esc(s.name)}</h1></div>
+      <p class="phero__lead">${esc(s.page.lead)}</p>
+      <div class="hero__actions"><a class="btn" href="#contact">${esc(t.pages.quote)}</a><a class="btn btn--ghost" href="${t.path}#services">${esc(t.pages.allServices)}</a></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="included-h">
+    <div class="wrap">
+      <div class="head"><h2 id="included-h">${esc(t.pages.included)}</h2></div>
+      <div class="items">${included}</div>
+    </div>
+  </section>
+
+  <section class="needs" aria-labelledby="needs-h">
+    <div class="wrap">
+      <div class="head"><h2 id="needs-h">${esc(t.pages.needs)}</h2></div>
+      <ul class="svc__points">${needs}</ul>
+    </div>
+  </section>
+
+  <section aria-labelledby="process-h">
+    <div class="wrap">
+      <div class="head"><h2 id="process-h">${esc(t.pages.process)}</h2><p>${esc(t.process.intro)}</p></div>
+      <ol class="steps">${processSteps(t)}</ol>
+    </div>
+  </section>
+
+  <section class="others" aria-labelledby="others-h">
+    <div class="wrap">
+      <div class="head"><h2 id="others-h">${esc(t.pages.others)}</h2></div>
+      <ul class="others__list">${others}</ul>
+    </div>
+  </section>
+
+  ${contactSection(t, idx)}`;
+  return shell(t, ctx, body);
+}
+
+function workPage(t) {
+  const jz = t.work.joyZone;
+  const pg = t.pages;
+  const trail = [[pg.home, t.path], [pg.workTitle, ""]];
+  const ctx = {
+    isHome: false, section: "work", path: workPath(t), otherPath: workPath(otherLang(t)), arPath: workPath(langs.ar),
+    title: `${pg.workH1} — Echo Tech`, description: pg.workDescription,
+    extra: [crumbLd(t, [[pg.home, t.path], [pg.workTitle, workPath(t)]])],
+  };
+  const quotes = t.work.testimonials.length
+    ? `<div class="quotes">${t.work.testimonials.map((q) => `<figure class="quote"><blockquote><p>${esc(q.text)}</p></blockquote><footer>${esc(q.name)}${q.role ? `، ${esc(q.role)}` : ""}</footer></figure>`).join("")}</div>`
+    : "";
+  const body = `
+  <section class="phero" aria-labelledby="page-h">
+    <div class="wrap">
+      ${crumbs(t, trail)}
+      <h1 id="page-h">${esc(pg.workH1)}</h1>
+      <p class="phero__lead">${esc(pg.workIntro)}</p>
+    </div>
+  </section>
+
+  <section class="work work--page" aria-labelledby="projects-h">
+    <div class="wrap">
+      ${clientsBlock(t, ctx)}
+      <h2 class="sr-only" id="projects-h">${esc(pg.workList)}</h2>
+      <article class="project">
+        <div class="project__head"><span class="client__logo">${jzLogo}</span><div><h3>${esc(jz.client)}</h3><p class="project__kind">${esc(jz.kind)}</p></div></div>
+        <p class="project__text">${esc(jz.summary)}</p>
+        <div class="project__meta"><p>${esc(pg.delivered)}</p><ul class="case__list">${jz.delivered.map((d) => `<li>${esc(d)}</li>`).join("")}</ul></div>
+        <a class="btn btn--ghost" href="${cfg.caseStudies.joyZoneUrl}" rel="noopener" target="_blank">${esc(jz.visit)}</a>
+      </article>
+      <article class="project project--slot">
+        <div class="project__head"><span class="client__logo">${markSvg("client__mark")}</span><div><h3>${esc(t.work.strip.slotName)}</h3><p class="project__kind">${esc(t.work.strip.slotKind)}</p></div></div>
+        <p class="project__text">${esc(pg.slotText)}</p>
+        <a class="btn btn--ghost" href="${t.path}#contact">${esc(t.cta)}</a>
+      </article>
+      ${quotes}
+    </div>
+  </section>
+
+  ${ctaBand(t)}`;
+  return shell(t, ctx, body);
+}
+
+const subPages = [];
+for (const t of [langs.ar, langs.en]) {
+  t.services.items.forEach((s, i) => subPages.push({ path: svcPath(t, s.id), html: servicePage(t, s, i) }));
+  subPages.push({ path: workPath(t), html: workPage(t) });
+}
+for (const p of subPages) await out(`public${p.path}index.html`, p.html);
 
 /* 404 */
 await out("public/404.html", `<!doctype html><html lang="en" dir="ltr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><title>404 — Echo Tech</title><link rel="icon" href="/favicon.svg" type="image/svg+xml"><script>${themeScript}</script><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300..700&display=swap"><link rel="stylesheet" href="${assets.css}"></head><body><main class="hero hero--full"><div class="wrap hero__content"><h1>404</h1><p class="hero__sub">This page doesn't exist. الصفحة غير موجودة.</p><div class="hero__actions"><a class="btn" href="/">الرئيسية</a><a class="btn btn--ghost" href="/en/">Home</a></div></div></main></body></html>
@@ -311,17 +484,17 @@ await out("public/404.html", `<!doctype html><html lang="en" dir="ltr"><head><me
 
 /* sitemap with hreflang alternates */
 const alt = (l, h) => `    <xhtml:link rel="alternate" hreflang="${l}" href="${h}"/>`;
-const entry = (t) => `  <url>
-    <loc>${url(t)}</loc>
+const entry = (arPath, enPath, own) => `  <url>
+    <loc>${site + own}</loc>
     <lastmod>${today}</lastmod>
-${alt("ar", site + "/")}
-${alt("en", site + "/en/")}
-${alt("x-default", site + "/")}
+${alt("ar", site + arPath)}
+${alt("en", site + enPath)}
+${alt("x-default", site + arPath)}
   </url>`;
+const pairs = [["/", "/en/"], [workPath(langs.ar), workPath(langs.en)], ...langs.ar.services.items.map((s) => [svcPath(langs.ar, s.id), svcPath(langs.en, s.id)])];
 await out("public/sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-${entry(langs.ar)}
-${entry(langs.en)}
+${pairs.flatMap(([ar, en]) => [entry(ar, en, ar), entry(ar, en, en)]).join("\n")}
 </urlset>
 `);
 await out("public/robots.txt", `User-agent: *\nAllow: /\nDisallow: /api/\n\nSitemap: ${site}/sitemap.xml\n`);

@@ -58,3 +58,7 @@ Ask for: permission to publish the name, a short quote about the outcome ("the c
 ## Client strip
 
 The strip in `#work` shows each real client as logo + name. Only Joy Zone exists today, so it alternates with a "Your business" slot linking to the contact form. To add a client: put the logo in `public/assets/clients/<name>.svg`, add the client to `src/content/*.json` and `src/build.mjs` with the client's permission. Never add a client that is not real.
+
+## Sub pages
+
+The build creates one page per service (`/services/<id>/`, `/en/services/<id>/`) and a work page (`/work/`, `/en/work/`). Service page copy lives in `services.items[].page` (title, description, lead, included, needs) in both language files. Keep it descriptive of how we work; no prices, metrics or promises the owner has not approved. Every page gets canonical, hreflang, JSON-LD (Service and BreadcrumbList) and a sitemap entry automatically.
