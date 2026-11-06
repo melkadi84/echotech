@@ -255,7 +255,7 @@
   },
   "work": {
     "title": "Selected work",
-    "intro": "Our first projects are with local businesses. Here is one.",
+    "intro": "Websites and systems we have built for real clients.",
     "joyZone": {
       "client": "Joy Zone",
       "kind": "Indoor play area for children in Al Soyouf, Alexandria, and birthday parties",
@@ -411,7 +411,7 @@
     "workTitle": "Work",
     "workH1": "Our work",
     "workDescription": "Projects by Echo Tech: bilingual websites and internal systems for local businesses, starting with Joy Zone in Alexandria.",
-    "workIntro": "Our first projects are with local businesses. Here is the one we can show today.",
+    "workIntro": "Websites and systems we have built for real clients.",
     "workList": "Projects",
     "slotText": "Your project could be the next one on this page.",
     "client": "Client",
