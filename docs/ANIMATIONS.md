@@ -4,7 +4,7 @@ Principle: motion is the echo. Things emit, ripple and fade. Nothing bounces for
 
 | Name | Where | Trigger | Implementation |
 |---|---|---|---|
-| Boot loader | Full-screen on first visit of a session | Page load | `.boot` in HTML, hidden by `site.js` after `load` (min 0.7s, max 4s). Skipped on later pages via `sessionStorage` (`et-boot`). Hidden without JS. |
+| Boot loader | Full-screen on every page load, refresh included | Page load | `.boot` in HTML, hidden by `site.js` after `load` (min 0.7s, max 4s). Hidden without JS. |
 | Spinner | Boot loader label, form submit button, any future loading state | State change | `.spinner` (SVG: track + rotating arc + pulsing core). Reuse by adding `<span class="spinner">` from `build.mjs` `spinner()`. Add `aria-busy="true"` on the button. |
 | Hero echo | Hero background | Continuous | Six `.wave` rings scale 0.1 to 1 while fading, 9s loop, staggered. `.core` pops in then breathes. |
 | Hero sequence | Hero text | Page load | Heading, text, buttons rise in with 120ms stagger. The single orchestrated entrance on the page. |

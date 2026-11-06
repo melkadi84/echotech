@@ -29,7 +29,7 @@ const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replac
 const jsonLd = (o) => JSON.stringify(o).replace(/</g, "\\u003c");
 
 /* Inline head script: sets theme + js flag before first paint. Its hash goes into the CSP. */
-const themeScript = `(function(){var d=document.documentElement;try{var t=localStorage.getItem('et-theme');if(!t){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}d.dataset.theme=t;d.classList.add('js');if(sessionStorage.getItem('et-boot'))d.classList.add('boot-skip')}catch(e){d.dataset.theme='light';d.classList.add('js')}})();`;
+const themeScript = `(function(){var d=document.documentElement;try{var t=localStorage.getItem('et-theme');if(!t){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}d.dataset.theme=t;d.classList.add('js')}catch(e){d.dataset.theme='light';d.classList.add('js')}})();`;
 const themeHash = "sha256-" + createHash("sha256").update(themeScript).digest("base64");
 
 const markSvg = (cls = "") => `<svg class="${cls}" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><circle class="r r2" cx="37.6" cy="32" r="14" opacity="0.4"/><circle class="r r1" cx="32" cy="32" r="14" opacity="0.8"/><circle class="d" cx="26.4" cy="32" r="14"/></svg>`;

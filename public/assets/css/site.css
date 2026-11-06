@@ -101,7 +101,6 @@ section { padding-block: clamp(4.5rem, 10vw, 8rem); }
 .boot__mark .r3 { animation-delay: 1.2s; }
 .boot__label { color: var(--muted); font-size: 0.9rem; display: inline-flex; gap: 0.6rem; align-items: center; }
 html:not(.js) .boot { display: none; }
-html.boot-skip .boot { display: none; }
 
 /* ---------- Scroll progress ---------- */
 .progress {

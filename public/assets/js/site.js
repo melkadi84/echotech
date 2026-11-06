@@ -12,7 +12,7 @@
     sset(k, v) { try { sessionStorage.setItem(k, v); } catch { /* storage unavailable */ } },
   };
 
-  /* 1. Boot loader: shown once per session, never blocks longer than 4s */
+  /* 1. Boot loader: shown on every page load (refresh included), never blocks longer than 4s */
   const boot = $(".boot");
   if (boot) {
     const started = performance.now();
@@ -20,7 +20,6 @@
       const wait = Math.max(0, 700 - (performance.now() - started));
       setTimeout(() => {
         boot.classList.add("is-done");
-        store.sset("et-boot", "1");
         setTimeout(() => boot.remove(), 700);
       }, wait);
     };
