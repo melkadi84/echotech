@@ -388,23 +388,23 @@ html:not(.js) .boot { display: none; }
 .marquee__set { display: flex; flex: none; }
 .clients:hover .marquee__track, .clients:focus-within .marquee__track, .clients.is-paused .marquee__track, .clients.is-offscreen .marquee__track { animation-play-state: paused; }
 .client { flex: none; border-inline-end: 1px solid var(--line); }
-.client a { display: flex; align-items: center; gap: 1.1rem; min-width: 22rem; padding: 1.9rem 2.5rem; color: var(--ink); text-decoration: none; transition: background-color 0.2s; }
-.client a:hover { background: var(--bg); }
-.client__logo { display: grid; place-items: center; flex: none; width: 64px; height: 64px; overflow: hidden; border: 1px solid var(--line); border-radius: 16px; background: var(--bg); color: var(--link); font-weight: 700; font-size: 1.2rem; letter-spacing: 0.02em; }
-.client__logo img { width: 100%; height: 100%; object-fit: contain; padding: 8px; }
-.client__mark { width: 36px; height: 36px; color: var(--ring); }
+.client a { display: grid; justify-items: center; align-content: start; gap: 0.35rem; width: 19rem; min-height: 17rem; padding: 2.25rem 1.75rem; text-align: center; color: var(--ink); text-decoration: none; transition: background-color 0.2s; }
+.client a:hover { background: var(--bg-2); }
+.client__logo { display: grid; place-items: center; flex: none; width: 84px; height: 84px; margin-block-end: 0.9rem; overflow: hidden; border: 1px solid var(--line); border-radius: 22px; background: #fff; color: var(--cobalt); font-weight: 700; font-size: 1.5rem; }
+.client__logo img { width: 100%; height: 100%; object-fit: contain; padding: 10px; }
+.client__mark { width: 48px; height: 48px; color: var(--ring); }
 .client__mark .d { fill: var(--ring); } .client__mark .r { fill: none; stroke: var(--ring); stroke-width: 3; }
 .client--slot .client__logo { border-style: dashed; }
-.client__text { display: grid; gap: 0.15rem; text-align: start; }
+.client__text { display: grid; justify-items: center; gap: 0.5rem; }
 .client strong { font-size: 1.3rem; font-weight: 600; }
-.client small { color: var(--muted); font-size: 0.9rem; }
+.client small { color: var(--muted); font-size: 0.9rem; line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 .case { display: grid; justify-items: start; max-width: 44rem; }
 .case__kind { color: var(--muted); }
 .case h3 { font-size: clamp(1.8rem, 2vw + 1rem, 2.6rem); margin-block: 0.4rem 1rem; }
 .case__list { display: flex; flex-wrap: wrap; gap: 0.5rem 0; margin-block: 1.5rem 2rem; }
 .case__list li { padding-inline-end: 1.25rem; margin-inline-end: 1.25rem; border-inline-end: 1px solid var(--line); font-weight: 500; }
 .case__list li:last-child { border-inline-end: 0; margin-inline-end: 0; }
-@media (max-width: 600px) { .client a { min-width: 18rem; padding: 1.4rem 1.5rem; }  }
+@media (max-width: 600px) { .client a { width: 16.5rem; min-height: 15.5rem; padding: 1.75rem 1.25rem; } }
 .quotes { margin-block-start: 4rem; display: grid; gap: 2rem; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); }
 .quote p { font-size: 1.25rem; line-height: 1.6; }
 .quote footer { margin-block-start: 1rem; color: var(--muted); font-size: 0.95rem; }

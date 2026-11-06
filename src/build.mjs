@@ -132,7 +132,7 @@ const clientsBlock = (t, ctx) => {
   const contactHref = `${ctx.isHome ? "" : t.path}#contact`;
   const items = (hidden) => {
     const tab = hidden ? ' tabindex="-1"' : "";
-    const one = clientList(t).map((c) => `<li class="client"><a href="${c.url}" target="_blank" rel="noopener"${tab}><span class="client__logo">${c.logo}</span><span class="client__text"><strong>${esc(c.name)}</strong><small>${esc(c.kind)}</small></span></a></li>`).join("");
+    const one = clientList(t).map((c) => `<li class="client"><a href="${c.url}" target="_blank" rel="noopener"${tab}><span class="client__logo">${c.logo}</span><span class="client__text"><strong>${esc(c.name)}</strong><small class="client__brief" data-brief-site="${c.url}">${esc(c.kind)}</small></span></a></li>`).join("");
     const slot = `<li class="client client--slot"><a href="${contactHref}"${tab}><span class="client__logo">${markSvg("client__mark")}</span><span class="client__text"><strong>${esc(st.slotName)}</strong><small>${esc(st.slotKind)}</small></span></a></li>`;
     return (one + slot).repeat(3);
   };

@@ -86,6 +86,24 @@ function initSignal() {
   map.querySelectorAll(".sig-node").forEach(bind);
 }
 
+// Client briefs: replace the written line with the client's own meta description when it is in the page language.
+async function initBriefs() {
+  const nodes = [...document.querySelectorAll("[data-brief-site]")];
+  if (!nodes.length) return;
+  const arabic = document.documentElement.lang === "ar";
+  const sites = [...new Set(nodes.map((n) => n.dataset.briefSite))];
+  await Promise.all(sites.map(async (site) => {
+    try {
+      const res = await fetch(`/api/brief?site=${encodeURIComponent(site)}`);
+      if (!res.ok) return;
+      const { description } = await res.json();
+      if (!description || /[\u0600-\u06FF]/.test(description) !== arabic) return;
+      nodes.filter((n) => n.dataset.briefSite === site).forEach((n) => { n.textContent = description; });
+    } catch { /* offline or blocked: keep the written line */ }
+  }));
+}
+
 initPicker();
 initClients();
+initBriefs();
 initSignal();

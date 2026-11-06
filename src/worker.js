@@ -2,6 +2,11 @@
 // Bindings: ASSETS (static files), DB (D1, optional until created).
 // Optional secrets: TURNSTILE_SECRET, NOTIFY_WEBHOOK_URL, IP_SALT.
 
+import cfg from "./site.config.json" with { type: "json" };
+
+// Client sites whose public meta description may be read (from site.config.json only: no open proxy).
+const BRIEF_SITES = new Set(Object.values(cfg.caseStudies || {}).filter(Boolean));
+
 const JSON_HEADERS = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" };
 const SERVICES = new Set([
   "Network infrastructure", "CCTV systems", "Website", "Mobile application", "Business system", "Something else",
@@ -110,10 +115,42 @@ async function handleContact(request, env) {
   return reply(200, { ok: true });
 }
 
+// GET /api/brief?site=<client url>: the client's own title and description, cached for a day.
+async function handleBrief(request) {
+  const site = new URL(request.url).searchParams.get("site") || "";
+  if (!BRIEF_SITES.has(site)) return reply(404, { ok: false, error: "not_found" });
+  const cache = caches.default;
+  const hit = await cache.match(request);
+  if (hit) return hit;
+  const info = { title: "", description: "" };
+  try {
+    const res = await fetch(site, { headers: { "User-Agent": "EchoTechBot/1.0 (+https://echo-tech.website)" }, redirect: "follow" });
+    const rewriter = new HTMLRewriter()
+      .on("title", { text(chunk) { if (!info.title) info.title += chunk.text; } })
+      .on("meta", {
+        element(el) {
+          const key = el.getAttribute("name") || el.getAttribute("property");
+          const content = (el.getAttribute("content") || "").trim();
+          if (content && (key === "description" || (key === "og:description" && !info.description))) info.description = content;
+        },
+      });
+    await rewriter.transform(res).text();
+  } catch {
+    return reply(502, { ok: false, error: "unreachable" });
+  }
+  const brief = info.description.length > 150 ? info.description.slice(0, 150).replace(/\s+\S*$/, "") + "…" : info.description;
+  const out = new Response(JSON.stringify({ ok: true, title: info.title.trim(), description: brief }), {
+    headers: { ...JSON_HEADERS, "Cache-Control": "public, max-age=86400" },
+  });
+  await cache.put(request, out.clone());
+  return out;
+}
+
 export default {
   async fetch(request, env) {
     const { pathname } = new URL(request.url);
     if (pathname === "/api/contact") return handleContact(request, env);
+    if (pathname === "/api/brief" && request.method === "GET") return handleBrief(request);
     if (pathname.startsWith("/api/")) return reply(404, { ok: false, error: "not_found" });
     return env.ASSETS.fetch(request);
   },
