@@ -22,6 +22,8 @@ src/site.config.json     domain, email, WhatsApp, Turnstile key, social links, t
 public/                  deployed output (committed). index.html and en/index.html are GENERATED
 public/assets/css/site.css   design tokens + components
 public/assets/js/site.js     behaviour (theme, menu, ripples, form, loader)
+public/assets/js/sections.js services picker (tabs) and client strip controls
+public/assets/clients/       optional client logos: joy-zone.svg|png|webp (build shows initials if absent)
 public/assets/brand/     logo files, app icons, OG image
 brand/                   brand source SVGs
 src/worker.js            Worker: serves ASSETS, handles POST /api/contact (validates, rate-limits, stores in D1)
@@ -41,7 +43,7 @@ Commands: `npm run build` (regenerate HTML), `npm run dev` (build + local Worker
 5. **Both themes always.** Every colour comes from a CSS variable in `site.css`. Check contrast (WCAG AA) in light and dark.
 6. **Honest content.** Never invent testimonials, metrics, client names, certifications, partnerships or prices. Add a client or quote only with the owner's confirmation and the client's permission. `work.testimonials` stays an empty array until real quotes exist. Policies written in FAQ answers (support, ownership of accounts) are owner decisions, so confirm before changing them.
 7. **Accessibility floor.** Semantic landmarks, one `h1`, visible focus, labels on every field, `aria-live` for form status, keyboard-operable menu, 44px touch targets on mobile.
-8. **Motion rules.** Every animation respects `prefers-reduced-motion` and uses `transform`/`opacity` only. New motion must answer a user action or be part of the single hero sequence. See `docs/ANIMATIONS.md`.
+8. **Motion rules.** Every animation respects `prefers-reduced-motion` and uses `transform`/`opacity` only. New motion must answer a user action or be part of the single hero sequence. One owner-approved exception: the client strip in `#work`, which must pause on hover/focus, have a visible pause button, pause off-screen, and stop entirely under reduced motion. See `docs/ANIMATIONS.md`.
 9. **Secrets never enter the repo.** Turnstile secret, webhook URLs and D1 ids live in Cloudflare settings or `.dev.vars` (git-ignored). `src/site.config.json` holds only public values.
 10. **No new dependencies** without a clear reason. The site has none at runtime.
 

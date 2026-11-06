@@ -28,3 +28,6 @@ Principle: motion is the echo. Things emit, ripple and fade. Nothing bounces for
 ## Logo animation (reuse in video, app splash, email)
 
 Intro: disc scales from 0 with an ease-out (0.7s), name fades in at 0.5s. Loop: a ring leaves the disc towards the inline-end, travels about 1 disc diameter and fades over 3.2s; three rings staggered by about 1.07s.
+
+| Client strip | Continuous slow scroll in `#work` (owner-approved exception) | Page view | `.marquee__track` translateX only. Pauses on hover/focus, via the pause button, and when off-screen (`sections.js`). Static and scrollable under reduced motion. |
+| Service switch | 0.45s fade-up of the selected panel | Click or key on a service tab | `.panel` `swap` keyframes (opacity/transform). |

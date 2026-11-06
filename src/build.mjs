@@ -1,6 +1,7 @@
 // Echo Tech static build: src/content/*.json + src/site.config.json  ->  public/
 // Run with: node src/build.mjs   (or: npm run build). No dependencies.
 import { readFile, writeFile, mkdir } from "node:fs/promises";
+import { existsSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -76,13 +77,35 @@ function page(t) {
   const ogImg = `${site}/assets/brand/og-image.png`;
   const social = Object.entries(cfg.social).filter(([, v]) => v);
 
-  const services = t.services.items.map((s) => `
-        <article class="svc" id="svc-${s.id}">
-          <div><h3>${esc(s.name)}</h3><p class="svc__summary">${esc(s.summary)}</p></div>
+  const icons = {
+    network: '<circle cx="12" cy="5" r="2.2"/><circle cx="5" cy="19" r="2.2"/><circle cx="19" cy="19" r="2.2"/><path d="M12 7.2v4.3M12 11.5 6.2 17.2M12 11.5l5.8 5.7"/>',
+    cctv: '<path d="M3 8.5 15 5l1.6 5.2L4.6 13.7z"/><path d="m9 12.2-.8 4.3M6.2 20h6M8.2 16.5 7 20"/><path d="M18.5 9.5c1 .4 1.8 1.2 2.2 2.2"/>',
+    web: '<rect x="3" y="4.5" width="18" height="15" rx="2.2"/><path d="M3 9.5h18M7 7h.01M10 7h.01"/>',
+    apps: '<rect x="7" y="2.8" width="10" height="18.4" rx="2.4"/><path d="M11 18h2"/>',
+    systems: '<rect x="3.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="4.5" rx="1.6"/><rect x="13.5" y="11" width="7" height="9.5" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/>',
+  };
+  const tabs = t.services.items.map((s, i) => `
+          <button class="tab" type="button" role="tab" id="tab-${s.id}" aria-controls="svc-${s.id}" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}" data-index="${i}">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">${icons[s.id] || ""}</svg><span>${esc(s.name)}</span>
+          </button>`).join("");
+  const services = t.services.items.map((s, i) => `
+        <article class="panel" id="svc-${s.id}" role="tabpanel" aria-labelledby="tab-${s.id}" data-index="${i}">
+          <h3>${esc(s.name)}</h3>
+          <p class="panel__summary">${esc(s.summary)}</p>
           <ul class="svc__points">${s.points.map((p) => `<li>${esc(p)}</li>`).join("")}</ul>
+          <a class="btn" href="#contact" data-pick="${i}">${esc(t.services.cta)}</a>
         </article>`).join("");
 
   const jz = t.work.joyZone;
+  const st = t.work.strip;
+  const logoFile = ["svg", "png", "webp"].map((x) => `assets/clients/joy-zone.${x}`).find((p) => existsSync(join(root, "public", p)));
+  const jzLogo = logoFile ? `<img src="/${logoFile}" alt="" width="64" height="64" loading="lazy">` : `<span aria-hidden="true">JZ</span>`;
+  const clientItems = (hidden) => {
+    const tab = hidden ? ' tabindex="-1"' : "";
+    const one = `<li class="client"><a href="${cfg.caseStudies.joyZoneUrl}" target="_blank" rel="noopener"${tab}><span class="client__logo">${jzLogo}</span><span class="client__text"><strong>${esc(jz.client)}</strong><small>${esc(jz.kind)}</small></span></a></li>`;
+    const slot = `<li class="client client--slot"><a href="#contact"${tab}><span class="client__logo">${markSvg("client__mark")}</span><span class="client__text"><strong>${esc(st.slotName)}</strong><small>${esc(st.slotKind)}</small></span></a></li>`;
+    return one + slot + one + slot + one + slot;
+  };
   const testimonials = t.work.testimonials.length
     ? `<div class="quotes" aria-labelledby="quotes-h"><h3 class="sr-only" id="quotes-h">${esc(t.work.testimonialsTitle)}</h3>${t.work.testimonials.map((q) => `<figure class="quote"><blockquote><p>${esc(q.text)}</p></blockquote><footer>${esc(q.name)}${q.role ? `، ${esc(q.role)}` : ""}</footer></figure>`).join("")}</div>`
     : "";
@@ -170,22 +193,32 @@ function page(t) {
   <section id="services" aria-labelledby="services-h">
     <div class="wrap">
       <div class="head"><h2 id="services-h">${esc(t.services.title)}</h2><p>${esc(t.services.intro)}</p></div>
-      <div>${services}</div>
+      <div class="picker" data-picker>
+        <div class="picker__list" role="tablist" aria-label="${esc(t.services.pick)}" aria-orientation="vertical" hidden>${tabs}
+        </div>
+        <div class="picker__panels">${services}</div>
+      </div>
     </div>
   </section>
 
   <section id="work" class="work" aria-labelledby="work-h">
     <div class="wrap">
       <div class="head"><h2 id="work-h">${esc(t.work.title)}</h2><p>${esc(t.work.intro)}</p></div>
-      <div class="case">
-        <div>
-          <p class="case__kind">${esc(jz.kind)}</p>
-          <h3>${esc(jz.client)}</h3>
-          <p>${esc(jz.summary)}</p>
-          <ul class="case__list">${jz.delivered.map((d) => `<li>${esc(d)}</li>`).join("")}</ul>
-          <a class="btn btn--ghost" href="${cfg.caseStudies.joyZoneUrl}" rel="noopener" target="_blank">${esc(jz.visit)}</a>
+      <div class="clients" role="group" aria-label="${esc(st.label)}" data-clients>
+        <button class="clients__toggle" type="button" aria-pressed="false" data-pause="${esc(st.pause)}" data-play="${esc(st.play)}" hidden>${esc(st.pause)}</button>
+        <div class="marquee" dir="ltr">
+          <div class="marquee__track">
+            <ul class="marquee__set">${clientItems(false)}</ul>
+            <ul class="marquee__set marquee__set--copy" aria-hidden="true">${clientItems(true)}</ul>
+          </div>
         </div>
-        <div class="proof" aria-hidden="true"><span class="wave"></span><span class="wave"></span><span class="wave"></span><span class="wave"></span><a tabindex="-1" href="${cfg.caseStudies.joyZoneUrl}">joy-zone.net</a></div>
+      </div>
+      <div class="case">
+        <p class="case__kind">${esc(jz.kind)}</p>
+        <h3>${esc(jz.client)}</h3>
+        <p>${esc(jz.summary)}</p>
+        <ul class="case__list">${jz.delivered.map((d) => `<li>${esc(d)}</li>`).join("")}</ul>
+        <a class="btn btn--ghost" href="${cfg.caseStudies.joyZoneUrl}" rel="noopener" target="_blank">${esc(jz.visit)}</a>
       </div>
       ${testimonials}
     </div>
@@ -253,6 +286,7 @@ function page(t) {
 ${cfg.turnstileSiteKey ? `<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>` : ""}
 ${cfg.analyticsToken ? `<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"${esc(cfg.analyticsToken)}"}'></script>` : ""}
 <script src="/assets/js/site.js" defer></script>
+<script src="/assets/js/sections.js" defer></script>
 </body>
 </html>
 `;

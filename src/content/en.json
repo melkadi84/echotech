@@ -19,10 +19,22 @@
     "backTop": "Back to top"
   },
   "nav": [
-    { "id": "services", "label": "Services" },
-    { "id": "work", "label": "Work" },
-    { "id": "process", "label": "How we work" },
-    { "id": "faq", "label": "Questions" }
+    {
+      "id": "services",
+      "label": "Services"
+    },
+    {
+      "id": "work",
+      "label": "Work"
+    },
+    {
+      "id": "process",
+      "label": "How we work"
+    },
+    {
+      "id": "faq",
+      "label": "Questions"
+    }
   ],
   "cta": "Request a quote",
   "hero": {
@@ -40,33 +52,62 @@
         "id": "network",
         "name": "Network infrastructure",
         "summary": "Wired and wireless networks that stay fast and stay up.",
-        "points": ["Structured cabling and rack layout", "Wi-Fi design and coverage surveys", "Routers, switches and firewalls", "VPN and secure remote access", "DNS, Cloudflare and traffic protection"]
+        "points": [
+          "Structured cabling and rack layout",
+          "Wi-Fi design and coverage surveys",
+          "Routers, switches and firewalls",
+          "VPN and secure remote access",
+          "DNS, Cloudflare and traffic protection"
+        ]
       },
       {
         "id": "cctv",
         "name": "CCTV systems",
         "summary": "Cameras placed for coverage, recorded reliably, viewable from anywhere.",
-        "points": ["Site survey and camera placement", "IP cameras, recorders and storage sizing", "Remote viewing on phone and desktop", "Maintenance and health checks"]
+        "points": [
+          "Site survey and camera placement",
+          "IP cameras, recorders and storage sizing",
+          "Remote viewing on phone and desktop",
+          "Maintenance and health checks"
+        ]
       },
       {
         "id": "web",
         "name": "Websites",
         "summary": "Fast, bilingual sites that turn visitors into enquiries.",
-        "points": ["Design and development", "Arabic and English, right-to-left done properly", "Hosting and security on Cloudflare", "Search visibility and analytics", "Forms connected to your inbox or CRM"]
+        "points": [
+          "Design and development",
+          "Arabic and English, right-to-left done properly",
+          "Hosting and security on Cloudflare",
+          "Search visibility and analytics",
+          "Forms connected to your inbox or CRM"
+        ]
       },
       {
         "id": "apps",
         "name": "Mobile applications",
         "summary": "iOS and Android apps with the backend they need.",
-        "points": ["Product scoping and interface design", "iOS and Android builds", "APIs and databases", "Store publishing and updates"]
+        "points": [
+          "Product scoping and interface design",
+          "iOS and Android builds",
+          "APIs and databases",
+          "Store publishing and updates"
+        ]
       },
       {
         "id": "systems",
         "name": "Business systems",
         "summary": "CRMs and internal tools shaped around how your team already works.",
-        "points": ["Customer and booking management", "Dashboards and reports", "Integrations with the tools you use", "Training and handover"]
+        "points": [
+          "Customer and booking management",
+          "Dashboards and reports",
+          "Integrations with the tools you use",
+          "Training and handover"
+        ]
       }
-    ]
+    ],
+    "pick": "Choose a service",
+    "cta": "Request a quote for this service"
   },
   "work": {
     "title": "Selected work",
@@ -75,40 +116,93 @@
       "client": "Joy Zone",
       "kind": "Indoor play centre for children, Alexandria",
       "summary": "A bilingual website for the centre's programs, events and bookings, and an internal CRM for the team. The site runs on Cloudflare.",
-      "delivered": ["Bilingual website", "Internal CRM"],
+      "delivered": [
+        "Bilingual website",
+        "Internal CRM"
+      ],
       "visit": "Visit joy-zone.net"
     },
     "testimonialsTitle": "What clients say",
-    "testimonials": []
+    "testimonials": [],
+    "strip": {
+      "pause": "Pause the client strip",
+      "play": "Play the client strip",
+      "label": "Our clients",
+      "slotName": "Your business",
+      "slotKind": "Our next project",
+      "more": "Project details"
+    }
   },
   "process": {
     "title": "How we work",
     "intro": "A clear path from first message to ongoing support.",
     "steps": [
-      { "name": "Discover", "text": "We listen, look at your space or product, and agree what success means." },
-      { "name": "Quote", "text": "A written scope, timeline and price, so there are no surprises." },
-      { "name": "Build", "text": "We install or develop, and show progress along the way." },
-      { "name": "Hand over", "text": "Testing, documentation and training for your team." },
-      { "name": "Support", "text": "We stay available for fixes, changes and growth." }
+      {
+        "name": "Discover",
+        "text": "We listen, look at your space or product, and agree what success means."
+      },
+      {
+        "name": "Quote",
+        "text": "A written scope, timeline and price, so there are no surprises."
+      },
+      {
+        "name": "Build",
+        "text": "We install or develop, and show progress along the way."
+      },
+      {
+        "name": "Hand over",
+        "text": "Testing, documentation and training for your team."
+      },
+      {
+        "name": "Support",
+        "text": "We stay available for fixes, changes and growth."
+      }
     ]
   },
   "principles": {
     "title": "How we think",
     "items": [
-      { "title": "Plain language", "text": "You get clear explanations and clear quotes, not jargon." },
-      { "title": "Built to last", "text": "We choose reliable components and simple designs that are easy to maintain." },
-      { "title": "Yours to keep", "text": "Documentation comes with every project, so you are never locked in." }
+      {
+        "title": "Plain language",
+        "text": "You get clear explanations and clear quotes, not jargon."
+      },
+      {
+        "title": "Built to last",
+        "text": "We choose reliable components and simple designs that are easy to maintain."
+      },
+      {
+        "title": "Yours to keep",
+        "text": "Documentation comes with every project, so you are never locked in."
+      }
     ]
   },
   "faq": {
     "title": "Questions",
     "items": [
-      { "q": "Do you work with clients outside Egypt?", "a": "Yes. Websites, apps and business systems are delivered remotely anywhere in the world. Network and CCTV work happens on site, so tell us where you are and we will confirm how we can help." },
-      { "q": "How much does a project cost?", "a": "It depends on scope. After a short discovery conversation we send a written quote with what is included, the timeline and the price." },
-      { "q": "How long does a project take?", "a": "A small website can take a few weeks. Network and CCTV installs depend on the size of the site. You get a timeline in the quote." },
-      { "q": "Do you support what you build after delivery?", "a": "Yes. We offer support and maintenance after handover, and we agree the terms in the quote." },
-      { "q": "Which languages do you work in?", "a": "Arabic and English, for both the work and the interfaces we build." },
-      { "q": "Will I own my website and accounts?", "a": "Domains, hosting and cloud accounts are set up in your name, and we hand over documentation with the project." }
+      {
+        "q": "Do you work with clients outside Egypt?",
+        "a": "Yes. Websites, apps and business systems are delivered remotely anywhere in the world. Network and CCTV work happens on site, so tell us where you are and we will confirm how we can help."
+      },
+      {
+        "q": "How much does a project cost?",
+        "a": "It depends on scope. After a short discovery conversation we send a written quote with what is included, the timeline and the price."
+      },
+      {
+        "q": "How long does a project take?",
+        "a": "A small website can take a few weeks. Network and CCTV installs depend on the size of the site. You get a timeline in the quote."
+      },
+      {
+        "q": "Do you support what you build after delivery?",
+        "a": "Yes. We offer support and maintenance after handover, and we agree the terms in the quote."
+      },
+      {
+        "q": "Which languages do you work in?",
+        "a": "Arabic and English, for both the work and the interfaces we build."
+      },
+      {
+        "q": "Will I own my website and accounts?",
+        "a": "Domains, hosting and cloud accounts are set up in your name, and we hand over documentation with the project."
+      }
     ]
   },
   "contact": {
@@ -122,7 +216,14 @@
       "phone": "Phone or WhatsApp (optional)",
       "service": "What do you need?",
       "serviceDefault": "Choose a service",
-      "serviceOptions": ["Network infrastructure", "CCTV systems", "Website", "Mobile application", "Business system", "Something else"],
+      "serviceOptions": [
+        "Network infrastructure",
+        "CCTV systems",
+        "Website",
+        "Mobile application",
+        "Business system",
+        "Something else"
+      ],
       "message": "Tell us about your project",
       "send": "Send message",
       "sending": "Sending",

@@ -54,3 +54,7 @@ Ask for: permission to publish the name, a short quote about the outcome ("the c
 ## Search and schema
 
 `build.mjs` writes JSON-LD for Organization/ProfessionalService with the offer catalog, WebSite, WebPage and FAQPage (from the FAQ), plus hreflang links and a sitemap. Add `Review` markup only when real reviews are shown on the page.
+
+## Client strip
+
+The strip in `#work` shows each real client as logo + name. Only Joy Zone exists today, so it alternates with a "Your business" slot linking to the contact form. To add a client: put the logo in `public/assets/clients/<name>.svg`, add the client to `src/content/*.json` and `src/build.mjs` with the client's permission. Never add a client that is not real.
