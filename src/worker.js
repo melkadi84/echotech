@@ -3,15 +3,15 @@
 // Optional secrets: TURNSTILE_SECRET, NOTIFY_WEBHOOK_URL, IP_SALT.
 
 import cfg from "./site.config.json" with { type: "json" };
+import ar from "./content/ar.json" with { type: "json" };
+import en from "./content/en.json" with { type: "json" };
 
 // Client sites whose public meta description may be read (from site.config.json only: no open proxy).
 const BRIEF_SITES = new Set(Object.values(cfg.caseStudies || {}).filter(Boolean));
 
 const JSON_HEADERS = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" };
-const SERVICES = new Set([
-  "Network infrastructure", "CCTV systems", "Website", "Mobile application", "Business system", "Something else",
-  "البنية التحتية للشبكات", "أنظمة كاميرات المراقبة", "موقع إلكتروني", "تطبيق موبايل", "نظام إدارة أعمال", "شيء آخر",
-]);
+// Allowed values come from the form options in the content files, so a new service only needs content.
+const SERVICES = new Set([...ar.contact.form.serviceOptions, ...en.contact.form.serviceOptions]);
 const RATE_LIMIT = 5; // messages per IP per window
 const RATE_WINDOW_MIN = 15;
 const MAX_BODY_BYTES = 16 * 1024;

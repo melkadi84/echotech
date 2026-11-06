@@ -62,6 +62,9 @@ const icons = {
   web: '<rect x="3" y="4.5" width="18" height="15" rx="2.2"/><path d="M3 9.5h18M7 7h.01M10 7h.01"/>',
   apps: '<rect x="7" y="2.8" width="10" height="18.4" rx="2.4"/><path d="M11 18h2"/>',
   systems: '<rect x="3.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="4.5" rx="1.6"/><rect x="13.5" y="11" width="7" height="9.5" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/>',
+  automation: '<path d="M4 7h9a3 3 0 0 1 0 6H8a3 3 0 0 0 0 6h12"/><path d="m17.5 16.5 2.5 2.5-2.5 2.5"/><circle cx="4" cy="7" r="1.2"/>',
+  data: '<path d="M4 4v16h16"/><path d="M8.5 16v-4.5M13 16V8M17.5 16v-6.5"/>',
+  hosting: '<rect x="3.5" y="4" width="17" height="6.5" rx="1.8"/><rect x="3.5" y="13.5" width="17" height="6.5" rx="1.8"/><path d="M7.5 7.25h.01M7.5 16.75h.01M12 7.25h5M12 16.75h5"/>',
 };
 icons.generic = '<circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8.5"/>';
 const iconSvg = (id, cls = "") => `<svg${cls ? ` class="${cls}"` : ""} viewBox="0 0 24 24" aria-hidden="true" focusable="false">${icons[id] || ""}</svg>`;

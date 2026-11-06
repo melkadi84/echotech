@@ -62,3 +62,10 @@ The strip in `#work` shows each real client as logo + name. Only Joy Zone exists
 ## Sub pages
 
 The build creates one page per service (`/services/<id>/`, `/en/services/<id>/`) and a work page (`/work/`, `/en/work/`). Service page copy lives in `services.items[].page` (title, description, lead, included, needs) in both language files. Keep it descriptive of how we work; no prices, metrics or promises the owner has not approved. Every page gets canonical, hreflang, JSON-LD (Service and BreadcrumbList) and a sitemap entry automatically.
+
+## Adding a service
+
+1. Append an object to `services.items` in both `ar.json` and `en.json` (same `id`, `name`, `summary`, `points`, and a `page` block).
+2. Add the service name to `contact.form.serviceOptions` in both files, before "Something else". The Worker reads the allowed values from there.
+3. Add an icon with the same `id` in the `icons` map in `src/build.mjs` (a generic ring is used if missing).
+4. Run `npm run build`. The signal map, dock, picker, service page, sitemap and schema all follow the list.

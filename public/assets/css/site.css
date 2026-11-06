@@ -241,9 +241,10 @@ html:not(.js) .boot { display: none; }
 .sig-node:hover .sig-disc, .sig-node.is-on .sig-disc { fill: var(--cobalt); }
 
 /* Dock: the real links, one per service */
-.dock { display: grid; grid-template-columns: repeat(auto-fit, minmax(13.5rem, 1fr)); margin-block-start: clamp(2.5rem, 5vw, 4rem); border-block-start: 1px solid var(--line); }
+.dock { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-block-start: clamp(2.5rem, 5vw, 4rem); border-block-start: 1px solid var(--line); }
 .dock a { display: grid; grid-template-columns: auto 1fr; gap: 0.35rem 0.9rem; align-content: start; padding: 1.5rem 1.25rem 2rem; color: var(--ink); text-decoration: none; transition: background-color 0.2s; }
-.dock a + a { border-inline-start: 1px solid var(--line); }
+.dock a:not(:nth-child(4n+1)) { border-inline-start: 1px solid var(--line); }
+.dock a:nth-child(n+5) { border-block-start: 1px solid var(--line); }
 .dock a:hover, .dock a.is-on { background: var(--bg-2); }
 .dock svg { grid-row: span 2; width: 28px; height: 28px; margin-block-start: 0.1rem; fill: none; stroke: var(--link); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 .dock span { display: grid; gap: 0.3rem; }
@@ -259,7 +260,7 @@ html:not(.js) .boot { display: none; }
   .dock { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .dock a:nth-child(2n+1) { border-inline-start: 0; }
   .dock a:nth-child(n+3) { border-block-start: 1px solid var(--line); }
-  .dock a:last-child { grid-column: 1 / -1; border-inline-start: 0; }
+  .dock a:nth-child(odd):last-child { grid-column: 1 / -1; border-inline-start: 0; }
 }
 @media (max-width: 520px) { .dock small { display: none; } .dock a { padding: 1.1rem 0.9rem; } }
 

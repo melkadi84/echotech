@@ -249,6 +249,142 @@
             "The tools it must work with"
           ]
         }
+      },
+      {
+        "id": "automation",
+        "name": "Business automation",
+        "summary": "Repetitive work handled by software, so your team spends time on people.",
+        "points": [
+          "Order, invoice and report workflows",
+          "Forms, email and WhatsApp follow-ups",
+          "Connecting the tools you already use",
+          "Scheduled jobs and data syncing",
+          "AI assistants for routine questions and documents"
+        ],
+        "page": {
+          "title": "Business automation for repetitive office work",
+          "description": "Echo Tech automates repetitive work: connecting your tools, moving data between them, sending follow-ups and building assistants for routine tasks.",
+          "lead": "We find the tasks your team repeats every day and replace them with workflows that run on their own and tell you when something needs a person.",
+          "included": [
+            {
+              "title": "Workflows between your tools",
+              "text": "When something happens in one system, the next step happens in another: a new order creates an invoice, a form creates a task."
+            },
+            {
+              "title": "Automatic follow-ups",
+              "text": "Confirmations, reminders and status updates sent by email or WhatsApp at the right moment, in the customer's language."
+            },
+            {
+              "title": "Data moved without retyping",
+              "text": "Spreadsheets, forms, your CRM and accounting kept in sync, with checks that catch bad entries before they spread."
+            },
+            {
+              "title": "Assistants for routine work",
+              "text": "AI helpers that answer common questions or draft and sort documents, always with a person able to review the result."
+            },
+            {
+              "title": "Alerts when something breaks",
+              "text": "Every workflow logs what it did and notifies you when a step fails, so nothing fails silently."
+            }
+          ],
+          "needs": [
+            "The tasks that take your team the most time",
+            "The tools and systems you use today",
+            "Who approves or reviews each step"
+          ]
+        }
+      },
+      {
+        "id": "data",
+        "name": "Data analysis and dashboards",
+        "summary": "Your numbers in one clear view, so decisions rest on facts.",
+        "points": [
+          "Cleaning and combining data from different sources",
+          "Dashboards that update on their own",
+          "Sales, stock and operations reports",
+          "Analysis that answers a specific question",
+          "Scheduled reports sent to your inbox"
+        ],
+        "page": {
+          "title": "Data analysis and dashboards for business decisions",
+          "description": "Echo Tech turns scattered spreadsheets and system data into dashboards and analysis that show how your business is doing and what to change.",
+          "lead": "We collect the data you already have, clean it and turn it into dashboards and analysis that answer the questions you ask every week.",
+          "included": [
+            {
+              "title": "Data gathered in one place",
+              "text": "Spreadsheets, your systems and exports combined into one clean source, with duplicates and gaps handled."
+            },
+            {
+              "title": "Dashboards that stay current",
+              "text": "A live view of the numbers you track, such as sales, stock, bookings or tickets, that updates without manual work."
+            },
+            {
+              "title": "Analysis for a real question",
+              "text": "Which products earn the most, when you are busiest, where customers drop off. You get findings you can act on, explained plainly."
+            },
+            {
+              "title": "Reports on a schedule",
+              "text": "A weekly or monthly summary delivered by email, in Arabic or English, so you do not have to ask for it."
+            },
+            {
+              "title": "Access that fits your team",
+              "text": "Each person sees the views they need, and sensitive figures stay restricted."
+            }
+          ],
+          "needs": [
+            "The questions you want the numbers to answer",
+            "Where your data lives today (files, systems, exports)",
+            "Who will read the dashboards and how often"
+          ]
+        }
+      },
+      {
+        "id": "hosting",
+        "name": "Domains and hosting",
+        "summary": "Your name on the web, and a safe place for your site or app to run.",
+        "points": [
+          "Domain search, registration and renewal",
+          "DNS setup and email on your own domain",
+          "Hosting for websites and applications",
+          "SSL certificates and basic protection",
+          "Backups, monitoring and migration"
+        ],
+        "page": {
+          "title": "Domain registration and web hosting",
+          "description": "Echo Tech handles domain names, DNS, business email and hosting for websites and applications, including security, backups and moving existing sites.",
+          "lead": "We register and manage your domain, set up email on it and host your website or application, so you do not have to deal with technical panels.",
+          "included": [
+            {
+              "title": "Domain names",
+              "text": "We help you choose, register and renew a domain, and remind you before it expires."
+            },
+            {
+              "title": "DNS and business email",
+              "text": "DNS records set up correctly, with email addresses on your own domain that reach the inbox."
+            },
+            {
+              "title": "Hosting that fits the project",
+              "text": "Hosting for a website, a web application or an API, chosen for your traffic and your budget."
+            },
+            {
+              "title": "Security and certificates",
+              "text": "HTTPS certificates, traffic protection and sensible access rules from the first day."
+            },
+            {
+              "title": "Backups and monitoring",
+              "text": "Regular backups and checks that alert us when the site is slow or down."
+            },
+            {
+              "title": "Moving an existing site",
+              "text": "We migrate your site from another host with a plan that keeps downtime short."
+            }
+          ],
+          "needs": [
+            "The domain you want, or the one you already own",
+            "What will be hosted (website, application, email)",
+            "Access to your current host or registrar if you are moving"
+          ]
+        }
       }
     ],
     "pick": "Choose a service",
@@ -377,6 +513,9 @@
         "Website",
         "Mobile application",
         "Business system",
+        "Business automation",
+        "Data analysis and dashboards",
+        "Domains and hosting",
         "Something else"
       ],
       "message": "Tell us about your project",

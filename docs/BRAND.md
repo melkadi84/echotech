@@ -39,7 +39,7 @@ Contrast: ink on bg is above 15:1 in both modes; white on cobalt buttons is abou
 
 ## Layout and shape
 
-Left-aligned (start-aligned in RTL) text, wide margins, hairline dividers that carry meaning (they separate list items). Pills for buttons and header controls, 10px radius for form fields. The hero and the work section sit on a dark stage in both themes (`.stage`, tokens scoped in `site.css`); the hero holds the signal map and a dock of five service links. No card grids and no decorative gradients. The progress bar at the top of the page is the only gradient and it is functional.
+Left-aligned (start-aligned in RTL) text, wide margins, hairline dividers that carry meaning (they separate list items). Pills for buttons and header controls, 10px radius for form fields. The hero and the work section sit on a dark stage in both themes (`.stage`, tokens scoped in `site.css`); the hero holds the signal map and a dock of service links (four per row on desktop). No card grids and no decorative gradients. The progress bar at the top of the page is the only gradient and it is functional.
 
 ## Voice
 

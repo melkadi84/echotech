@@ -98,4 +98,46 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://echo-tech.website/en/services/systems/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://echo-tech.website/services/systems/"/>
   </url>
+  <url>
+    <loc>https://echo-tech.website/services/automation/</loc>
+    <lastmod>2026-11-06</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://echo-tech.website/services/automation/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://echo-tech.website/en/services/automation/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://echo-tech.website/services/automation/"/>
+  </url>
+  <url>
+    <loc>https://echo-tech.website/en/services/automation/</loc>
+    <lastmod>2026-11-06</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://echo-tech.website/services/automation/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://echo-tech.website/en/services/automation/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://echo-tech.website/services/automation/"/>
+  </url>
+  <url>
+    <loc>https://echo-tech.website/services/data/</loc>
+    <lastmod>2026-11-06</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://echo-tech.website/services/data/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://echo-tech.website/en/services/data/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://echo-tech.website/services/data/"/>
+  </url>
+  <url>
+    <loc>https://echo-tech.website/en/services/data/</loc>
+    <lastmod>2026-11-06</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://echo-tech.website/services/data/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://echo-tech.website/en/services/data/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://echo-tech.website/services/data/"/>
+  </url>
+  <url>
+    <loc>https://echo-tech.website/services/hosting/</loc>
+    <lastmod>2026-11-06</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://echo-tech.website/services/hosting/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://echo-tech.website/en/services/hosting/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://echo-tech.website/services/hosting/"/>
+  </url>
+  <url>
+    <loc>https://echo-tech.website/en/services/hosting/</loc>
+    <lastmod>2026-11-06</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://echo-tech.website/services/hosting/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://echo-tech.website/en/services/hosting/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://echo-tech.website/services/hosting/"/>
+  </url>
 </urlset>
