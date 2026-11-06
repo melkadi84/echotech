@@ -109,6 +109,17 @@ html:not(.js) .boot { display: none; }
 }
 [dir="rtl"] .progress { transform-origin: right center; }
 
+/* ---------- Back to top ---------- */
+.to-top {
+  position: fixed; z-index: 55; inset-block-end: 1.25rem; inset-inline-end: 1.25rem; display: grid; place-items: center;
+  width: 3rem; height: 3rem; padding: 0; border: 1px solid var(--line); border-radius: 50%; cursor: pointer;
+  background: var(--cobalt); color: #fff; box-shadow: 0 10px 24px -10px rgba(10, 18, 48, 0.55);
+  opacity: 0; visibility: hidden; transform: translateY(12px); transition: opacity 0.25s, transform 0.3s var(--ease), visibility 0.25s;
+}
+.to-top.is-visible { opacity: 1; visibility: visible; transform: none; }
+.to-top:hover { transform: translateY(-2px); }
+.to-top svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
 /* ---------- Header ---------- */
 .header {
   position: sticky; inset-block-start: 0; z-index: 50;

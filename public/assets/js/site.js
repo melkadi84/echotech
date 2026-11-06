@@ -53,6 +53,11 @@
   /* 3. Header state + reading progress */
   const header = $(".header");
   const bar = $(".progress");
+  const toTop = $(".to-top");
+  toTop?.addEventListener("click", () => {
+    const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: 0, behavior: calm ? "auto" : "smooth" });
+  });
   let ticking = false;
   const onScroll = () => {
     if (ticking) return;
@@ -60,6 +65,7 @@
     requestAnimationFrame(() => {
       const y = window.scrollY;
       header?.classList.toggle("is-scrolled", y > 8);
+      toTop?.classList.toggle("is-visible", y > 700);
       const max = doc.scrollHeight - innerHeight;
       if (bar) bar.style.transform = `scaleX(${max > 0 ? Math.min(1, y / max) : 0})`;
       ticking = false;

@@ -261,6 +261,7 @@ function shell(t, ctx, body) {
 <a class="skip" href="#main">${esc(u.skip)}</a>
 <div class="boot" role="status" aria-live="polite"><div class="boot__stack"><div class="boot__mark" aria-hidden="true">${markSvg("boot__logo")}</div><span class="boot__label">${esc(u.loading)}</span></div></div>
 <div class="progress" role="presentation"></div>
+<button class="to-top" type="button" aria-label="${esc(u.top)}"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 19V5M5.5 11.5 12 5l6.5 6.5"/></svg></button>
 
 <header class="header${ctx.section ? " header--stage" : ""}">
   <div class="wrap header__row">
