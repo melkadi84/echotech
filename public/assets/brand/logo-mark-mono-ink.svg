@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Echo Tech">
+  <title>Echo Tech</title>
+  <circle cx="37.6" cy="32" r="14" fill="none" stroke="#0A1230" stroke-width="1.8" opacity="0.4"/>
+  <circle cx="32" cy="32" r="14" fill="none" stroke="#0A1230" stroke-width="1.8" opacity="0.8"/>
+  <circle cx="26.4" cy="32" r="14" fill="#0A1230"/>
+</svg>

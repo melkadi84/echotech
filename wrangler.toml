@@ -1,0 +1,16 @@
+# Cloudflare Pages project: static site in /public + Pages Functions in /functions.
+name = "echotech"
+pages_build_output_dir = "public"
+compatibility_date = "2026-11-01"
+
+# Create the database first:  npx wrangler d1 create echotech-db
+# then paste the printed database_id below.
+[[d1_databases]]
+binding = "DB"
+database_name = "echotech-db"
+database_id = "REPLACE_WITH_D1_DATABASE_ID"
+
+# Secrets (set in the Cloudflare dashboard or with `wrangler pages secret put NAME`):
+#   TURNSTILE_SECRET        optional, enables bot protection (also set turnstileSiteKey in src/site.config.json)
+#   NOTIFY_WEBHOOK_URL      optional, POSTs a short JSON summary of each message (Slack, Discord, n8n...)
+#   IP_SALT                 optional, random string used to hash visitor IPs for rate limiting

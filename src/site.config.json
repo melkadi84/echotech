@@ -1,0 +1,20 @@
+{
+  "name": "Echo Tech",
+  "domain": "https://echo-tech.website",
+  "email": "hello@echo-tech.website",
+  "whatsapp": "",
+  "turnstileSiteKey": "",
+  "analyticsToken": "",
+  "themeColor": { "light": "#F6F8FE", "dark": "#060A18" },
+  "social": {
+    "linkedin": "",
+    "facebook": "",
+    "instagram": "",
+    "github": "",
+    "x": ""
+  },
+  "caseStudies": {
+    "joyZoneUrl": "https://joy-zone.net"
+  },
+  "_notes": "Empty strings hide the matching UI. whatsapp = digits only with country code (e.g. 201001234567). email must be a real mailbox (set up Cloudflare Email Routing). Fill social links to add them to the footer and the schema.org sameAs list."
+}

@@ -1,0 +1,1 @@
+Read and follow `AGENTS.md` at the repository root. Never hand-edit generated HTML in `public/`; edit `src/` and run `npm run build`. Keep Arabic and English content in sync. Use CSS logical properties. Strict CSP: no inline styles or scripts.

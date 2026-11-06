@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#060A18"/>
+  <g fill="none" stroke="#60A5FA" stroke-width="2">
+    <circle cx="930" cy="315" r="120" opacity="0.55"/>
+    <circle cx="930" cy="315" r="200" opacity="0.38"/>
+    <circle cx="930" cy="315" r="290" opacity="0.24"/>
+    <circle cx="930" cy="315" r="390" opacity="0.14"/>
+    <circle cx="930" cy="315" r="500" opacity="0.08"/>
+  </g>
+  <circle cx="930" cy="315" r="78" fill="#1D4ED8"/>
+  <g transform="translate(80 92)">
+    <circle cx="37.6" cy="32" r="14" fill="none" stroke="#60A5FA" stroke-width="1.8" opacity="0.4"/>
+    <circle cx="32" cy="32" r="14" fill="none" stroke="#60A5FA" stroke-width="1.8" opacity="0.8"/>
+    <circle cx="26.4" cy="32" r="14" fill="#1D4ED8"/>
+  </g>
+  <text x="150" y="134" font-family="'Readex Pro','Segoe UI',Helvetica,Arial,sans-serif" font-size="28" font-weight="600" letter-spacing="7" fill="#EAF0FF">ECHO TECH</text>
+  <text x="80" y="340" font-family="'Readex Pro','Segoe UI',Helvetica,Arial,sans-serif" font-size="70" font-weight="600" fill="#EAF0FF">Networks, cameras,</text>
+  <text x="80" y="424" font-family="'Readex Pro','Segoe UI',Helvetica,Arial,sans-serif" font-size="70" font-weight="600" fill="#EAF0FF">websites and apps.</text>
+  <text x="80" y="500" font-family="'Readex Pro','Segoe UI',Helvetica,Arial,sans-serif" font-size="28" fill="#93A0C8">echo-tech.website</text>
+</svg>
