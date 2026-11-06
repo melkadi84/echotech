@@ -31,3 +31,7 @@ Intro: disc scales from 0 with an ease-out (0.7s), name fades in at 0.5s. Loop: 
 
 | Client strip | Continuous slow scroll in `#work` (owner-approved exception) | Page view | `.marquee__track` translateX only. Pauses on hover/focus, via the pause button, and when off-screen (`sections.js`). Static and scrollable under reduced motion. |
 | Service switch | 0.45s fade-up of the selected panel | Click or key on a service tab | `.panel` `swap` keyframes (opacity/transform). |
+
+## Hero signal map
+
+Part of the single hero sequence: three echo rings expand from the core (6s loop), and a dot travels to each service node in turn (10s loop) while the node flashes. Transform and opacity only. Under reduced motion the dots and flashes are hidden and the rings rest as static circles. Hovering or focusing a dock link lights its node (`initSignal` in `sections.js`).

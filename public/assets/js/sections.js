@@ -66,5 +66,26 @@ function initClients() {
   }
 }
 
+// Hero: hovering or focusing a dock link lights its node on the signal map, and the reverse.
+function initSignal() {
+  const map = document.querySelector(".signal");
+  const dock = document.querySelector(".dock");
+  if (!map || !dock) return;
+  const set = (index, on) => {
+    map.querySelector(`.sig-node[data-node="${index}"]`)?.classList.toggle("is-on", on);
+    dock.querySelector(`a[data-node="${index}"]`)?.classList.toggle("is-on", on);
+  };
+  const bind = (el) => {
+    const i = el.dataset.node;
+    el.addEventListener("pointerenter", () => set(i, true));
+    el.addEventListener("pointerleave", () => set(i, false));
+    el.addEventListener("focus", () => set(i, true));
+    el.addEventListener("blur", () => set(i, false));
+  };
+  dock.querySelectorAll("a[data-node]").forEach(bind);
+  map.querySelectorAll(".sig-node").forEach(bind);
+}
+
 initPicker();
 initClients();
+initSignal();

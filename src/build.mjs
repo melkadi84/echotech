@@ -237,7 +237,7 @@ function shell(t, ctx, body) {
 <div class="boot" role="status" aria-live="polite"><div class="boot__stack"><div class="boot__mark" aria-hidden="true"><i class="r"></i><i class="r r2"></i><i class="r r3"></i><i class="d"></i></div><span class="boot__label">${spinner("", "")}${esc(u.loading)}</span></div></div>
 <div class="progress" role="presentation"></div>
 
-<header class="header">
+<header class="header${ctx.isHome ? " header--stage" : ""}">
   <div class="wrap header__row">
     <a class="brand" href="${t.path}" aria-label="${esc(u.home)}">${markSvg()}<span class="brand__name">${t.lang === "ar" ? "إيكو تك" : "ECHO TECH"}</span></a>
     <nav class="nav" id="nav" aria-label="${esc(u.menu)}">
@@ -273,6 +273,26 @@ ${cfg.analyticsToken ? `<script defer src="https://static.cloudflareinsights.com
 `;
 }
 
+// The hero's signal map: a pulse leaves the core and visits each service. Decorative, so aria-hidden;
+// the dock below holds the real links. Motion lives in site.css (transform/opacity only).
+function signalSvg(t) {
+  const C = 300, R = 210;
+  const pts = t.services.items.map((s, i) => {
+    const a = ((-90 + i * 72) * Math.PI) / 180;
+    return { id: s.id, x: +(C + R * Math.cos(a)).toFixed(1), y: +(C + R * Math.sin(a)).toFixed(1) };
+  });
+  const spokes = pts.map((p) => `<line class="sig-spoke" x1="${C}" y1="${C}" x2="${p.x}" y2="${p.y}"/>`).join("");
+  const dots = pts.map((p, i) => `<circle class="sig-dot d${i}" cx="${C}" cy="${C}" r="4.5"/>`).join("");
+  const nodes = pts.map((p, i) => `<a class="sig-node n${i}" href="${svcPath(t, p.id)}" tabindex="-1" data-node="${i}"><circle class="sig-flash" cx="${p.x}" cy="${p.y}" r="30"/><circle class="sig-disc" cx="${p.x}" cy="${p.y}" r="30"/><svg class="sig-icon" x="${p.x - 14}" y="${p.y - 14}" width="28" height="28" viewBox="0 0 24 24">${icons[p.id]}</svg></a>`).join("");
+  return `<div class="signal" aria-hidden="true"><svg viewBox="0 0 600 600" focusable="false">
+        <circle class="sig-orbit" cx="${C}" cy="${C}" r="${R}"/><circle class="sig-orbit sig-orbit--out" cx="${C}" cy="${C}" r="285"/>
+        ${spokes}
+        <circle class="sig-echo" cx="${C}" cy="${C}" r="34"/><circle class="sig-echo" cx="${C}" cy="${C}" r="34"/><circle class="sig-echo" cx="${C}" cy="${C}" r="34"/>
+        ${dots}${nodes}
+        <circle class="sig-core" cx="${C}" cy="${C}" r="34"/>
+      </svg></div>`;
+}
+
 function homeBody(t) {
   const jz = t.work.joyZone;
   const tabs = t.services.items.map((s, i) => `
@@ -281,7 +301,7 @@ function homeBody(t) {
           </button>`).join("");
   const services = t.services.items.map((s, i) => `
         <article class="panel" id="svc-${s.id}" role="tabpanel" aria-labelledby="tab-${s.id}" data-index="${i}">
-          <h3>${esc(s.name)}</h3>
+          ${iconSvg(s.id, "panel__icon")}<h3>${esc(s.name)}</h3>
           <p class="panel__summary">${esc(s.summary)}</p>
           <ul class="svc__points">${s.points.map((p) => `<li>${esc(p)}</li>`).join("")}</ul>
           <div class="panel__actions"><a class="btn" href="#contact" data-pick="${i}">${esc(t.services.cta)}</a><a class="btn btn--ghost" href="${svcPath(t, s.id)}">${esc(t.pages.learn)}</a></div>
@@ -294,16 +314,20 @@ function homeBody(t) {
   const faq = t.faq.items.map((q) => `<details><summary>${esc(q.q)}</summary><p>${esc(q.a)}</p></details>`).join("");
   const ctx = { isHome: true };
   return `
-  <section class="hero" aria-labelledby="hero-h">
-    <div class="echo" aria-hidden="true"><span class="wave"></span><span class="wave"></span><span class="wave"></span><span class="wave"></span><span class="wave"></span><span class="wave"></span><span class="core"></span></div>
-    <div class="wrap hero__content">
-      <h1 id="hero-h">${esc(t.hero.title)}</h1>
-      <p class="hero__sub">${esc(t.hero.sub)}</p>
-      <div class="hero__actions">
-        <a class="btn" href="#contact">${esc(t.hero.primary)}</a>
-        <a class="btn btn--ghost" href="${workPath(t)}">${esc(t.hero.secondary)}</a>
+  <section class="hero stage" aria-labelledby="hero-h">
+    <div class="wrap hero__grid">
+      <div class="hero__content">
+        <h1 id="hero-h">${esc(t.hero.title)}</h1>
+        <p class="hero__sub">${esc(t.hero.sub)}</p>
+        <div class="hero__actions">
+          <a class="btn" href="#contact">${esc(t.hero.primary)}</a>
+          <a class="btn btn--ghost" href="${workPath(t)}">${esc(t.hero.secondary)}</a>
+        </div>
       </div>
-      <p class="hero__jump" aria-label="${esc(t.hero.jump)}">${t.services.items.map((s) => `<a href="#svc-${s.id}">${esc(s.name)}</a>`).join("")}</p>
+      ${signalSvg(t)}
+    </div>
+    <div class="wrap">
+      <nav class="dock" aria-label="${esc(t.hero.jump)}">${t.services.items.map((s, i) => `<a href="#svc-${s.id}" data-node="${i}">${iconSvg(s.id)}<span><strong>${esc(s.name)}</strong><small>${esc(s.summary)}</small></span></a>`).join("")}</nav>
     </div>
   </section>
 
@@ -318,7 +342,7 @@ function homeBody(t) {
     </div>
   </section>
 
-  <section id="work" class="work" aria-labelledby="work-h">
+  <section id="work" class="work stage" aria-labelledby="work-h">
     <div class="wrap">
       <div class="head"><h2 id="work-h">${esc(t.work.title)}</h2><p>${esc(t.work.intro)}</p></div>
       ${clientsBlock(t, ctx)}
