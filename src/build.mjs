@@ -241,7 +241,7 @@ function shell(t, ctx, body) {
 </head>
 <body>
 <a class="skip" href="#main">${esc(u.skip)}</a>
-<div class="boot" role="status" aria-live="polite"><div class="boot__stack"><div class="boot__mark" aria-hidden="true"><i class="r"></i><i class="r r2"></i><i class="r r3"></i><i class="d"></i></div><span class="boot__label">${spinner("", "")}${esc(u.loading)}</span></div></div>
+<div class="boot" role="status" aria-live="polite"><div class="boot__stack"><div class="boot__mark" aria-hidden="true">${markSvg("boot__logo")}</div><span class="boot__label">${spinner("", "")}${esc(u.loading)}</span></div></div>
 <div class="progress" role="presentation"></div>
 
 <header class="header${ctx.section ? " header--stage" : ""}">
