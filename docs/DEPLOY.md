@@ -47,7 +47,7 @@ Cloudflare Email Routing: create `info@echo-tech.website` forwarding to your inb
 - Google Business Profile for Echo Tech.
 - Cloudflare Web Analytics: copy the token to `analyticsToken` in `src/site.config.json` and rebuild.
 - Check headers at securityheaders.com and the structured data with Google's Rich Results Test.
-- Test the `/` and `/en/` pages on a real phone in light and dark.
+- Test the `/` and `/ar/` pages on a real phone in light and dark.
 
 ## Local development
 

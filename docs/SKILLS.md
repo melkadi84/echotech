@@ -29,7 +29,7 @@ Other tools: `npx impeccable install`, `npx ui-ux-pro-max-cli init --ai claude` 
 Project rules in `AGENTS.md` and `docs/BRAND.md` always win over a skill's defaults. The logo, the Cobalt and Sky palette, Readex Pro and the echo concept are fixed.
 
 1. **Direction and options:** `ui-ux-pro-max` for palette, type and UX checks; `taste-skill` when building a new page or section.
-2. **Review:** `/impeccable critique` and `/impeccable audit` on a changed section, in both `/` and `/en/`.
+2. **Review:** `/impeccable critique` and `/impeccable audit` on a changed section, in both `/` and `/ar/`.
 3. **Finish:** `/impeccable polish`, `typeset`, `harden` (empty and error states, long Arabic text), `adapt` (mobile).
 4. **Clean up code:** run the `code-simplifier` agent after a batch of changes.
 5. Run `npm run build` and re-check light/dark and RTL/LTR after any skill makes edits.

@@ -4,7 +4,7 @@ This is the single source of truth for any AI assistant working in this repo (Cl
 
 ## What this project is
 
-The website of **Echo Tech**, a startup selling: network infrastructure, CCTV systems, websites, mobile applications, business systems (CRMs, internal tools), business automation, data analysis and dashboards, and domains and hosting. More services will be added; they are data, not code (see Adding a service below). Clients are worldwide. The site is bilingual (Arabic default at `/`, English at `/en/`), has light and dark themes, and runs on a **Cloudflare Worker with static assets** (Git integration: build `npm run build`, deploy `npx wrangler deploy`) (domain `echo-tech.website`, repo `melkadi84/echotech`, branch `main`).
+The website of **Echo Tech**, a startup selling: network infrastructure, CCTV systems, websites, mobile applications, business systems (CRMs, internal tools), business automation, data analysis and dashboards, and domains and hosting. More services will be added; they are data, not code (see Adding a service below). Clients are worldwide. The site is bilingual (English is the default at `/`, Arabic at `/ar/`; `public/_redirects` sends the old `/en/` URLs to `/`), has light and dark themes, and runs on a **Cloudflare Worker with static assets** (Git integration: build `npm run build`, deploy `npx wrangler deploy`) (domain `echo-tech.website`, repo `melkadi84/echotech`, branch `main`).
 
 First reference client: **Joy Zone** (joy-zone.net), a children's indoor play centre in Alexandria. We built its website and an internal CRM.
 
@@ -36,9 +36,9 @@ Commands: `npm run build` (regenerate HTML), `npm run dev` (build + local Worker
 
 ## Hard rules
 
-1. **Never hand-edit `public/index.html`, `public/en/index.html`, `sitemap.xml`, `_headers` or `site.webmanifest`.** Change `src/` and run `npm run build`, then commit the regenerated files.
+1. **Never hand-edit `public/index.html`, `public/ar/index.html`, `sitemap.xml`, `_headers`, `_redirects` or `site.webmanifest`.** Change `src/` and run `npm run build`, then commit the regenerated files.
 2. **Keep Arabic and English in sync.** Every key in `ar.json` exists in `en.json` and the reverse. A change to one language is incomplete until the other is updated.
-3. **RTL correctness.** Use CSS logical properties (`inline-start`, `margin-inline`, `inset-inline-end`, `padding-block`). Never `left`/`right` for layout. Test every UI change in both `/` and `/en/`.
+3. **RTL correctness.** Use CSS logical properties (`inline-start`, `margin-inline`, `inset-inline-end`, `padding-block`). Never `left`/`right` for layout. Test every UI change in both `/` and `/ar/`.
 4. **Content Security Policy is strict.** No inline `style=""` attributes, no inline event handlers, no new inline `<script>` (the one theme script is hash-allowed by the build). Set styles from JS through the CSSOM (`el.style.x = ...`) or classes. New external origins must be added to the CSP in `src/build.mjs`.
 5. **Both themes always.** Every colour comes from a CSS variable in `site.css`. Check contrast (WCAG AA) in light and dark.
 6. **Honest content.** Never invent testimonials, metrics, client names, certifications, partnerships or prices. Add a client or quote only with the owner's confirmation and the client's permission. `work.testimonials` stays an empty array until real quotes exist. Policies written in FAQ answers (support, ownership of accounts) are owner decisions, so confirm before changing them.

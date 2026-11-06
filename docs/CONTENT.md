@@ -61,7 +61,7 @@ The strip in `#work` shows each real client as logo + name. Only Joy Zone exists
 
 ## Sub pages
 
-The build creates one page per service (`/services/<id>/`, `/en/services/<id>/`) and a work page (`/work/`, `/en/work/`). Service page copy lives in `services.items[].page` (title, description, lead, included, needs) in both language files. Keep it descriptive of how we work; no prices, metrics or promises the owner has not approved. Every page gets canonical, hreflang, JSON-LD (Service and BreadcrumbList) and a sitemap entry automatically.
+The build creates one page per service (`/services/<id>/`, `/ar/services/<id>/`) and a work page (`/work/`, `/ar/work/`); English lives at the root and Arabic under `/ar/`. Service page copy lives in `services.items[].page` (title, description, lead, included, needs) in both language files. Keep it descriptive of how we work; no prices, metrics or promises the owner has not approved. Every page gets canonical, hreflang, JSON-LD (Service and BreadcrumbList) and a sitemap entry automatically.
 
 ## Adding a service
 

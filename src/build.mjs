@@ -242,7 +242,7 @@ function shell(t, ctx, body) {
 <link rel="canonical" href="${site + ctx.path}">
 <link rel="alternate" hreflang="${t.lang}" href="${site + ctx.path}">
 <link rel="alternate" hreflang="${other.lang}" href="${site + ctx.otherPath}">
-<link rel="alternate" hreflang="x-default" href="${site + ctx.arPath}">
+<link rel="alternate" hreflang="x-default" href="${site + ctx.defPath}">
 <meta name="theme-color" content="${cfg.themeColor.light}" data-light="${cfg.themeColor.light}" data-dark="${cfg.themeColor.dark}">
 <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
@@ -427,11 +427,10 @@ function homeBody(t) {
 `;
 }
 
-const homeCtx = (t, other) => ({ isHome: true, section: "home", path: t.path, otherPath: other.path, arPath: "/", title: t.title, description: t.description, extra: [] });
+const homeCtx = (t, other) => ({ isHome: true, section: "home", path: t.path, otherPath: other.path, defPath: "/", title: t.title, description: t.description, extra: [] });
 const page = (t) => shell(t, homeCtx(t, t.lang === "ar" ? langs.en : langs.ar), homeBody(t));
 
-await out("public/index.html", page(langs.ar));
-await out("public/en/index.html", page(langs.en));
+for (const t of [langs.en, langs.ar]) await out(`public${t.path}index.html`, page(t));
 
 
 /* ---- Sub pages: one per service, plus the work page ---- */
@@ -445,7 +444,7 @@ function servicePage(t, s, idx) {
   const path = svcPath(t, s.id);
   const trail = [[t.pages.home, t.path], [t.pages.services, `${t.path}#services`], [s.name, ""]];
   const ctx = {
-    isHome: false, section: "services", path, otherPath: svcPath(otherLang(t), s.id), arPath: svcPath(langs.ar, s.id),
+    isHome: false, section: "services", path, otherPath: svcPath(otherLang(t), s.id), defPath: svcPath(langs.en, s.id),
     title: `${s.page.title} — Echo Tech`, description: s.page.description,
     extra: [
       { "@type": "Service", "@id": `${site}${path}#service`, name: s.name, description: s.page.description, serviceType: s.name, url: site + path, provider: { "@id": `${site}/#org` }, areaServed: "Worldwide", inLanguage: t.lang },
@@ -502,7 +501,7 @@ function workPage(t) {
   const pg = t.pages;
   const trail = [[pg.home, t.path], [pg.workTitle, ""]];
   const ctx = {
-    isHome: false, section: "work", path: workPath(t), otherPath: workPath(otherLang(t)), arPath: workPath(langs.ar),
+    isHome: false, section: "work", path: workPath(t), otherPath: workPath(otherLang(t)), defPath: workPath(langs.en),
     title: `${pg.workH1} — Echo Tech`, description: pg.workDescription,
     extra: [crumbLd(t, [[pg.home, t.path], [pg.workTitle, workPath(t)]])],
   };
@@ -549,7 +548,7 @@ for (const t of [langs.ar, langs.en]) {
 for (const p of subPages) await out(`public${p.path}index.html`, p.html);
 
 /* 404 */
-await out("public/404.html", `<!doctype html><html lang="en" dir="ltr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><title>404 — Echo Tech</title><link rel="icon" href="/favicon.svg" type="image/svg+xml"><script>${themeScript}</script><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300..700&display=swap"><link rel="stylesheet" href="${assets.css}"></head><body><main class="hero hero--full"><div class="wrap hero__content"><h1>404</h1><p class="hero__sub">This page doesn't exist. الصفحة غير موجودة.</p><div class="hero__actions"><a class="btn" href="/">الرئيسية</a><a class="btn btn--ghost" href="/en/">Home</a></div></div></main></body></html>
+await out("public/404.html", `<!doctype html><html lang="en" dir="ltr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><title>404 — Echo Tech</title><link rel="icon" href="/favicon.svg" type="image/svg+xml"><script>${themeScript}</script><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300..700&display=swap"><link rel="stylesheet" href="${assets.css}"></head><body><main class="hero hero--full"><div class="wrap hero__content"><h1>404</h1><p class="hero__sub">This page doesn't exist. الصفحة غير موجودة.</p><div class="hero__actions"><a class="btn" href="/">Home</a><a class="btn btn--ghost" href="/ar/">الرئيسية</a></div></div></main></body></html>
 `);
 
 /* sitemap with hreflang alternates */
@@ -559,9 +558,9 @@ const entry = (arPath, enPath, own) => `  <url>
     <lastmod>${today}</lastmod>
 ${alt("ar", site + arPath)}
 ${alt("en", site + enPath)}
-${alt("x-default", site + arPath)}
+${alt("x-default", site + enPath)}
   </url>`;
-const pairs = [["/", "/en/"], [workPath(langs.ar), workPath(langs.en)], ...langs.ar.services.items.map((s) => [svcPath(langs.ar, s.id), svcPath(langs.en, s.id)])];
+const pairs = [["/ar/", "/"], [workPath(langs.ar), workPath(langs.en)], ...langs.ar.services.items.map((s) => [svcPath(langs.ar, s.id), svcPath(langs.en, s.id)])];
 await out("public/sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${pairs.flatMap(([ar, en]) => [entry(ar, en, ar), entry(ar, en, en)]).join("\n")}
@@ -571,7 +570,7 @@ await out("public/robots.txt", `User-agent: *\nAllow: /\nDisallow: /api/\n\nSite
 
 await out("public/site.webmanifest", JSON.stringify({
   name: "Echo Tech", short_name: "Echo Tech", description: langs.en.description,
-  start_url: "/", scope: "/", display: "standalone", lang: "ar", dir: "rtl",
+  start_url: "/", scope: "/", display: "standalone", lang: "en", dir: "ltr",
   background_color: cfg.themeColor.dark, theme_color: "#1D4ED8",
   icons: [
     { src: "/assets/brand/icon-192.png", sizes: "192x192", type: "image/png" },
@@ -610,4 +609,7 @@ await out("public/_headers", `/*
   Cache-Control: public, max-age=86400
 `);
 
-console.log(`Built: public/index.html, public/en/index.html (+404, sitemap, robots, manifest, _headers). CSP script hash: ${themeHash}`);
+/* English moved from /en/ to the root; keep old links working */
+await out("public/_redirects", "/en / 301\n/en/* /:splat 301\n");
+
+console.log(`Built: public/index.html, public/ar/index.html (+404, sitemap, robots, manifest, _headers). CSP script hash: ${themeHash}`);
