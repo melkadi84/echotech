@@ -346,13 +346,7 @@ function homeBody(t) {
     <div class="wrap">
       <div class="head"><h2 id="work-h">${esc(t.work.title)}</h2><p>${esc(t.work.intro)}</p></div>
       ${clientsBlock(t, ctx)}
-      <div class="case">
-        <p class="case__kind">${esc(jz.kind)}</p>
-        <h3>${esc(jz.client)}</h3>
-        <p>${esc(jz.summary)}</p>
-        <ul class="case__list">${jz.delivered.map((d) => `<li>${esc(d)}</li>`).join("")}</ul>
-        <div class="case__actions"><a class="btn btn--ghost" href="${cfg.caseStudies.joyZoneUrl}" rel="noopener" target="_blank">${esc(jz.visit)}</a><a class="btn btn--ghost" href="${workPath(t)}">${esc(t.pages.allWork)}</a></div>
-      </div>
+      <a class="btn btn--ghost" href="${workPath(t)}">${esc(t.pages.allWork)}</a>
       ${testimonials}
     </div>
   </section>
