@@ -117,7 +117,9 @@ const footerLinks = (t, ctx) => {
 };
 
 const logoFile = ["svg", "png", "webp"].map((x) => `assets/clients/joy-zone.${x}`).find((p) => existsSync(join(root, "public", p)));
-const jzLogo = logoFile ? `<img src="/${logoFile}" alt="" width="64" height="64" loading="lazy">` : `<span aria-hidden="true">JZ</span>`;
+// Prefer a self-hosted file in public/assets/clients/. Until one is added, show the logo from the client's own site.
+const jzLogoRemote = "https://joy-zone.net/assets/logo_320.png";
+const jzLogo = `<img src="${logoFile ? `/${logoFile}` : jzLogoRemote}" alt="" width="64" height="64" loading="lazy">`;
 
 const clientsBlock = (t, ctx) => {
   const jz = t.work.joyZone;
@@ -535,7 +537,7 @@ const csp = [
   `script-src 'self' '${themeHash}' https://challenges.cloudflare.com${cfg.analyticsToken ? " https://static.cloudflareinsights.com" : ""}`,
   "style-src 'self' https://fonts.googleapis.com",
   "font-src https://fonts.gstatic.com",
-  "img-src 'self' data:",
+  "img-src 'self' data: https://joy-zone.net",
   `connect-src 'self'${cfg.analyticsToken ? " https://cloudflareinsights.com" : ""}`,
   "frame-src https://challenges.cloudflare.com",
   "base-uri 'self'", "form-action 'self'", "object-src 'none'", "frame-ancestors 'none'",
