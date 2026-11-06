@@ -39,7 +39,7 @@ Set `NOTIFY_WEBHOOK_URL` to a Slack, Discord or n8n webhook. Each message posts 
 
 ## 5. Email
 
-Cloudflare Email Routing: create `hello@echo-tech.website` forwarding to your inbox, then keep `email` in `src/site.config.json` in sync.
+Cloudflare Email Routing: create `info@echo-tech.website` forwarding to your inbox, then keep `email` in `src/site.config.json` in sync.
 
 ## 6. After launch
 
