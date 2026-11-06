@@ -14,7 +14,7 @@ A solid disc with rings that fade behind it. The disc is the signal, the rings a
 | `logo-lockup-onlight.svg`, `logo-lockup-ondark.svg` | Mark + "ECHO TECH". Text uses Readex Pro, falls back to system sans. Convert text to outlines before sending to print. |
 | `public/favicon.svg`, `favicon.ico`, `apple-touch-icon.png` | Browser and device icons. The SVG favicon lightens the disc in dark mode. |
 | `assets/brand/icon-192.png`, `icon-512.png`, `icon-maskable-512.png` | PWA icons. |
-| `assets/brand/og-image.png` | Social share image, 1200×630. Source: `brand/og-image.svg`. |
+| `assets/brand/og-share.png` | Social share image, 1200×630. Source: `brand/og-image.svg`. |
 
 Rules: clear space around the mark equals the disc radius. Minimum size 16px (favicon) or 10mm in print. Do not recolour, stretch, rotate, outline, add shadows or place on busy photos. Under 24px drop the outer ring (favicon already does this visually).
 

@@ -27,7 +27,7 @@ const assetUrl = async (path) => {
   await writeFile(join(root, "public/assets/css/signal.css"), css);
 }
 const assets = {
-  og: await assetUrl("assets/brand/og-image.png"),
+  og: await assetUrl("assets/brand/og-share.png"),
   signal: await assetUrl("assets/css/signal.css"),
   css: await assetUrl("assets/css/site.css"),
   site: await assetUrl("assets/js/site.js"),
@@ -80,7 +80,7 @@ function schema(t, ctx) {
     alternateName: "إيكو تك",
     url: site + "/",
     logo: { "@type": "ImageObject", url: `${site}/assets/brand/icon-512.png`, width: 512, height: 512 },
-    image: `${site}/assets/brand/og-image.png`,
+    image: `${site}/assets/brand/og-share.png`,
     description: t.description,
     areaServed: "Worldwide",
     knowsLanguage: ["ar", "en"],
@@ -101,7 +101,7 @@ function schema(t, ctx) {
     "@graph": [
       org,
       { "@type": "WebSite", "@id": `${site}/#website`, url: site + "/", name: "Echo Tech", publisher: { "@id": `${site}/#org` }, inLanguage: ["ar", "en"] },
-      { "@type": "WebPage", "@id": site + ctx.path + "#webpage", url: site + ctx.path, name: ctx.title, description: ctx.description, inLanguage: t.lang, isPartOf: { "@id": `${site}/#website` }, about: { "@id": `${site}/#org` }, primaryImageOfPage: `${site}/assets/brand/og-image.png`, translationOfWork: { "@id": site + ctx.otherPath + "#webpage" } },
+      { "@type": "WebPage", "@id": site + ctx.path + "#webpage", url: site + ctx.path, name: ctx.title, description: ctx.description, inLanguage: t.lang, isPartOf: { "@id": `${site}/#website` }, about: { "@id": `${site}/#org` }, primaryImageOfPage: `${site}/assets/brand/og-share.png`, translationOfWork: { "@id": site + ctx.otherPath + "#webpage" } },
       ...(ctx.isHome ? [{ "@type": "FAQPage", "@id": url(t) + "#faq", inLanguage: t.lang, name: t.faqTitleSchema, mainEntity: t.faq.items.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) }] : []),
       ...(ctx.extra || []),
     ],
