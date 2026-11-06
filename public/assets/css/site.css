@@ -350,10 +350,15 @@ html:not(.js) .boot { display: none; }
 .nav__group:hover .nav__menu, .nav__group:focus-within .nav__menu { opacity: 1; visibility: visible; transform: none; }
 .nav__menu::before { content: ""; position: absolute; inset-inline: 0; inset-block-end: 100%; height: 0.75rem; }
 @media (max-width: 880px) {
-  .nav__group { display: block; }
-  .nav__menu { position: static; width: auto; padding: 0 0 0.5rem; border: 0; border-radius: 0; box-shadow: none; opacity: 1; visibility: visible; transform: none; background: none; border-block-end: 1px solid var(--line); }
-  .nav .nav__group a.nav__link { border-block-end: 0; }
-  .nav__menu a { padding: 0.6rem 0.25rem; min-height: 44px; }
+  /* Top-level links are the main rows; the services sit under their parent, indented and lighter. */
+  .nav a.nav__link { font-weight: 500; }
+  .nav__group { display: block; border-block-end: 1px solid var(--line); padding-block-end: 0.6rem; }
+  .nav .nav__group a.nav__link { border-block-end: 0; padding-block-end: 0.5rem; }
+  .nav__menu { position: static; width: auto; margin-inline-start: 0.25rem; padding: 0 0 0 0; padding-inline-start: 0.9rem; border: 0; border-inline-start: 1px solid var(--line); border-radius: 0; box-shadow: none; opacity: 1; visibility: visible; transform: none; background: none; }
+  .nav__menu a { padding: 0.5rem 0.25rem; min-height: 44px; align-items: center; color: var(--muted); }
+  .nav__menu a:hover { color: var(--ink); }
+  .nav__menu strong { font-weight: 400; font-size: 0.98rem; }
+  .nav__menu svg { width: 20px; height: 20px; margin-block-start: 0; }
   .nav__menu small { display: none; }
   .nav__menu::before { display: none; }
 }
