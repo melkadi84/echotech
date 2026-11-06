@@ -140,6 +140,7 @@ html:not(.js) .boot { display: none; }
   font-size: 0.95rem; transition: background 0.2s;
 }
 .nav a.nav__link:hover { background: var(--bg-2); }
+.nav .btn { padding: 0.55rem 1.15rem; font-size: 0.95rem; margin-inline-start: 0.5rem; }
 .tools { display: flex; align-items: center; gap: 0.5rem; }
 .icon-btn, .lang {
   display: inline-grid; place-items: center; min-width: 2.5rem; height: 2.5rem; padding-inline: 0.7rem;
@@ -163,7 +164,7 @@ html:not(.js) .boot { display: none; }
   }
   .nav.is-open { transform: none; opacity: 1; visibility: visible; }
   .nav a.nav__link { padding: 0.9rem 0; border-radius: 0; border-block-end: 1px solid var(--line); font-size: 1.05rem; }
-  .nav .btn { margin-block-start: 1rem; justify-content: center; }
+  .nav .btn { margin-block-start: 1rem; margin-inline-start: 0; padding: 0.85rem 1.5rem; font-size: 1rem; justify-content: center; }
   .tools { margin-inline-start: auto; }
 }
 
