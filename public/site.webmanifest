@@ -1,7 +1,7 @@
 {
   "name": "Echo Tech",
   "short_name": "Echo Tech",
-  "description": "Echo Tech designs and installs networks and CCTV systems, and builds websites, mobile apps and internal business systems for clients anywhere.",
+  "description": "Echo Tech designs, builds and supports the technology businesses run on, for clients anywhere.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

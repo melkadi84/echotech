@@ -3,8 +3,8 @@
   "dir": "ltr",
   "locale": "en_US",
   "path": "/en/",
-  "title": "Echo Tech — Networks, CCTV, websites and mobile apps",
-  "description": "Echo Tech designs and installs networks and CCTV systems, and builds websites, mobile apps and internal business systems for clients anywhere.",
+  "title": "Echo Tech — Technology solutions for business",
+  "description": "Echo Tech designs, builds and supports the technology businesses run on, for clients anywhere.",
   "ui": {
     "skip": "Skip to content",
     "menu": "Menu",
@@ -39,14 +39,14 @@
   "cta": "Request a quote",
   "hero": {
     "title": "Everything your business runs on, built right the first time.",
-    "sub": "We design and install networks and CCTV, and build websites, mobile apps and internal systems for clients anywhere. Our support doesn't end at handover.",
+    "sub": "We design, build and support the technology your business runs on, for clients anywhere. Our support doesn't end at handover.",
     "primary": "Request a quote",
     "secondary": "See our work",
     "jump": "What we do"
   },
   "services": {
     "title": "What we do",
-    "intro": "Five areas, one team. Each project starts with a short conversation about what you actually need.",
+    "intro": "One team, whatever your business needs. Each project starts with a short conversation about what you actually need.",
     "items": [
       {
         "id": "network",
@@ -335,7 +335,7 @@
     "items": [
       {
         "q": "Do you work with clients outside Egypt?",
-        "a": "Yes. Websites, apps and business systems are delivered remotely anywhere in the world. Network and CCTV work happens on site, so tell us where you are and we will confirm how we can help."
+        "a": "Yes. Work that can be delivered online is done remotely for clients anywhere in the world. Work that needs us on site depends on where you are, so tell us your location and we will confirm how we can help."
       },
       {
         "q": "How much does a project cost?",
@@ -343,7 +343,7 @@
       },
       {
         "q": "How long does a project take?",
-        "a": "A small website can take a few weeks. Network and CCTV installs depend on the size of the site. You get a timeline in the quote."
+        "a": "It depends on the scope. A small project can take a few weeks, and larger or on-site work takes longer. You get a timeline in the quote."
       },
       {
         "q": "Do you support what you build after delivery?",
@@ -388,7 +388,7 @@
     }
   },
   "footer": {
-    "tagline": "Networks, CCTV, websites and apps.",
+    "tagline": "Technology solutions for your business.",
     "rights": "All rights reserved."
   },
   "faqTitleSchema": "Frequently asked questions",

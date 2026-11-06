@@ -223,21 +223,14 @@ html:not(.js) .boot { display: none; }
 .sig-echo:nth-of-type(2) { animation-delay: -2s; }
 .sig-echo:nth-of-type(3) { animation-delay: -4s; }
 .sig-dot { fill: #bcd8ff; opacity: 0; --x: 0px; --y: 0px; animation: sig-travel 10s linear infinite; }
-.d0 { --x: 0px; --y: -210px; animation-delay: 1s; }
-.d1 { --x: 199.7px; --y: -64.9px; animation-delay: 3s; }
-.d2 { --x: 123.4px; --y: 169.9px; animation-delay: 5s; }
-.d3 { --x: -123.4px; --y: 169.9px; animation-delay: 7s; }
-.d4 { --x: -199.7px; --y: -64.9px; animation-delay: 9s; }
 .sig-node { cursor: pointer; }
 .sig-disc { fill: var(--bg-2); stroke: var(--ring); stroke-width: 1.6; transition: fill 0.25s; }
 .sig-icon { fill: none; stroke: #eaf0ff; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; pointer-events: none; }
 .sig-flash { fill: none; stroke: var(--ring); stroke-width: 2; opacity: 0; transform-box: fill-box; transform-origin: center; animation: sig-flash 10s linear infinite; }
-.n0 .sig-flash { animation-delay: 2.6s; } .n1 .sig-flash { animation-delay: 4.6s; } .n2 .sig-flash { animation-delay: 6.6s; }
-.n3 .sig-flash { animation-delay: 8.6s; } .n4 .sig-flash { animation-delay: 0.6s; }
 .sig-node:hover .sig-disc, .sig-node.is-on .sig-disc { fill: var(--cobalt); }
 
 /* Dock: the real links, one per service */
-.dock { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); margin-block-start: clamp(2.5rem, 5vw, 4rem); border-block-start: 1px solid var(--line); }
+.dock { display: grid; grid-template-columns: repeat(auto-fit, minmax(13.5rem, 1fr)); margin-block-start: clamp(2.5rem, 5vw, 4rem); border-block-start: 1px solid var(--line); }
 .dock a { display: grid; grid-template-columns: auto 1fr; gap: 0.35rem 0.9rem; align-content: start; padding: 1.5rem 1.25rem 2rem; color: var(--ink); text-decoration: none; transition: background-color 0.2s; }
 .dock a + a { border-inline-start: 1px solid var(--line); }
 .dock a:hover, .dock a.is-on { background: var(--bg-2); }
@@ -383,15 +376,16 @@ html:not(.js) .boot { display: none; }
 .clients__toggle { display: block; margin-inline-start: auto; margin-block-end: 0.75rem; min-height: 44px; padding: 0 1rem; border: 1px solid var(--line); border-radius: 999px; background: var(--bg); color: var(--muted); font: inherit; font-size: 0.9rem; cursor: pointer; transition: color 0.2s, border-color 0.2s; }
 .clients__toggle:hover { color: var(--ink); border-color: var(--ring); }
 .clients__toggle[hidden] { display: none; }
-.marquee { overflow: hidden; border-block: 1px solid var(--line); -webkit-mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent); mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent); }
+.marquee { overflow: hidden; -webkit-mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent); mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent); }
 .marquee__track { display: flex; width: max-content; animation: marquee 60s linear infinite; }
 .marquee__set { display: flex; flex: none; }
 .clients:hover .marquee__track, .clients:focus-within .marquee__track, .clients.is-paused .marquee__track, .clients.is-offscreen .marquee__track { animation-play-state: paused; }
-.client { flex: none; border-inline-end: 1px solid var(--line); }
+.client { flex: none; }
 .client a { display: grid; justify-items: center; align-content: start; gap: 0.35rem; width: 19rem; min-height: 17rem; padding: 2.25rem 1.75rem; text-align: center; color: var(--ink); text-decoration: none; transition: background-color 0.2s; }
 .client a:hover { background: var(--bg-2); }
 .client__logo { display: grid; place-items: center; flex: none; width: 84px; height: 84px; margin-block-end: 0.9rem; overflow: hidden; border: 1px solid var(--line); border-radius: 22px; background: #fff; color: var(--cobalt); font-weight: 700; font-size: 1.5rem; }
 .client__logo img { width: 100%; height: 100%; object-fit: contain; padding: 10px; }
+.client__logo img.client__photo { object-fit: cover; object-position: center top; padding: 0; }
 .client__mark { width: 48px; height: 48px; color: var(--ring); }
 .client__mark .d { fill: var(--ring); } .client__mark .r { fill: none; stroke: var(--ring); stroke-width: 3; }
 .client--slot .client__logo { border-style: dashed; }
@@ -493,8 +487,10 @@ html:not(.js) .boot { display: none; }
 .footer__row { display: flex; flex-wrap: wrap; gap: 1.5rem 3rem; justify-content: space-between; align-items: flex-start; }
 .footer .brand { color: var(--ink); }
 .footer nav { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; }
+.footer p { margin-block-start: 0.5rem; }
 .footer a { color: var(--muted); text-decoration: none; }
 .footer a:hover { color: var(--ink); text-decoration: underline; }
+.footer .brand svg { margin-inline-start: -8px; }
 .footer__copy { margin-block-start: 2rem; font-size: 0.85rem; }
 
 /* ---------- Theme switch reveal (View Transitions) ---------- */

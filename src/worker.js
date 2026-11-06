@@ -115,6 +115,12 @@ async function handleContact(request, env) {
   return reply(200, { ok: true });
 }
 
+const decodeEntities = (text) =>
+  text
+    .replace(/&#x([0-9a-f]+);/gi, (_, h) => String.fromCodePoint(parseInt(h, 16)))
+    .replace(/&#(\d+);/g, (_, d) => String.fromCodePoint(Number(d)))
+    .replace(/&quot;/g, '"').replace(/&apos;/g, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&");
+
 // GET /api/brief?site=<client url>: the client's own title and description, cached for a day.
 async function handleBrief(request) {
   const site = new URL(request.url).searchParams.get("site") || "";
@@ -138,6 +144,8 @@ async function handleBrief(request) {
   } catch {
     return reply(502, { ok: false, error: "unreachable" });
   }
+  info.description = decodeEntities(info.description);
+  info.title = decodeEntities(info.title);
   const brief = info.description.length > 150 ? info.description.slice(0, 150).replace(/\s+\S*$/, "") + "…" : info.description;
   const out = new Response(JSON.stringify({ ok: true, title: info.title.trim(), description: brief }), {
     headers: { ...JSON_HEADERS, "Cache-Control": "public, max-age=86400" },
