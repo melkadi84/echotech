@@ -7,7 +7,7 @@
   Strict-Transport-Security: max-age=31536000; includeSubDomains
 
 /assets/*
-  Cache-Control: public, max-age=86400, must-revalidate
+  Cache-Control: public, max-age=3600, must-revalidate
 
 /assets/brand/*
   Cache-Control: public, max-age=604800

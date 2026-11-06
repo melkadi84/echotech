@@ -7,6 +7,16 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
+// Asset URLs carry a content hash so edge and browser caches never serve a stale file after a deploy.
+const assetUrl = async (path) => {
+  const hash = createHash("sha256").update(await readFile(join(root, "public", path))).digest("hex").slice(0, 10);
+  return `/${path}?v=${hash}`;
+};
+const assets = {
+  css: await assetUrl("assets/css/site.css"),
+  site: await assetUrl("assets/js/site.js"),
+  sections: await assetUrl("assets/js/sections.js"),
+};
 const read = async (p) => JSON.parse(await readFile(join(root, p), "utf8"));
 const out = async (p, s) => { await mkdir(dirname(join(root, p)), { recursive: true }); await writeFile(join(root, p), s); };
 
@@ -152,7 +162,7 @@ function page(t) {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300..700&display=swap">
 <script>${themeScript}</script>
-<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="stylesheet" href="${assets.css}">
 <noscript><style>.boot{display:none}</style></noscript>
 <script type="application/ld+json">${jsonLd(schema(t))}</script>
 </head>
@@ -285,8 +295,8 @@ function page(t) {
 </footer>
 ${cfg.turnstileSiteKey ? `<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>` : ""}
 ${cfg.analyticsToken ? `<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"${esc(cfg.analyticsToken)}"}'></script>` : ""}
-<script src="/assets/js/site.js" defer></script>
-<script src="/assets/js/sections.js" defer></script>
+<script src="${assets.site}" defer></script>
+<script src="${assets.sections}" defer></script>
 </body>
 </html>
 `;
@@ -296,7 +306,7 @@ await out("public/index.html", page(langs.ar));
 await out("public/en/index.html", page(langs.en));
 
 /* 404 */
-await out("public/404.html", `<!doctype html><html lang="en" dir="ltr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><title>404 — Echo Tech</title><link rel="icon" href="/favicon.svg" type="image/svg+xml"><script>${themeScript}</script><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300..700&display=swap"><link rel="stylesheet" href="/assets/css/site.css"></head><body><main class="hero hero--full"><div class="wrap hero__content"><h1>404</h1><p class="hero__sub">This page doesn't exist. الصفحة غير موجودة.</p><div class="hero__actions"><a class="btn" href="/">الرئيسية</a><a class="btn btn--ghost" href="/en/">Home</a></div></div></main></body></html>
+await out("public/404.html", `<!doctype html><html lang="en" dir="ltr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><title>404 — Echo Tech</title><link rel="icon" href="/favicon.svg" type="image/svg+xml"><script>${themeScript}</script><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300..700&display=swap"><link rel="stylesheet" href="${assets.css}"></head><body><main class="hero hero--full"><div class="wrap hero__content"><h1>404</h1><p class="hero__sub">This page doesn't exist. الصفحة غير موجودة.</p><div class="hero__actions"><a class="btn" href="/">الرئيسية</a><a class="btn btn--ghost" href="/en/">Home</a></div></div></main></body></html>
 `);
 
 /* sitemap with hreflang alternates */
@@ -348,7 +358,7 @@ await out("public/_headers", `/*
   Strict-Transport-Security: max-age=31536000; includeSubDomains
 
 /assets/*
-  Cache-Control: public, max-age=86400, must-revalidate
+  Cache-Control: public, max-age=3600, must-revalidate
 
 /assets/brand/*
   Cache-Control: public, max-age=604800
