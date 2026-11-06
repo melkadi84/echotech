@@ -2,14 +2,16 @@
   "name": "echotech",
   "version": "1.0.0",
   "private": true,
-  "description": "Echo Tech website: static, bilingual (ar/en), Cloudflare Pages + Pages Functions + D1.",
+  "description": "Echo Tech website: static, bilingual (ar/en), Cloudflare Worker with static assets + D1.",
   "type": "module",
   "scripts": {
     "build": "node src/build.mjs",
-    "dev": "node src/build.mjs && npx wrangler pages dev public --d1=DB",
+    "dev": "node src/build.mjs && npx wrangler dev",
     "db:init": "npx wrangler d1 execute echotech-db --local --file=./schema.sql",
     "db:init:remote": "npx wrangler d1 execute echotech-db --remote --file=./schema.sql",
-    "deploy": "node src/build.mjs && npx wrangler pages deploy public --project-name=echotech"
+    "deploy": "node src/build.mjs && npx wrangler deploy"
   },
-  "engines": { "node": ">=20" }
+  "engines": {
+    "node": ">=20"
+  }
 }

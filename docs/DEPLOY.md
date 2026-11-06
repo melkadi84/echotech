@@ -1,21 +1,23 @@
 # Deploying to Cloudflare
 
-## 1. Connect the repo (Cloudflare Pages)
+## 1. Worker and Git integration
 
-1. Cloudflare dashboard, Workers & Pages, Create, Pages, Connect to Git, pick `melkadi84/echotech`.
-2. Production branch `main`. Framework preset none. Build command: `npm run build` (or leave empty; `public/` is committed). Build output directory: `public`.
-3. Custom domain: add `echo-tech.website`. Cloudflare creates DNS and SSL.
+The site is a Cloudflare **Worker with static assets** named `echotech` (config in `wrangler.jsonc`, entry `src/worker.js`).
 
-Every push to `main` deploys automatically.
+1. Dashboard, Workers & Pages, `echotech`, Settings, Builds: repo `melkadi84/echotech`, branch `main`.
+2. Build command `npm run build`. Deploy command `npx wrangler deploy`. Root directory `/`.
+3. Custom domain: Settings, Domains, add `echo-tech.website`.
+
+Every push to `main` builds and deploys automatically.
 
 ## 2. Contact form (D1)
 
 ```bash
-npx wrangler d1 create echotech-db          # copy database_id into wrangler.toml
+npx wrangler d1 create echotech-db          # prints database_id
 npm run db:init:remote                      # creates the messages table
 ```
 
-Pages project, Settings, Bindings: add D1 binding `DB` pointing at `echotech-db`. The binding also needs to exist for Preview if you test branches.
+Add the printed id to `wrangler.jsonc` under `d1_databases` (binding `DB`), commit and push. Until then the form answers "not configured" and nothing is stored.
 
 Read messages:
 
@@ -27,7 +29,7 @@ npx wrangler d1 execute echotech-db --remote --command "SELECT created_at,name,e
 
 1. Dashboard, Turnstile, add widget for `echo-tech.website`.
 2. Put the **site key** in `src/site.config.json` as `turnstileSiteKey`, run `npm run build`, commit.
-3. Add the **secret** to the Pages project as `TURNSTILE_SECRET` (Settings, Variables and Secrets).
+3. Add the **secret** to the Worker as `TURNSTILE_SECRET` (Settings, Variables and Secrets).
 
 Without the secret the form still works, protected by a honeypot field and a rate limit (5 messages per 15 minutes per visitor).
 
@@ -50,7 +52,7 @@ Cloudflare Email Routing: create `hello@echo-tech.website` forwarding to your in
 ## Local development
 
 ```bash
-npm run dev          # builds, then serves public/ with Functions and a local D1
+npm run dev          # builds, then runs the Worker with static assets locally
 npm run db:init      # once, to create the local table
 ```
 

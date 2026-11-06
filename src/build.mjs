@@ -294,7 +294,7 @@ await out("public/site.webmanifest", JSON.stringify({
   ],
 }, null, 2) + "\n");
 
-/* Cloudflare Pages headers (CSP includes the hash of the inline theme script) */
+/* Cloudflare static assets headers (CSP includes the hash of the inline theme script) */
 const csp = [
   "default-src 'self'",
   `script-src 'self' '${themeHash}' https://challenges.cloudflare.com${cfg.analyticsToken ? " https://static.cloudflareinsights.com" : ""}`,

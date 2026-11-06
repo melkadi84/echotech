@@ -1,0 +1,17 @@
+{
+  // Cloudflare Worker with static assets. Deployed by the Git integration: build "npm run build", deploy "npx wrangler deploy".
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "echotech",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    "run_worker_first": ["/api/*"]
+  },
+  "observability": { "enabled": true }
+  // Contact form storage: run `npx wrangler d1 create echotech-db`, then add:
+  // "d1_databases": [{ "binding": "DB", "database_name": "echotech-db", "database_id": "<printed id>" }]
+  // Secrets (dashboard or `npx wrangler secret put NAME`): TURNSTILE_SECRET, NOTIFY_WEBHOOK_URL, IP_SALT
+}

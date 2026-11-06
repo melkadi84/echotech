@@ -1,10 +1,10 @@
 # Echo Tech website
 
-Bilingual (Arabic / English), light and dark, static site for **Echo Tech**: network infrastructure, CCTV systems, websites, mobile apps and business systems. Hosted on Cloudflare Pages at https://echo-tech.website.
+Bilingual (Arabic / English), light and dark, static site for **Echo Tech**: network infrastructure, CCTV systems, websites, mobile apps and business systems. Hosted on a Cloudflare Worker with static assets at https://echo-tech.website.
 
 ```bash
 npm run build        # regenerate public/ from src/
-npm run dev          # local Cloudflare Pages with D1 (needs wrangler)
+npm run dev          # local Worker with static assets (needs wrangler)
 npm run deploy       # build and deploy with wrangler
 ```
 
