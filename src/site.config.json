@@ -10,11 +10,13 @@
     "dark": "#060A18"
   },
   "social": {
-    "linkedin": "",
-    "facebook": "",
-    "instagram": "",
-    "github": "",
-    "x": ""
+    "youtube": "https://www.youtube.com/c/EchoTech",
+    "facebook": "https://www.facebook.com/echotech17/",
+    "instagram": "https://www.instagram.com/echotech17/",
+    "tiktok": "https://www.tiktok.com/@echotech17",
+    "x": "https://twitter.com/echotech_17/",
+    "linkedin": "https://www.linkedin.com/in/echotech17/",
+    "github": ""
   },
   "caseStudies": {
     "joyZoneUrl": "https://joy-zone.net",

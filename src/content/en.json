@@ -529,7 +529,11 @@
   },
   "footer": {
     "tagline": "Technology solutions for your business.",
-    "rights": "All rights reserved."
+    "rights": "All rights reserved.",
+    "services": "Services",
+    "company": "Company",
+    "contact": "Get in touch",
+    "follow": "Follow Echo Tech"
   },
   "faqTitleSchema": "Frequently asked questions",
   "pages": {

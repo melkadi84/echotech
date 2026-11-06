@@ -130,10 +130,21 @@ const navHtml = (t, ctx) => {
   }).join("\n      ");
 };
 
+// Brand glyphs for the footer. Third-party marks, shown small and unchanged.
+const socialIcons = {
+  youtube: { label: "YouTube", svg: '<path d="M2.5 17a24.1 24.1 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.6 49.6 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.1 24.1 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.6 49.6 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z"/>' },
+  facebook: { label: "Facebook", svg: '<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>' },
+  instagram: { label: "Instagram", svg: '<rect width="20" height="20" x="2" y="2" rx="5"/><path d="M16 11.4A4 4 0 1 1 12.6 8 4 4 0 0 1 16 11.4z"/><path d="M17.5 6.5h.01"/>' },
+  tiktok: { label: "TikTok", svg: '<path d="M15 3v11.2a4.2 4.2 0 1 1-3.6-4.2"/><path d="M15 3c.3 2.6 2 4.4 5 4.6"/>' },
+  x: { label: "X", svg: '<path d="M4 4l16 16M20 4 4 20"/>' },
+  linkedin: { label: "LinkedIn", svg: '<path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/>' },
+};
+const socialLinks = (t) => Object.entries(cfg.social).filter(([k, v]) => v && socialIcons[k]).map(([k, v]) => `<a href="${esc(v)}" rel="noopener me" target="_blank" aria-label="${socialIcons[k].label}"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">${socialIcons[k].svg}</svg></a>`).join("");
+
 const footerLinks = (t, ctx) => {
   const base = ctx.isHome ? "" : t.path;
   const links = t.nav.map((n) => (n.id === "work" ? `<a href="${workPath(t)}">${esc(n.label)}</a>` : `<a href="${base}#${n.id}">${esc(n.label)}</a>`));
-  return links.join("") + `<a href="${base}#contact">${esc(t.cta)}</a>`;
+  return links.map((a) => `<li>${a}</li>`).join("");
 };
 
 const logoFile = ["svg", "png", "webp"].map((x) => `assets/clients/joy-zone.${x}`).find((p) => existsSync(join(root, "public", p)));
@@ -286,10 +297,21 @@ function shell(t, ctx, body) {
 
 <footer class="footer stage">
   <div class="wrap">
-    <div class="footer__row">
-      <div><a class="brand" href="${t.path}" aria-label="${esc(u.home)}">${markSvg()}<span class="brand__name">${t.lang === "ar" ? "إيكو تك" : "ECHO TECH"}</span></a><p>${esc(t.footer.tagline)}</p></div>
-      <nav aria-label="${esc(u.menu)}">${footerLinks(t, ctx)}</nav>
-      ${social.length ? `<nav aria-label="Social">${social.map(([k, v]) => `<a href="${esc(v)}" rel="noopener me" target="_blank">${esc(k)}</a>`).join("")}</nav>` : ""}
+    <div class="footer__grid">
+      <div class="footer__about">
+        <a class="brand" href="${t.path}" aria-label="${esc(u.home)}">${markSvg()}<span class="brand__name">${t.lang === "ar" ? "إيكو تك" : "ECHO TECH"}</span></a>
+        <p>${esc(t.footer.tagline)}</p>
+        ${socialLinks(t) ? `<nav class="footer__social" aria-label="${esc(t.footer.follow)}">${socialLinks(t)}</nav>` : ""}
+      </div>
+      <nav aria-labelledby="f-services"><h2 class="footer__h" id="f-services">${esc(t.footer.services)}</h2><ul>${t.services.items.map((s) => `<li><a href="${svcPath(t, s.id)}">${esc(s.name)}</a></li>`).join("")}</ul></nav>
+      <nav aria-labelledby="f-company"><h2 class="footer__h" id="f-company">${esc(t.footer.company)}</h2><ul>${footerLinks(t, ctx)}</ul></nav>
+      <div><h2 class="footer__h">${esc(t.footer.contact)}</h2>
+        <ul>
+          ${cfg.email ? `<li><a href="mailto:${esc(cfg.email)}" dir="ltr">${esc(cfg.email)}</a></li>` : ""}
+          ${waLink() ? `<li><a href="${waLink()}" rel="noopener" target="_blank" dir="ltr">+${esc(cfg.whatsapp.replace(/\D/g, ""))}</a></li>` : ""}
+        </ul>
+        <a class="btn footer__cta" href="${ctx.isHome ? "" : t.path}#contact">${esc(t.cta)}</a>
+      </div>
     </div>
     <p class="footer__copy">© ${new Date().getFullYear()} Echo Tech. ${esc(t.footer.rights)}</p>
   </div>
