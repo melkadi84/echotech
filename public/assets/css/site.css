@@ -308,7 +308,9 @@ html:not(.js) .boot { display: none; }
 
 /* ---------- Sub pages ---------- */
 .crumbs ol { display: flex; flex-wrap: wrap; gap: 0.25rem 0.6rem; color: var(--muted); font-size: 0.95rem; }
-.crumbs li + li::before { content: "/"; margin-inline-end: 0.6rem; color: var(--line); }
+.crumbs li + li::before { content: "/"; margin-inline-end: 0.6rem; color: var(--muted); opacity: 0.6; }
+/* A slash leans toward the reading direction; mirror it in RTL so the trail reads right to left. */
+[dir="rtl"] .crumbs li + li::before { content: "\005C"; }
 .crumbs a { color: var(--muted); text-decoration: none; }
 .crumbs a:hover { color: var(--ink); text-decoration: underline; }
 .crumbs [aria-current] { color: var(--ink); }
