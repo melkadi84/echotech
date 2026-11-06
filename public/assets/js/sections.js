@@ -64,6 +64,51 @@ function initClients() {
   if ("IntersectionObserver" in window) {
     new IntersectionObserver(([entry]) => root.classList.toggle("is-offscreen", !entry.isIntersecting)).observe(root);
   }
+  initClientsDrag(root);
+}
+
+// Drag the strip left or right to pick a client. The marquee is a CSS animation, so dragging moves its clock:
+// one full loop equals half the track width. The strip stays paused while dragging, and resumes afterwards
+// unless the visitor pressed the pause button.
+function initClientsDrag(root) {
+  const marquee = root.querySelector(".marquee");
+  const track = root.querySelector(".marquee__track");
+  const animation = track.getAnimations()[0];
+  if (!animation) return; // reduced motion: the strip scrolls natively
+  const loopMs = animation.effect.getComputedTiming().duration;
+  let startX = 0;
+  let startTime = 0;
+  let moved = false;
+  let active = false;
+  marquee.addEventListener("dragstart", (e) => e.preventDefault());
+  marquee.addEventListener("pointerdown", (e) => {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    active = true;
+    moved = false;
+    startX = e.clientX;
+    startTime = Number(animation.currentTime);
+    marquee.setPointerCapture(e.pointerId);
+  });
+  marquee.addEventListener("pointermove", (e) => {
+    if (!active) return;
+    const dx = e.clientX - startX;
+    if (!moved && Math.abs(dx) < 6) return;
+    moved = true;
+    root.classList.add("is-dragging");
+    // Dragging right pulls earlier content into view, so it rewinds the clock.
+    const shift = (dx / (track.scrollWidth / 2)) * loopMs;
+    animation.currentTime = (((startTime - shift) % loopMs) + loopMs) % loopMs;
+  });
+  const end = () => {
+    active = false;
+    root.classList.remove("is-dragging");
+  };
+  marquee.addEventListener("pointerup", end);
+  marquee.addEventListener("pointercancel", end);
+  // A drag must not open the client's link.
+  marquee.addEventListener("click", (e) => {
+    if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; }
+  }, true);
 }
 
 // Hero: hovering or focusing a dock link lights its node on the signal map, and the reverse.

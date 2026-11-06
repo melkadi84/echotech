@@ -389,9 +389,12 @@ html:not(.js) .boot { display: none; }
 .clients__toggle:hover { color: var(--ink); border-color: var(--ring); }
 .clients__toggle[hidden] { display: none; }
 .marquee { overflow: hidden; -webkit-mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent); mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent); }
+.marquee { cursor: grab; touch-action: pan-y; }
+.clients.is-dragging .marquee { cursor: grabbing; user-select: none; }
+.marquee img { -webkit-user-drag: none; }
 .marquee__track { display: flex; width: max-content; animation: marquee 60s linear infinite; }
 .marquee__set { display: flex; flex: none; }
-.clients:hover .marquee__track, .clients:focus-within .marquee__track, .clients.is-paused .marquee__track, .clients.is-offscreen .marquee__track { animation-play-state: paused; }
+.clients:hover .marquee__track, .clients:focus-within .marquee__track, .clients.is-paused .marquee__track, .clients.is-dragging .marquee__track, .clients.is-offscreen .marquee__track { animation-play-state: paused; }
 .client { flex: none; }
 .client a { display: grid; justify-items: center; align-content: start; gap: 0.35rem; width: 19rem; min-height: 17rem; padding: 2.25rem 1.75rem; text-align: center; color: var(--ink); text-decoration: none; transition: background-color 0.2s; }
 .client a:hover { background: var(--bg-2); }
