@@ -422,14 +422,12 @@ html:not(.js) .boot { display: none; }
 }
 .step::after {
   content: ""; position: absolute; inset-inline-start: 7px; inset-block-start: 7px; width: 15px; height: 15px; border-radius: 50%;
-  background: var(--cobalt); transform: scale(0); transition: transform 0.5s var(--ease);
+  background: var(--cobalt); transition: transform 0.5s var(--ease);
 }
 [data-theme="dark"] .step::after { background: var(--sky); }
-.steps.is-in .step::after { transform: scale(1); }
-.steps.is-in .step:nth-child(2)::after { transition-delay: 0.15s; }
-.steps.is-in .step:nth-child(3)::after { transition-delay: 0.3s; }
-.steps.is-in .step:nth-child(4)::after { transition-delay: 0.45s; }
-.steps.is-in .step:nth-child(5)::after { transition-delay: 0.6s; }
+.rv-ready .step:not(.is-in)::after { transform: scale(0); }
+.rv-ready .step { transition-delay: var(--rv-delay, 0s); }
+.rv-ready .step::after { transition-delay: calc(var(--rv-delay, 0s) + 0.2s); }
 .step h3 { font-size: 1.2rem; margin-block-end: 0.4rem; }
 .step p { color: var(--muted); font-size: 0.97rem; }
 @media (max-width: 900px) {
@@ -441,6 +439,8 @@ html:not(.js) .boot { display: none; }
 /* ---------- Principles ---------- */
 .principles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3rem; }
 .principles > div { padding-block-start: 1.5rem; border-block-start: 2px solid var(--cobalt); }
+.principle__icon { width: 44px; height: 44px; padding: 10px; margin-block-end: 0.9rem; border-radius: 14px; background: var(--ring-bg, rgb(29 78 216 / 0.1)); color: var(--cobalt); fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; box-sizing: border-box; }
+[data-theme="dark"] .principle__icon { color: var(--sky); background: rgb(96 165 250 / 0.14); }
 .principles h3 { font-size: 1.35rem; margin-block-end: 0.6rem; }
 .principles p { color: var(--muted); }
 @media (max-width: 860px) { .principles { grid-template-columns: 1fr; gap: 2rem; } }
@@ -819,27 +819,33 @@ html:not(.js) .boot { display: none; }
   .sc-tab small { display: none; }
   .sc-tab[aria-selected="true"], [dir="rtl"] .sc-tab[aria-selected="true"] { transform: none; }
 
-  /* Services: a compact two-column grid of buttons, with the chosen service's detail right under it. */
-  .picker { gap: 1rem; }
-  .picker__list, .picker__list[hidden] { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.5rem; }
-  .picker__list[hidden] { display: none; }
-  .tab { min-height: 52px; padding: 0.4rem 0.75rem; gap: 0.6rem; font-size: 0.95rem; line-height: 1.25; border: 1px solid var(--line); border-radius: 14px; }
-  .tab svg { width: 22px; height: 22px; }
-  .tab::before { display: none; }
-  .tab[aria-selected="true"] { border-color: var(--ring); }
-  .panel { padding: 1.1rem; border-radius: 20px; }
-  .panel__icon { width: 40px; height: 40px; margin-block-end: 0.5rem; }
-  .panel h3 { font-size: 1.35rem; }
-  .panel__summary { margin-block: 0.25rem 0.75rem; font-size: 1rem; }
-  .svc__points { gap: 0.35rem; font-size: 0.95rem; }
+  /* Services: one service per slide with arrow buttons at the middle of both sides. */
+  .picker { gap: 0.75rem; }
+  .picker__list, .picker__list[hidden] { display: none; }
+  .picker__stage { position: relative; }
+  .picker__panels { display: flex; gap: 0.75rem; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; cursor: grab; }
+  .picker__panels::-webkit-scrollbar { display: none; }
+  .picker__panels.is-dragging { cursor: grabbing; scroll-snap-type: none; user-select: none; }
+  .picker.is-ready .panel, .picker.is-ready .panel[hidden] { display: block; flex: 0 0 100%; scroll-snap-align: start; scroll-snap-stop: always; animation: none; padding: 1.25rem 3rem; border-radius: 22px; }
+  .picker__arrow { position: absolute; inset-block-start: 50%; translate: 0 -50%; z-index: 2; background: var(--bg); border: 1px solid var(--line); box-shadow: 0 2px 8px rgb(0 0 0 / 0.12); }
+  .picker__arrow--prev { inset-inline-start: 0.25rem; }
+  .picker__arrow--next { inset-inline-end: 0.25rem; }
+  .picker__arrow svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .picker__arrow--next svg { transform: scaleX(-1); }
+  [dir="rtl"] .picker__arrow--prev svg { transform: scaleX(-1); }
+  [dir="rtl"] .picker__arrow--next svg { transform: none; }
+  .picker__arrow:disabled { opacity: 0.35; cursor: default; }
+  .picker__count { margin: 0; text-align: center; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .panel__icon { width: 44px; height: 44px; margin-block-end: 0.6rem; }
+  .panel h3 { font-size: 1.4rem; }
+  .panel__summary { margin-block: 0.3rem 0.8rem; font-size: 1rem; }
+  .svc__points { gap: 0.4rem; font-size: 0.96rem; }
   .panel .btn { margin-block-start: 0.9rem; }
   .panel__actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-  .picker__more { margin-block-start: 0.5rem; }
+  .picker__more { margin-block-start: 0.25rem; }
 
   /* One screen per section: trim secondary text and spacing so each section fits a phone screen. */
   #services .head p, .showcase .head p, .sc-hint { display: none; }
-  .picker .panel__icon, .picker .panel h3 { display: none; }
-  .picker .panel__summary { margin-block-start: 0; }
   .form { gap: 0.6rem; }
   .form .row { gap: 0.6rem; }
   .field { gap: 0.25rem; }
@@ -898,3 +904,11 @@ main > section > .wrap { width: min(100% - 2 * var(--gutter), var(--max)); }
 /* 44px touch targets for the brand and direct-contact links. */
 .brand { min-height: 44px; }
 .contact a[href^="mailto:"], .contact a[href*="wa.me"] { display: inline-flex; align-items: center; min-height: 44px; }
+
+.picker__stage .picker__arrow, .picker__count { display: none; }
+@media (max-width: 860px) { .picker__stage .picker__arrow { display: inline-flex; } .picker__count { display: block; } }
+
+@media (max-width: 860px) {
+  .panel__actions .btn { flex: 1 1 100%; justify-content: center; text-align: center; border-radius: 16px; padding-block: 0.8rem; line-height: 1.3; }
+}
+@media (max-width: 860px) { .principles > div { display: grid; grid-template-columns: 44px 1fr; column-gap: 1rem; align-items: start; } .principle__icon { grid-row: span 2; margin: 0; } .principles h3 { margin-block-end: 0.3rem; } }

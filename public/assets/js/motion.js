@@ -4,11 +4,13 @@
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   const root = document.documentElement;
 
-  const targets = [...document.querySelectorAll("[data-rv], .project, .principles > div")];
+  const targets = [...document.querySelectorAll("[data-rv], .project, .principles > div, .step")];
   targets.forEach((el, i) => {
     el.dataset.rv = "";
     const siblings = [...el.parentElement.children].filter((c) => "rv" in c.dataset);
-    el.style.setProperty("--rv-delay", `${Math.min(siblings.indexOf(el), 5) * 0.08}s`);
+    // Process steps arrive one after another, even when the whole list is already on screen.
+    const gap = el.classList.contains("step") ? 0.28 : 0.08;
+    el.style.setProperty("--rv-delay", `${Math.min(siblings.indexOf(el), 5) * gap}s`);
   });
   if ("IntersectionObserver" in window) {
     root.classList.add("rv-ready");

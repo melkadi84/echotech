@@ -114,17 +114,6 @@
     dot.addEventListener("animationend", () => dot.remove(), { once: true });
   });
 
-  /* 7. Process steps light up once when they enter the viewport */
-  const steps = $(".steps");
-  if (steps) {
-    if ("IntersectionObserver" in window && !reduce) {
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach((en) => { if (en.isIntersecting) { steps.classList.add("is-in"); io.disconnect(); } });
-      }, { threshold: 0.35 });
-      io.observe(steps);
-    } else steps.classList.add("is-in");
-  }
-
   /* 8. Contact form */
   const form = $("#contact-form");
   if (form) {

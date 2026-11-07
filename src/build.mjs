@@ -77,6 +77,9 @@ Object.assign(icons, {
   sheet: '<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 10h16M4 15h16M10 4v16"/>',
   bell: '<path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 1.5h-15z"/><path d="M10 20.5h4"/>',
   check: '<path d="m5 12.5 4.5 4.5L19 7.5"/>',
+  speak: '<path d="M4 5.5h16v10H12l-4.5 4v-4H4z"/><path d="M8 9.5h8M8 12.5h5"/>',
+  durable: '<path d="M12 3l8 3v6c0 4.5-3.2 7.8-8 9-4.8-1.2-8-4.5-8-9V6z"/><path d="m8.5 12 2.5 2.5 4.5-5"/>',
+  keep: '<circle cx="8" cy="14" r="4"/><path d="M11 11.5 20 4M16.5 7.5l2.5 2.5M14 10l2 2"/>',
   play: '<path d="M8 5.5v13l10-6.5z"/>',
 });
 icons.generic = '<circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8.5"/>';
@@ -483,7 +486,7 @@ function homeBody(t) {
     ? `<div class="quotes" aria-labelledby="quotes-h"><h3 class="sr-only" id="quotes-h">${esc(t.work.testimonialsTitle)}</h3>${t.work.testimonials.map((q) => `<figure class="quote"><blockquote><p>${esc(q.text)}</p></blockquote><footer>${esc(q.name)}${q.role ? `، ${esc(q.role)}` : ""}</footer></figure>`).join("")}</div>`
     : "";
   const steps = processSteps(t);
-  const principles = t.principles.items.map((p) => `<div><h3>${esc(p.title)}</h3><p>${esc(p.text)}</p></div>`).join("");
+  const principles = t.principles.items.map((p, i) => `<div>${iconSvg(["speak", "durable", "keep"][i] || "check", "principle__icon")}<h3>${esc(p.title)}</h3><p>${esc(p.text)}</p></div>`).join("");
   const faq = t.faq.items.map((q) => `<details><summary>${esc(q.q)}</summary><p>${esc(q.a)}</p></details>`).join("");
   const ctx = { isHome: true };
   return `
@@ -503,7 +506,12 @@ function homeBody(t) {
       <div class="picker" data-picker>
         <div class="picker__list" role="tablist" aria-label="${esc(t.services.pick)}" aria-orientation="vertical" hidden>${tabs}
         </div>
-        <div class="picker__panels" data-track>${services}</div>
+        <div class="picker__stage">
+          <button class="icon-btn picker__arrow picker__arrow--prev" type="button" data-step="-1" aria-label="${esc(t.services.prev)}"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7"/></svg></button>
+          <div class="picker__panels" data-track>${services}</div>
+          <button class="icon-btn picker__arrow picker__arrow--next" type="button" data-step="1" aria-label="${esc(t.services.next)}"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7"/></svg></button>
+        </div>
+        <p class="picker__count" aria-live="polite" data-of="${esc(t.services.of)}"></p>
       </div>
       <p class="picker__more"><a class="btn btn--ghost" href="${servicesIndexPath(t)}">${esc(t.pages.connectLink)}</a></p>
     </div>
