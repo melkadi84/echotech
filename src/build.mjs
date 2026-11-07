@@ -33,6 +33,8 @@ const assets = {
   site: await assetUrl("assets/js/site.js"),
   sections: await assetUrl("assets/js/sections.js"),
   motion: await assetUrl("assets/js/motion.js"),
+  check: await assetUrl("assets/js/check.js"),
+  mesh: await assetUrl("assets/js/mesh.js"),
   showcase: await assetUrl("assets/js/showcase.js"),
 };
 const read = async (p) => JSON.parse(await readFile(join(root, p), "utf8"));
@@ -81,8 +83,12 @@ icons.generic = '<circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8.5"/
 const iconSvg = (id, cls = "") => `<svg${cls ? ` class="${cls}"` : ""} viewBox="0 0 24 24" aria-hidden="true" focusable="false">${icons[id] || ""}</svg>`;
 
 const url = (t) => site + t.path;
-const svcPath = (t, id) => `${t.path}services/${id}/`;
+/* Descriptive URL slugs, shared by both languages. Old short ids redirect (see _redirects below). */
+const slugs = { network: "network-infrastructure", cctv: "cctv-surveillance", web: "web-development", apps: "mobile-apps", systems: "business-systems", automation: "workflow-automation", data: "data-analytics", hosting: "domains-hosting" };
+const svcPath = (t, id) => `${t.path}services/${slugs[id] || id}/`;
 const workPath = (t) => `${t.path}work/`;
+const aboutPath = (t) => `${t.path}about/`;
+const contactPath = (t) => `${t.path}contact/`;
 
 function schema(t, ctx) {
   const other = t.lang === "ar" ? langs.en : langs.ar;
@@ -137,6 +143,10 @@ const navHtml = (t, ctx) => {
       const current = ctx.section === "work" ? ' aria-current="page"' : "";
       return `<a class="nav__link" href="${workPath(t)}"${current}>${esc(n.label)}</a>`;
     }
+    if (n.id === "about") {
+      const current = ctx.section === "about" ? ' aria-current="page"' : "";
+      return `<a class="nav__link" href="${aboutPath(t)}"${current}>${esc(n.label)}</a>`;
+    }
     return `<a class="nav__link" href="${base}#${n.id}">${esc(n.label)}</a>`;
   }).join("\n      ");
 };
@@ -154,7 +164,8 @@ const socialLinks = (t) => Object.entries(cfg.social).filter(([k, v]) => v && so
 
 const footerLinks = (t, ctx) => {
   const base = ctx.isHome ? "" : t.path;
-  const links = t.nav.map((n) => (n.id === "work" ? `<a href="${workPath(t)}">${esc(n.label)}</a>` : `<a href="${base}#${n.id}">${esc(n.label)}</a>`));
+  const pageLinks = { work: workPath(t), about: aboutPath(t) };
+  const links = t.nav.map((n) => (pageLinks[n.id] ? `<a href="${pageLinks[n.id]}">${esc(n.label)}</a>` : `<a href="${base}#${n.id}">${esc(n.label)}</a>`));
   return links.map((a) => `<li>${a}</li>`).join("");
 };
 
@@ -332,6 +343,8 @@ ${cfg.analyticsToken ? `<script defer src="https://static.cloudflareinsights.com
 <script src="${assets.site}" defer></script>
 <script src="${assets.sections}" defer></script>
 <script src="${assets.showcase}" defer></script>
+<script src="${assets.check}" defer></script>
+<script src="${assets.mesh}" defer></script>
 <script src="${assets.motion}" defer></script>
 </body>
 </html>
@@ -411,6 +424,40 @@ function showcaseSection(t, id = "showcase") {
   </section>`;
 }
 
+/* Which services depend on or feed each other. The sentence for each pair lives in content under mesh.edges. */
+const meshEdges = ["network-cctv", "network-systems", "web-hosting", "web-systems", "web-automation", "apps-systems", "apps-hosting", "systems-automation", "systems-data", "automation-data", "data-hosting", "cctv-hosting"].map((k) => k.split("-"));
+
+function meshSection(t, current = "", idAttr = "mesh") {
+  const m = t.mesh;
+  const items = t.services.items;
+  const cx = 400, cy = 270, rx = 290, ry = 185;
+  const pos = Object.fromEntries(items.map((s, i) => {
+    const a = (-90 + (360 / items.length) * i) * Math.PI / 180;
+    return [s.id, { x: +(cx + rx * Math.cos(a)).toFixed(1), y: +(cy + ry * Math.sin(a)).toFixed(1), c: Math.cos(a) }];
+  }));
+  const lines = meshEdges.map(([a, b]) => `<line class="mesh__edge" data-a="${a}" data-b="${b}" x1="${pos[a].x}" y1="${pos[a].y}" x2="${pos[b].x}" y2="${pos[b].y}"/>`).join("");
+  const nodes = items.map((s) => {
+    const p = pos[s.id];
+    const anchor = p.c > 0.3 ? "start" : p.c < -0.3 ? "end" : "middle";
+    const lx = anchor === "start" ? p.x + 40 : anchor === "end" ? p.x - 40 : p.x;
+    const ly = anchor === "middle" ? p.y + (p.y < cy ? -42 : 54) : p.y + 5;
+    return `<g class="mesh__node" data-id="${s.id}"><circle class="mesh__disc" cx="${p.x}" cy="${p.y}" r="30"/><svg x="${p.x - 13}" y="${p.y - 13}" width="26" height="26" viewBox="0 0 24 24" class="mesh__icon">${icons[s.id] || icons.generic}</svg><text class="mesh__label" x="${lx}" y="${ly}" text-anchor="${anchor}">${esc(s.name)}</text></g>`;
+  }).join("");
+  const chips = items.map((s) => `<button type="button" class="mesh__chip" data-id="${s.id}" aria-pressed="${s.id === current}">${iconSvg(s.id)}<span>${esc(s.name)}</span></button>`).join("");
+  const data = { services: Object.fromEntries(items.map((s) => [s.id, { name: s.name, href: svcPath(t, s.id) }])), edges: meshEdges.map(([a, b]) => [a, b, m.edges[`${a}-${b}`]]), current, hint: m.hint, with: m.with, open: m.open };
+  return `
+  <section id="${idAttr}" class="mesh" aria-labelledby="${idAttr}-h">
+    <div class="wrap">
+      <div class="head" data-rv><h2 id="${idAttr}-h">${esc(m.title)}</h2><p>${esc(m.intro)}</p></div>
+      <div class="mesh__box" data-mesh data-config="${esc(JSON.stringify(data))}">
+        <svg class="mesh__svg" viewBox="0 0 800 540" aria-hidden="true" focusable="false"><g class="mesh__edges">${lines}</g><g class="mesh__dots"></g>${nodes}</svg>
+        <div class="mesh__chips" role="group" aria-label="${esc(m.label)}">${chips}</div>
+        <div class="mesh__info" role="status" aria-live="polite"><p class="mesh__hint">${esc(m.hint)}</p></div>
+      </div>
+    </div>
+  </section>`;
+}
+
 function homeBody(t) {
   const jz = t.work.joyZone;
   const tabs = t.services.items.map((s, i) => `
@@ -459,6 +506,8 @@ function homeBody(t) {
       </div>
     </div>
   </section>
+
+  ${meshSection(t)}
 
   ${showcaseSection(t)}
 
@@ -553,6 +602,8 @@ function servicePage(t, s, idx) {
     </div>
   </section>
 
+  ${meshSection(t, s.id, "connects")}
+
   <section class="others" aria-labelledby="others-h">
     <div class="wrap">
       <div class="head"><h2 id="others-h">${esc(t.pages.others)}</h2></div>
@@ -610,10 +661,90 @@ function workPage(t) {
   return shell(t, ctx, body);
 }
 
+function healthCheck(t) {
+  const c = t.check;
+  const items = c.items.map((it, i) => `<li><label class="check__item"><input type="checkbox" data-svc="${esc(it.service)}"><span>${esc(it.text)}</span></label></li>`).join("");
+  const help = Object.fromEntries(t.services.items.map((s) => [s.id, `<a href="${svcPath(t, s.id)}">${esc(s.name)}</a>`]));
+  return `<section class="check" aria-labelledby="check-h">
+    <div class="wrap">
+      <div class="head" data-rv><h2 id="check-h">${esc(c.title)}</h2><p>${esc(c.intro)}</p></div>
+      <div class="check__grid" data-check data-help="${esc(JSON.stringify(help))}" data-total="${c.items.length}" data-tiers="${esc(JSON.stringify({ low: c.low, mid: c.mid, high: c.high }))}">
+        <ul class="check__list">${items}</ul>
+        <div class="check__result" role="status" aria-live="polite">
+          <p class="check__score"><b data-score>0</b> ${esc(c.scoreLabel)}</p>
+          <div class="check__meter" aria-hidden="true"><span data-meter></span></div>
+          <h3 data-result-title></h3>
+          <p data-result-text></p>
+          <div class="check__help" data-help-box hidden><p>${esc(c.help)}</p><ul data-help-list></ul></div>
+          <button class="btn btn--ghost" type="button" data-reset>${esc(c.reset)}</button>
+        </div>
+      </div>
+    </div>
+  </section>`;
+}
+
+function aboutPage(t) {
+  const pg = t.pages;
+  const ctx = {
+    isHome: false, section: "about", path: aboutPath(t), otherPath: aboutPath(otherLang(t)), defPath: aboutPath(langs.en),
+    title: `${pg.aboutH1} — Echo Tech`, description: pg.aboutDescription,
+    extra: [crumbLd(t, [[pg.home, t.path], [pg.aboutTitle, aboutPath(t)]])],
+  };
+  const others = t.services.items.map((o) => `<li><a href="${svcPath(t, o.id)}">${iconSvg(o.id)}<span><strong>${esc(o.name)}</strong><small>${esc(o.summary)}</small></span></a></li>`).join("");
+  const body = `
+  <section class="phero stage" aria-labelledby="page-h">
+    <div class="wrap">
+      ${crumbs(t, [[pg.home, t.path], [pg.aboutTitle, ""]])}
+      <h1 id="page-h">${esc(pg.aboutH1)}</h1>
+      <p class="phero__lead">${esc(pg.aboutLead)}</p>
+    </div>
+  </section>
+
+  <section class="story" aria-labelledby="story-h">
+    <div class="wrap">
+      <div class="head" data-rv><h2 id="story-h">${esc(pg.storyTitle)}</h2></div>
+      <div class="story__text">${pg.story.map((p) => `<p>${esc(p)}</p>`).join("")}</div>
+    </div>
+  </section>
+
+  ${healthCheck(t)}
+
+  <section class="others" aria-labelledby="cover-h">
+    <div class="wrap">
+      <div class="head"><h2 id="cover-h">${esc(pg.coverTitle)}</h2></div>
+      <ul class="others__list">${others}</ul>
+    </div>
+  </section>
+
+  ${ctaBand(t)}`;
+  return shell(t, ctx, body);
+}
+
+function contactPage(t) {
+  const pg = t.pages;
+  const ctx = {
+    isHome: false, section: "contact", path: contactPath(t), otherPath: contactPath(otherLang(t)), defPath: contactPath(langs.en),
+    title: `${pg.contactH1} — Echo Tech`, description: pg.contactDescription,
+    extra: [crumbLd(t, [[pg.home, t.path], [pg.contactTitle, contactPath(t)]])],
+  };
+  const body = `
+  <section class="phero stage" aria-labelledby="page-h">
+    <div class="wrap">
+      ${crumbs(t, [[pg.home, t.path], [pg.contactTitle, ""]])}
+      <h1 id="page-h">${esc(pg.contactH1)}</h1>
+      <p class="phero__lead">${esc(pg.contactLead)}</p>
+    </div>
+  </section>
+  ${contactSection(t)}`;
+  return shell(t, ctx, body);
+}
+
 const subPages = [];
 for (const t of [langs.ar, langs.en]) {
   t.services.items.forEach((s, i) => subPages.push({ path: svcPath(t, s.id), html: servicePage(t, s, i) }));
   subPages.push({ path: workPath(t), html: workPage(t) });
+  subPages.push({ path: aboutPath(t), html: aboutPage(t) });
+  subPages.push({ path: contactPath(t), html: contactPage(t) });
 }
 for (const p of subPages) await out(`public${p.path}index.html`, p.html);
 
@@ -630,7 +761,7 @@ ${alt("ar", site + arPath)}
 ${alt("en", site + enPath)}
 ${alt("x-default", site + enPath)}
   </url>`;
-const pairs = [["/ar/", "/"], [workPath(langs.ar), workPath(langs.en)], ...langs.ar.services.items.map((s) => [svcPath(langs.ar, s.id), svcPath(langs.en, s.id)])];
+const pairs = [["/ar/", "/"], [workPath(langs.ar), workPath(langs.en)], [aboutPath(langs.ar), aboutPath(langs.en)], [contactPath(langs.ar), contactPath(langs.en)], ...langs.ar.services.items.map((s) => [svcPath(langs.ar, s.id), svcPath(langs.en, s.id)])];
 await out("public/sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${pairs.flatMap(([ar, en]) => [entry(ar, en, ar), entry(ar, en, en)]).join("\n")}
@@ -680,6 +811,7 @@ await out("public/_headers", `/*
 `);
 
 /* English moved from /en/ to the root; keep old links working */
-await out("public/_redirects", "/en / 301\n/en/* /:splat 301\n");
+const oldServiceRedirects = Object.entries(slugs).flatMap(([id, slug]) => ["/", "/ar/"].map((p) => `${p}services/${id}/ ${p}services/${slug}/ 301`)).join("\n");
+await out("public/_redirects", `/en / 301\n/en/* /:splat 301\n${oldServiceRedirects}\n`);
 
 console.log(`Built: public/index.html, public/ar/index.html (+404, sitemap, robots, manifest, _headers). CSP script hash: ${themeHash}`);

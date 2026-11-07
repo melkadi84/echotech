@@ -18,6 +18,7 @@ Principle: motion is the echo. Things emit, ripple and fade. Nothing bounces for
 | Scroll reveal | Section heads, project cards, principles | First time in view | `motion.js` adds `.is-in` to `[data-rv]` after IntersectionObserver fires; 80ms stagger among siblings. Only runs when `html.rv-ready`; skipped under reduced motion. |
 | Device tilt | `.dev` frames in the concept demos | Pointer move (fine pointers only) | `motion.js` sets `--tilt-x/--tilt-y`; resets on leave. |
 | Concept demos | `#showcase` on home, `#concepts` on Work | Click | `showcase.js`: bars scale, counters count up, automation steps run in sequence, toggles and booking confirmations animate. Reduced motion shows end states at once. |
+| Services mesh | `#mesh` on home, `#connects` on each service page | Select a service; continuous pulses | `mesh.js` animates one dot per link with WAAPI (`transform`/`opacity`), pauses off-screen, and is skipped under reduced motion. The links and their sentences are content (`mesh.edges`). Below 720px the diagram hides and the chips plus the info panel remain. |
 | Menu | Mobile nav | Menu button | Slide and fade, 250ms. |
 
 ## Rules for new motion

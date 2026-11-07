@@ -29,6 +29,10 @@
       "label": "Work"
     },
     {
+      "id": "about",
+      "label": "About"
+    },
+    {
       "id": "process",
       "label": "How we work"
     },
@@ -396,9 +400,11 @@
     "joyZone": {
       "client": "Joy Zone",
       "kind": "Indoor play area for children in Al Soyouf, Alexandria, and birthday parties",
-      "summary": "A bilingual website for the centre's programs, events and bookings, and an internal CRM for the team. The site runs on Cloudflare.",
+      "summary": "Everything is by Echo Tech: a bilingual website for the centre's programs, events and bookings, the network, the CCTV system and an internal CRM for the team.",
       "delivered": [
         "Bilingual website",
+        "Network infrastructure",
+        "CCTV system",
         "Internal CRM"
       ],
       "visit": "Visit joy-zone.net"
@@ -475,6 +481,10 @@
         "a": "Yes. Work that can be delivered online is done remotely for clients anywhere in the world. Work that needs us on site depends on where you are, so tell us your location and we will confirm how we can help."
       },
       {
+        "q": "How quickly will you reply to my request?",
+        "a": "We reply to every new request within one week, with questions or a quote."
+      },
+      {
         "q": "How much does a project cost?",
         "a": "It depends on scope. After a short discovery conversation we send a written quote with what is included, the timeline and the price."
       },
@@ -487,10 +497,6 @@
         "a": "Yes. We offer support and maintenance after handover, and we agree the terms in the quote."
       },
       {
-        "q": "Which languages do you work in?",
-        "a": "Arabic and English, for both the work and the interfaces we build."
-      },
-      {
         "q": "Will I own my website and accounts?",
         "a": "Domains, hosting and cloud accounts are set up in your name, and we hand over documentation with the project."
       }
@@ -498,7 +504,7 @@
   },
   "contact": {
     "title": "Tell us what you need",
-    "intro": "Send a few lines and we will reply with questions or a quote.",
+    "intro": "Send a few lines. We reply to every new request within one week, with questions or a quote.",
     "directEmail": "Email",
     "directWhatsapp": "WhatsApp",
     "form": {
@@ -521,7 +527,7 @@
       "message": "Tell us about your project",
       "send": "Send message",
       "sending": "Sending",
-      "ok": "Message sent. We will reply soon.",
+      "ok": "Message sent. We will reply within one week.",
       "err": "The message did not send. Check your connection and try again, or email us directly.",
       "invalid": "Check the highlighted fields.",
       "required": "Required"
@@ -560,7 +566,22 @@
     "slotText": "Your project could be the next one on this page.",
     "client": "Client",
     "delivered": "What we delivered",
-    "crumbs": "Breadcrumb"
+    "crumbs": "Breadcrumb",
+    "aboutTitle": "About",
+    "aboutH1": "One team for the technology your business runs on",
+    "aboutDescription": "Echo Tech designs, builds and supports business technology: networks, CCTV, websites, apps, internal systems and automation. One team instead of five suppliers.",
+    "aboutLead": "Echo Tech designs, builds and supports business technology: networks and cameras, websites and apps, internal systems and automation.",
+    "storyTitle": "Why one team",
+    "story": [
+      "Most businesses end up with a different supplier for the network, the cameras, the website and the internal tools. When something breaks, each one points at another.",
+      "At Echo Tech the same team handles all of it, so the parts work together and you have one place to call. Our first client, Joy Zone in Alexandria, is the example: we built its website, its network, its CCTV system and its internal CRM.",
+      "We explain things in plain language, quote before we start, and set up your domain, hosting and accounts in your name."
+    ],
+    "coverTitle": "What we cover",
+    "contactTitle": "Contact",
+    "contactH1": "Contact us",
+    "contactDescription": "Contact Echo Tech about networks, CCTV, websites, apps, business systems, automation, data and hosting. We reply to every new request within one week.",
+    "contactLead": "Tell us what you need. We reply to every new request within one week."
   },
   "showcase": {
     "title": "Concepts you can try",
@@ -768,6 +789,73 @@
           "status": "pending"
         }
       ]
+    }
+  },
+  "check": {
+    "title": "Quick tech health check",
+    "intro": "Tick the statements that are true for your business today. This is a quick self-check, not an audit.",
+    "items": [
+      {
+        "text": "Our website loads quickly on a phone and has no broken links.",
+        "service": "web"
+      },
+      {
+        "text": "Our office Wi-Fi stays connected during video calls.",
+        "service": "network"
+      },
+      {
+        "text": "We can watch our cameras from a phone, from anywhere.",
+        "service": "cctv"
+      },
+      {
+        "text": "Our data is backed up automatically and we have tested restoring it.",
+        "service": "hosting"
+      },
+      {
+        "text": "New customer requests reach our team without anyone copying them by hand.",
+        "service": "automation"
+      },
+      {
+        "text": "We know who owns our domain, hosting and admin accounts, and we hold the logins.",
+        "service": "hosting"
+      }
+    ],
+    "scoreLabel": "of 6 in place",
+    "low": {
+      "title": "Some basics need attention",
+      "text": "Several of these are worth fixing soon."
+    },
+    "mid": {
+      "title": "A solid base with a few gaps",
+      "text": "Most basics are in place. The gaps below are the next things to look at."
+    },
+    "high": {
+      "title": "Your basics are in good shape",
+      "text": "Keep testing them and review them regularly."
+    },
+    "help": "Where we can help",
+    "reset": "Start again"
+  },
+  "mesh": {
+    "title": "Services that work together",
+    "intro": "Each service connects to the others. Pick one to see how.",
+    "hint": "Choose a service to see what it connects to.",
+    "with": "Works with",
+    "open": "Open service page",
+    "label": "Services",
+    "edges": {
+      "network-cctv": "Cameras run on a well-planned network, so you can watch them from anywhere.",
+      "network-systems": "Internal systems need a reliable network inside the building.",
+      "web-hosting": "A website needs a domain and fast, secure hosting.",
+      "web-systems": "Website forms and bookings flow straight into your business system.",
+      "web-automation": "Enquiries from the website trigger follow-ups without anyone typing.",
+      "apps-systems": "The app and your business system share the same data.",
+      "apps-hosting": "An app needs a backend that is hosted and kept running.",
+      "systems-automation": "Automation moves data between systems so nobody retypes it.",
+      "systems-data": "Your business system is where the numbers on your dashboards come from.",
+      "automation-data": "Automations keep dashboards up to date without manual exports.",
+      "data-hosting": "Dashboards and reports run on reliable hosting.",
+      "cctv-hosting": "Recordings and alerts can be stored and sent through hosted services."
     }
   }
 }

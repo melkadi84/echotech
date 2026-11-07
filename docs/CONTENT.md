@@ -49,7 +49,7 @@ Ask for: permission to publish the name, a short quote about the outcome ("the c
 3. Blog or short guides ("How many cameras does a shop need", "Wi-Fi for small offices") for search traffic.
 4. Online booking for site visits.
 5. Pricing guide or package table.
-6. Dedicated pages per service for search (`/services/cctv/`).
+6. Dedicated pages per service for search (`/services/cctv-surveillance/`).
 
 ## Search and schema
 
@@ -73,3 +73,7 @@ The build creates one page per service (`/services/<id>/`, `/ar/services/<id>/`)
 ## Concept demos (showcase)
 
 `showcase` in both JSON files feeds `#showcase` (home) and `#concepts` (Work). Four labelled sample demos: dashboard, automation, mobile app, booking system. They use invented sample data, carry the badge "Concept · sample data" and must never be presented as client work. To add a real project, add it as a client (see Case study template); replace a concept only when a real project can be shown with the client's permission.
+
+## Services mesh and About
+
+`mesh.edges` in both JSON files holds one sentence per linked pair of services (keys like `web-hosting`; the pairs are listed in `meshEdges` in `build.mjs`). Write only relationships that are true for how we work. `pages.story` is the About story and `check` is the self-check on the About page; keep both free of invented numbers or promises. Reply time stated on the site: every new request gets a reply within one week (owner decision).
