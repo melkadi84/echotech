@@ -426,23 +426,28 @@ function showcaseSection(t, id = "showcase") {
 }
 
 /* Which services depend on or feed each other. The sentence for each pair lives in content under mesh.edges. */
-const meshEdges = ["network-cctv", "network-systems", "web-hosting", "web-systems", "web-automation", "apps-systems", "apps-hosting", "systems-automation", "systems-data", "automation-data", "data-hosting", "cctv-hosting"].map((k) => k.split("-"));
+const meshEdges = ["network-cctv", "network-systems", "web-hosting", "web-systems", "web-automation", "apps-systems", "apps-hosting", "systems-automation", "systems-data", "automation-data", "data-hosting", "cctv-hosting", "systems-cctv", "systems-hosting"].map((k) => k.split("-"));
 
-function meshSection(t, current = "", idAttr = "mesh") {
+function meshSection(t, current = "systems", idAttr = "mesh") {
   const m = t.mesh;
   const items = t.services.items;
-  const cx = 400, cy = 270, rx = 290, ry = 185;
-  const pos = Object.fromEntries(items.map((s, i) => {
-    const a = (-90 + (360 / items.length) * i) * Math.PI / 180;
-    return [s.id, { x: +(cx + rx * Math.cos(a)).toFixed(1), y: +(cy + ry * Math.sin(a)).toFixed(1), c: Math.cos(a) }];
-  }));
+  // Business systems sits in the middle because it connects to every other service; the rest circle around it.
+  const cx = 400, cy = 270, rx = 300, ry = 195;
+  const ring = ["network", "cctv", "hosting", "apps", "web", "automation", "data"].filter((id) => items.some((s) => s.id === id));
+  const pos = { systems: { x: cx, y: cy, c: 0, hub: true } };
+  ring.forEach((id, i) => {
+    const a = (-90 + (360 / ring.length) * i) * Math.PI / 180;
+    pos[id] = { x: +(cx + rx * Math.cos(a)).toFixed(1), y: +(cy + ry * Math.sin(a)).toFixed(1), c: Math.cos(a) };
+  });
   const lines = meshEdges.map(([a, b]) => `<line class="mesh__edge" data-a="${a}" data-b="${b}" x1="${pos[a].x}" y1="${pos[a].y}" x2="${pos[b].x}" y2="${pos[b].y}"/>`).join("");
   const nodes = items.map((s) => {
-    const p = pos[s.id];
-    const anchor = p.c > 0.3 ? "start" : p.c < -0.3 ? "end" : "middle";
+    const p = pos[s.id] || { x: cx, y: cy, c: 0 };
+    const r = p.hub ? 38 : 30;
+    const anchor = p.hub ? "middle" : p.c > 0.3 ? "start" : p.c < -0.3 ? "end" : "middle";
     const lx = anchor === "start" ? p.x + 40 : anchor === "end" ? p.x - 40 : p.x;
-    const ly = anchor === "middle" ? p.y + (p.y < cy ? -42 : 54) : p.y + 5;
-    return `<g class="mesh__node" data-id="${s.id}"><circle class="mesh__disc" cx="${p.x}" cy="${p.y}" r="30"/><svg x="${p.x - 13}" y="${p.y - 13}" width="26" height="26" viewBox="0 0 24 24" class="mesh__icon">${icons[s.id] || icons.generic}</svg><text class="mesh__label" x="${lx}" y="${ly}" text-anchor="${anchor}">${esc(s.name)}</text></g>`;
+    const ly = p.hub ? p.y + 62 : anchor === "middle" ? p.y + (p.y < cy ? -42 : 54) : p.y + 5;
+    const ic = p.hub ? 34 : 26;
+    return `<g class="mesh__node${p.hub ? " mesh__node--hub" : ""}" data-id="${s.id}"><circle class="mesh__disc" cx="${p.x}" cy="${p.y}" r="${r}"/><svg x="${p.x - ic / 2}" y="${p.y - ic / 2}" width="${ic}" height="${ic}" viewBox="0 0 24 24" class="mesh__icon">${icons[s.id] || icons.generic}</svg><text class="mesh__label" x="${lx}" y="${ly}" text-anchor="${anchor}">${esc(s.name)}</text></g>`;
   }).join("");
   const chips = items.map((s) => `<button type="button" class="mesh__chip" data-id="${s.id}" aria-pressed="${s.id === current}">${iconSvg(s.id)}<span>${esc(s.name)}</span></button>`).join("");
   const data = { services: Object.fromEntries(items.map((s) => [s.id, { name: s.name, href: svcPath(t, s.id) }])), edges: meshEdges.map(([a, b]) => [a, b, m.edges[`${a}-${b}`]]), current, hint: m.hint, with: m.with, open: m.open };
@@ -450,7 +455,7 @@ function meshSection(t, current = "", idAttr = "mesh") {
   <section id="${idAttr}" class="mesh" aria-label="${esc(m.title)}">
     <div class="wrap">
       <div class="mesh__box" data-mesh data-config="${esc(JSON.stringify(data))}">
-        <svg class="mesh__svg" viewBox="0 0 800 540" aria-hidden="true" focusable="false"><g class="mesh__edges">${lines}</g><g class="mesh__dots"></g>${nodes}</svg>
+        <svg class="mesh__svg" viewBox="-70 0 940 540" aria-hidden="true" focusable="false"><g class="mesh__edges">${lines}</g><g class="mesh__dots"></g>${nodes}</svg>
         <div class="mesh__chips" role="group" aria-label="${esc(m.label)}">${chips}</div>
         <div class="mesh__info" role="status" aria-live="polite"><p class="mesh__hint">${esc(m.hint)}</p></div>
       </div>

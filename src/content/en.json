@@ -857,7 +857,9 @@
       "systems-data": "Your business system is where the numbers on your dashboards come from.",
       "automation-data": "Automations keep dashboards up to date without manual exports.",
       "data-hosting": "Dashboards and reports run on reliable hosting.",
-      "cctv-hosting": "Recordings and alerts can be stored and sent through hosted services."
+      "cctv-hosting": "Recordings and alerts can be stored and sent through hosted services.",
+      "systems-cctv": "Camera alerts and recordings can be linked to the system your team already works in.",
+      "systems-hosting": "Your business system runs on hosting that is backed up and kept online."
     }
   }
 }
