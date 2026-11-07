@@ -352,7 +352,7 @@ ${cfg.analyticsToken ? `<script defer src="https://static.cloudflareinsights.com
 }
 
 // The hero's signal map: a pulse leaves the core and visits each service. Decorative, so aria-hidden;
-// the dock below holds the real links. Motion lives in site.css (transform/opacity only).
+// the services section below holds the real links. Motion lives in site.css (transform/opacity only).
 function signalSvg(t) {
   const C = 300, R = 210;
   const pts = t.services.items.map((s, i) => {
@@ -490,9 +490,6 @@ function homeBody(t) {
         </div>
       </div>
       ${signalSvg(t)}
-    </div>
-    <div class="wrap">
-      <nav class="dock" aria-label="${esc(t.hero.jump)}">${t.services.items.map((s, i) => `<a href="#svc-${s.id}" data-node="${i}">${iconSvg(s.id)}<span><strong>${esc(s.name)}</strong><small>${esc(s.summary)}</small></span></a>`).join("")}</nav>
     </div>
   </section>
 

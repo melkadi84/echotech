@@ -111,26 +111,6 @@ function initClientsDrag(root) {
   }, true);
 }
 
-// Hero: hovering or focusing a dock link lights its node on the signal map, and the reverse.
-function initSignal() {
-  const map = document.querySelector(".signal");
-  const dock = document.querySelector(".dock");
-  if (!map || !dock) return;
-  const set = (index, on) => {
-    map.querySelector(`.sig-node[data-node="${index}"]`)?.classList.toggle("is-on", on);
-    dock.querySelector(`a[data-node="${index}"]`)?.classList.toggle("is-on", on);
-  };
-  const bind = (el) => {
-    const i = el.dataset.node;
-    el.addEventListener("pointerenter", () => set(i, true));
-    el.addEventListener("pointerleave", () => set(i, false));
-    el.addEventListener("focus", () => set(i, true));
-    el.addEventListener("blur", () => set(i, false));
-  };
-  dock.querySelectorAll("a[data-node]").forEach(bind);
-  map.querySelectorAll(".sig-node").forEach(bind);
-}
-
 // Client briefs: replace the written line with the client's own meta description when it is in the page language.
 async function initBriefs() {
   const nodes = [...document.querySelectorAll("[data-brief-site]")];
@@ -151,4 +131,3 @@ async function initBriefs() {
 initPicker();
 initClients();
 initBriefs();
-initSignal();

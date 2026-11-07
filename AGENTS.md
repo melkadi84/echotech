@@ -53,7 +53,7 @@ Commands: `npm run build` (regenerate HTML), `npm run dev` (build + local Worker
 
 The mark is a solid disc with two fading rings trailing behind it: an echo. Primary **Cobalt `#1D4ED8`**, secondary **Sky `#60A5FA`**. Font: **Readex Pro** (Arabic and Latin). Do not recolour, rotate, outline or add effects to the logo. Wordmark is "ECHO TECH" in Latin, "إيكو تك" in Arabic.
 
-Design stance: a dark "stage" (hero and `#work`, dark in both themes) over a light or dark page. One memorable element: the signal map in the hero, where a pulse leaves the core disc and visits every service (it doubles as navigation through the dock below it). Everything else stays quiet: hairline dividers, one panel for the selected service, no card grids, no gradient washes (the faint dot grid in the hero is a texture), no all-caps eyebrow labels, no numbered markers unless the content is truly a sequence.
+Design stance: a dark "stage" (hero and `#work`, dark in both themes) over a light or dark page. One memorable element: the signal map in the hero, where a pulse leaves the core disc and visits every service (its nodes link to the service pages; the services section below is the keyboard-accessible route). Everything else stays quiet: hairline dividers, one panel for the selected service, no card grids, no gradient washes (the faint dot grid in the hero is a texture), no all-caps eyebrow labels, no numbered markers unless the content is truly a sequence.
 
 ## Copy style
 
