@@ -32,6 +32,8 @@ const assets = {
   css: await assetUrl("assets/css/site.css"),
   site: await assetUrl("assets/js/site.js"),
   sections: await assetUrl("assets/js/sections.js"),
+  motion: await assetUrl("assets/js/motion.js"),
+  showcase: await assetUrl("assets/js/showcase.js"),
 };
 const read = async (p) => JSON.parse(await readFile(join(root, p), "utf8"));
 const out = async (p, s) => { await mkdir(dirname(join(root, p)), { recursive: true }); await writeFile(join(root, p), s); };
@@ -66,6 +68,15 @@ const icons = {
   data: '<path d="M4 4v16h16"/><path d="M8.5 16v-4.5M13 16V8M17.5 16v-6.5"/>',
   hosting: '<rect x="3.5" y="4" width="17" height="6.5" rx="1.8"/><rect x="3.5" y="13.5" width="17" height="6.5" rx="1.8"/><path d="M7.5 7.25h.01M7.5 16.75h.01M12 7.25h5M12 16.75h5"/>',
 };
+Object.assign(icons, {
+  order: '<path d="M6 3.5h12v17l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/>',
+  invoice: '<path d="M7 3.5h8l3.5 3.5v13.5H7z"/><path d="M14.5 3.5V7h4M10 12h5M10 16h5"/>',
+  message: '<path d="M4 5.5h16v10.5H9.5L5 20v-4H4z"/><path d="M8 10h8"/>',
+  sheet: '<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 10h16M4 15h16M10 4v16"/>',
+  bell: '<path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 1.5h-15z"/><path d="M10 20.5h4"/>',
+  check: '<path d="m5 12.5 4.5 4.5L19 7.5"/>',
+  play: '<path d="M8 5.5v13l10-6.5z"/>',
+});
 icons.generic = '<circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8.5"/>';
 const iconSvg = (id, cls = "") => `<svg${cls ? ` class="${cls}"` : ""} viewBox="0 0 24 24" aria-hidden="true" focusable="false">${icons[id] || ""}</svg>`;
 
@@ -320,6 +331,8 @@ ${cfg.turnstileSiteKey ? `<script src="https://challenges.cloudflare.com/turnsti
 ${cfg.analyticsToken ? `<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"${esc(cfg.analyticsToken)}"}'></script>` : ""}
 <script src="${assets.site}" defer></script>
 <script src="${assets.sections}" defer></script>
+<script src="${assets.showcase}" defer></script>
+<script src="${assets.motion}" defer></script>
 </body>
 </html>
 `;
@@ -343,6 +356,59 @@ function signalSvg(t) {
         ${dots}${nodes}
         <circle class="sig-core" cx="${C}" cy="${C}" r="34"/>
       </svg></div>`;
+}
+
+function showcaseSection(t, id = "showcase") {
+  const sc = t.showcase;
+  const tabs = sc.tabs.map((x, i) => `<button class="sc-tab" type="button" role="tab" id="sct-${x.id}" aria-controls="scp-${x.id}" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}">${iconSvg(x.icon)}<span><strong>${esc(x.name)}</strong><small>${esc(x.line)}</small></span></button>`).join("");
+  const d = sc.dashboard;
+  const max = Math.max(...d.set30);
+  const bars = (arr) => arr.map((v) => `<span class="bar" data-v="${(v / max).toFixed(3)}"></span>`).join("");
+  const dash = `<div class="dev dev--browser">
+        <div class="dev__bar"><i></i><i></i><i></i><span class="dev__url">${esc(d.url)}</span><span class="dev__badge">${esc(sc.badge)}</span></div>
+        <div class="dash">
+          <div class="dash__top"><h3>${esc(d.title)}</h3>
+            <div class="seg" role="group" aria-label="${esc(d.title)}">${d.ranges.map((r, i) => `<button type="button" class="seg__btn" data-range="${i ? 30 : 7}" aria-pressed="${i === 0}">${esc(r)}</button>`).join("")}</div></div>
+          <div class="kpis">${d.kpis.map((k) => `<div class="kpi"><small>${esc(k.label)}</small><b data-v7="${esc(k.v7)}" data-v30="${esc(k.v30)}">${esc(k.v7)}</b><em data-d7="${esc(k.d7)}" data-d30="${esc(k.d30)}">${esc(k.d7)}</em></div>`).join("")}</div>
+          <div class="chart" role="img" aria-label="${esc(d.chart)}" data-set7="${d.set7.map((v) => (v / max).toFixed(3)).join(",")}" data-set30="${d.set30.map((v) => (v / max).toFixed(3)).join(",")}"><p class="chart__title">${esc(d.chart)}</p><div class="chart__bars">${bars(d.set30)}</div></div>
+          <ul class="feed" aria-label="${esc(d.listTitle)}">${d.list.map((r) => `<li><span class="feed__dot"></span><b>${esc(r.a)}</b><small>${esc(r.b)}</small></li>`).join("")}</ul>
+        </div></div>`;
+  const a = sc.automation;
+  const auto = `<div class="dev dev--browser">
+        <div class="dev__bar"><i></i><i></i><i></i><span class="dev__url">${esc(a.title)}</span><span class="dev__badge">${esc(sc.badge)}</span></div>
+        <div class="flow" data-flow data-running="${esc(a.running)}" data-again="${esc(a.again)}" data-done="${esc(a.done)}">
+          <ol class="flow__steps">${a.steps.map((st) => `<li class="flow__step" data-log="${esc(st.log)}"><span class="flow__ico">${iconSvg(st.icon)}</span><span><b>${esc(st.name)}</b><small>${esc(st.detail)}</small></span><span class="flow__tick">${iconSvg("check")}</span></li>`).join("")}</ol>
+          <div class="flow__foot"><button class="btn" type="button" data-run>${iconSvg("play")}<span>${esc(a.run)}</span></button><p class="flow__log" role="status" aria-live="polite"></p></div>
+        </div></div>`;
+  const ap = sc.app;
+  const app = `<div class="dev dev--phone"><div class="phone" data-app>
+        <span class="phone__notch"></span><span class="dev__badge dev__badge--phone">${esc(sc.badge)}</span>
+        <div class="phone__screen" role="tabpanel" data-screen="0"><p class="phone__hello">${esc(ap.home.hello)}</p><div class="phone__card"><small>${esc(ap.home.next)}</small><b>${esc(ap.home.nextValue)}</b></div>${ap.home.items.map((x) => `<div class="phone__row"><span class="phone__ico">${iconSvg("check")}</span>${esc(x)}</div>`).join("")}</div>
+        <div class="phone__screen" role="tabpanel" data-screen="1" hidden><p class="phone__hello">${esc(ap.book.title)}</p><div class="slots">${ap.book.slots.map((x, i) => `<button type="button" class="slot" aria-pressed="${i === 1}">${esc(x)}</button>`).join("")}</div><button class="btn phone__cta" type="button" data-book data-booked="${esc(ap.book.booked)}"><span>${esc(ap.book.confirm)}</span></button></div>
+        <div class="phone__screen" role="tabpanel" data-screen="2" hidden><p class="phone__hello">${esc(ap.account.title)}</p>${ap.account.toggles.map((x, i) => `<div class="phone__row"><span>${esc(x)}</span><button type="button" role="switch" class="sw" aria-checked="${i === 0}" aria-label="${esc(x)}"></button></div>`).join("")}</div>
+        <div class="phone__nav" role="tablist">${ap.nav.map((x, i) => `<button type="button" role="tab" aria-selected="${i === 0}" data-go="${i}">${esc(x)}</button>`).join("")}</div>
+      </div></div>`;
+  const c = sc.crm;
+  const pending = c.rows.filter((r) => r.status === "pending").length;
+  const crm = `<div class="dev dev--browser">
+        <div class="dev__bar"><i></i><i></i><i></i><span class="dev__url">${esc(c.url)}</span><span class="dev__badge">${esc(sc.badge)}</span></div>
+        <div class="crm" data-crm data-pending="${esc(c.pending)}" data-confirmed="${esc(c.confirmed)}">
+          <div class="dash__top"><h3>${esc(c.title)}</h3><p class="crm__count"><b data-count-pending>${pending}</b> ${esc(c.count)}</p></div>
+          <ul class="crm__rows">${c.rows.map((r) => `<li class="crm__row" data-status="${r.status}"><span><b>${esc(r.name)}</b><small>${esc(r.meta)}</small></span><span class="chip">${esc(r.status === "pending" ? c.pending : c.confirmed)}</span>${r.status === "pending" ? `<button type="button" class="btn btn--ghost crm__btn">${esc(c.confirm)}</button>` : `<span class="crm__btn"></span>`}</li>`).join("")}</ul>
+        </div></div>`;
+  const panels = { dashboard: dash, automation: auto, app, crm };
+  const body = sc.tabs.map((x, i) => `<div class="sc-panel" role="tabpanel" id="scp-${x.id}" aria-labelledby="sct-${x.id}" ${i ? "hidden" : ""}>${panels[x.id]}<p class="sc-hint">${esc(x.hint)}</p></div>`).join("");
+  return `
+  <section id="${id}" class="showcase" aria-labelledby="${id}-h">
+    <div class="wrap">
+      <div class="head" data-rv><h2 id="${id}-h">${esc(sc.title)}</h2><p>${esc(sc.intro)}</p></div>
+      <div class="sc" data-showcase>
+        <div class="sc-tabs" role="tablist" aria-label="${esc(sc.label)}" aria-orientation="vertical">${tabs}</div>
+        <div class="sc-stage">${body}</div>
+      </div>
+      <p class="sc-cta"><a class="btn" href="${esc(t.path)}#contact">${esc(sc.cta)}</a></p>
+    </div>
+  </section>`;
 }
 
 function homeBody(t) {
@@ -393,6 +459,8 @@ function homeBody(t) {
       </div>
     </div>
   </section>
+
+  ${showcaseSection(t)}
 
   <section id="work" class="work stage" aria-labelledby="work-h">
     <div class="wrap">
@@ -535,6 +603,8 @@ function workPage(t) {
       ${quotes}
     </div>
   </section>
+
+  ${showcaseSection(t, "concepts")}
 
   ${ctaBand(t)}`;
   return shell(t, ctx, body);

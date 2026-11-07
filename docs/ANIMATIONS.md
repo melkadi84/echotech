@@ -15,12 +15,15 @@ Principle: motion is the echo. Things emit, ripple and fade. Nothing bounces for
 | Service line | Each service row | Hover or focus-within | A `--ring` line draws across the top edge. |
 | Process dots | "How we work" | First time in view | Inner dots fill one after another (IntersectionObserver adds `.is-in`). |
 | Scroll progress | Top of page | Scroll | `.progress` scaleX driven by `site.js`; origin flips in RTL. |
+| Scroll reveal | Section heads, project cards, principles | First time in view | `motion.js` adds `.is-in` to `[data-rv]` after IntersectionObserver fires; 80ms stagger among siblings. Only runs when `html.rv-ready`; skipped under reduced motion. |
+| Device tilt | `.dev` frames in the concept demos | Pointer move (fine pointers only) | `motion.js` sets `--tilt-x/--tilt-y`; resets on leave. |
+| Concept demos | `#showcase` on home, `#concepts` on Work | Click | `showcase.js`: bars scale, counters count up, automation steps run in sequence, toggles and booking confirmations animate. Reduced motion shows end states at once. |
 | Menu | Mobile nav | Menu button | Slide and fade, 250ms. |
 
 ## Rules for new motion
 
 1. Only `transform` and `opacity`.
-2. Must answer a user action, show loading, or belong to the hero sequence. No scroll-triggered fade-ups on every section.
+2. Must answer a user action, show loading, belong to the hero sequence, or be one of the approved reveals above. Do not add scroll fade-ups to new components without a reason.
 3. Durations: feedback 150–250ms, reveals 500–700ms, ambient loops 6–9s.
 4. `prefers-reduced-motion: reduce` collapses everything (see end of `site.css`); ambient rings show as a static set, the spinner keeps a slow rotation so loading stays visible.
 5. Check RTL: any horizontal movement must flip (use logical properties or `[dir="rtl"]` overrides).

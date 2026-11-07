@@ -23,6 +23,8 @@ public/                  deployed output (committed). Every index.html (home, wo
 public/assets/css/site.css   design tokens + components
 public/assets/js/site.js     behaviour (theme, menu, ripples, form, loader)
 public/assets/js/sections.js services picker (tabs) and client strip controls
+public/assets/js/showcase.js concept demos (dashboard, automation, app, booking list)
+public/assets/js/motion.js   scroll reveals and pointer tilt
 public/assets/clients/       optional client logos: joy-zone.svg|png|webp (build shows initials if absent)
 public/assets/brand/     logo files, app icons, OG image
 brand/                   brand source SVGs
@@ -43,7 +45,7 @@ Commands: `npm run build` (regenerate HTML), `npm run dev` (build + local Worker
 5. **Both themes always.** Every colour comes from a CSS variable in `site.css`. Check contrast (WCAG AA) in light and dark.
 6. **Honest content.** Never invent testimonials, metrics, client names, certifications, partnerships or prices. Add a client or quote only with the owner's confirmation and the client's permission. `work.testimonials` stays an empty array until real quotes exist. Policies written in FAQ answers (support, ownership of accounts) are owner decisions, so confirm before changing them.
 7. **Accessibility floor.** Semantic landmarks, one `h1`, visible focus, labels on every field, `aria-live` for form status, keyboard-operable menu, 44px touch targets on mobile.
-8. **Motion rules.** Every animation respects `prefers-reduced-motion` and uses `transform`/`opacity` only. New motion must answer a user action or be part of the single hero sequence. One owner-approved exception: the client strip in `#work`, which must pause on hover/focus, have a visible pause button, pause off-screen, and stop entirely under reduced motion. See `docs/ANIMATIONS.md`.
+8. **Motion rules.** Every animation respects `prefers-reduced-motion` and uses `transform`/`opacity` only (the concept demos also set bar heights through `transform`). Owner-approved (Nov 2026): richer motion is allowed when it helps the visitor understand or act, namely staggered reveals on scroll (`motion.js`), pointer tilt on device frames, and the interactive demos in `showcase.js`. Under reduced motion none of that runs and content is shown at once. The client strip in `#work` must still pause on hover/focus, have a visible pause button, pause off-screen, and stop entirely under reduced motion. See `docs/ANIMATIONS.md`.
 9. **Secrets never enter the repo.** Turnstile secret, webhook URLs and D1 ids live in Cloudflare settings or `.dev.vars` (git-ignored). `src/site.config.json` holds only public values.
 10. **No new dependencies** without a clear reason. The site has none at runtime.
 

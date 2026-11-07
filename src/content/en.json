@@ -561,5 +561,213 @@
     "client": "Client",
     "delivered": "What we delivered",
     "crumbs": "Breadcrumb"
+  },
+  "showcase": {
+    "title": "Concepts you can try",
+    "intro": "Interactive samples of a dashboard, an automation, a mobile app and a booking system. They use sample data and are not client projects.",
+    "badge": "Concept · sample data",
+    "label": "Concept demos",
+    "cta": "Want something like this?",
+    "tabs": [
+      {
+        "id": "dashboard",
+        "icon": "data",
+        "name": "Dashboard",
+        "line": "Your numbers, live and clear",
+        "hint": "Switch between 7 and 30 days."
+      },
+      {
+        "id": "automation",
+        "icon": "automation",
+        "name": "Automation",
+        "line": "Repetitive work that runs itself",
+        "hint": "Press run and watch the steps follow each other."
+      },
+      {
+        "id": "app",
+        "icon": "apps",
+        "name": "Mobile app",
+        "line": "Your service in a pocket",
+        "hint": "Move between the tabs and book a time."
+      },
+      {
+        "id": "crm",
+        "icon": "systems",
+        "name": "Booking system",
+        "line": "Every booking in one place",
+        "hint": "Confirm a booking and watch the counter change."
+      }
+    ],
+    "dashboard": {
+      "url": "app.yourbusiness.example",
+      "title": "Overview",
+      "ranges": [
+        "7 days",
+        "30 days"
+      ],
+      "chart": "Bookings per day",
+      "kpis": [
+        {
+          "label": "Bookings",
+          "v7": "128",
+          "v30": "540",
+          "d7": "+12%",
+          "d30": "+8%"
+        },
+        {
+          "label": "Revenue",
+          "v7": "42.5k",
+          "v30": "181k",
+          "d7": "+9%",
+          "d30": "+6%"
+        },
+        {
+          "label": "New customers",
+          "v7": "36",
+          "v30": "152",
+          "d7": "+18%",
+          "d30": "+11%"
+        }
+      ],
+      "set7": [
+        18,
+        22,
+        20,
+        28,
+        26,
+        34,
+        30
+      ],
+      "set30": [
+        22,
+        26,
+        30,
+        28,
+        38,
+        34,
+        44,
+        40,
+        48,
+        52
+      ],
+      "listTitle": "Latest activity",
+      "list": [
+        {
+          "a": "New booking",
+          "b": "2 minutes ago"
+        },
+        {
+          "a": "Invoice paid",
+          "b": "14 minutes ago"
+        },
+        {
+          "a": "Booking needs confirming",
+          "b": "1 hour ago"
+        }
+      ]
+    },
+    "automation": {
+      "title": "New order workflow",
+      "run": "Run sample workflow",
+      "again": "Run again",
+      "running": "Running…",
+      "done": "All steps completed",
+      "steps": [
+        {
+          "icon": "order",
+          "name": "New order arrives",
+          "detail": "From your website or a form",
+          "log": "Order #1042 received"
+        },
+        {
+          "icon": "invoice",
+          "name": "Invoice created",
+          "detail": "Filled in automatically",
+          "log": "Invoice created and saved"
+        },
+        {
+          "icon": "message",
+          "name": "Customer is told",
+          "detail": "Confirmation by WhatsApp or email",
+          "log": "Confirmation sent to the customer"
+        },
+        {
+          "icon": "sheet",
+          "name": "Sheet updated",
+          "detail": "Stock and sales stay in sync",
+          "log": "Sales sheet updated"
+        },
+        {
+          "icon": "bell",
+          "name": "Team is notified",
+          "detail": "Only when a person needs to act",
+          "log": "Team notified: ready to prepare"
+        }
+      ]
+    },
+    "app": {
+      "title": "Mobile app concept",
+      "nav": [
+        "Home",
+        "Book",
+        "Account"
+      ],
+      "home": {
+        "hello": "Good morning",
+        "next": "Next booking",
+        "nextValue": "Saturday, 4:00 PM",
+        "items": [
+          "Birthday party",
+          "Group visit"
+        ]
+      },
+      "book": {
+        "title": "Choose a time",
+        "slots": [
+          "2:00 PM",
+          "4:00 PM",
+          "6:00 PM"
+        ],
+        "confirm": "Confirm booking",
+        "booked": "Booked"
+      },
+      "account": {
+        "title": "Settings",
+        "toggles": [
+          "Booking reminders",
+          "Offers and news"
+        ]
+      }
+    },
+    "crm": {
+      "url": "admin.yourbusiness.example",
+      "title": "Today's bookings",
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "confirm": "Confirm",
+      "count": "waiting for confirmation",
+      "rows": [
+        {
+          "name": "Birthday party",
+          "meta": "4:00 PM · 18 guests",
+          "status": "pending"
+        },
+        {
+          "name": "Group visit",
+          "meta": "5:30 PM · 24 guests",
+          "status": "confirmed"
+        },
+        {
+          "name": "Birthday party",
+          "meta": "6:00 PM · 12 guests",
+          "status": "pending"
+        },
+        {
+          "name": "Visit without booking",
+          "meta": "6:30 PM · 4 guests",
+          "status": "pending"
+        }
+      ]
+    }
   }
 }

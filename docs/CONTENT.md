@@ -69,3 +69,7 @@ The build creates one page per service (`/services/<id>/`, `/ar/services/<id>/`)
 2. Add the service name to `contact.form.serviceOptions` in both files, before "Something else". The Worker reads the allowed values from there.
 3. Add an icon with the same `id` in the `icons` map in `src/build.mjs` (a generic ring is used if missing).
 4. Run `npm run build`. The signal map, dock, picker, service page, sitemap and schema all follow the list.
+
+## Concept demos (showcase)
+
+`showcase` in both JSON files feeds `#showcase` (home) and `#concepts` (Work). Four labelled sample demos: dashboard, automation, mobile app, booking system. They use invented sample data, carry the badge "Concept · sample data" and must never be presented as client work. To add a real project, add it as a client (see Case study template); replace a concept only when a real project can be shown with the client's permission.
