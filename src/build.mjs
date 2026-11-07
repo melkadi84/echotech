@@ -427,12 +427,11 @@ function showcaseSection(t, id = "showcase") {
   return `
   <section id="${id}" class="showcase" aria-labelledby="${id}-h">
     <div class="wrap">
-      <div class="head" data-rv><h2 id="${id}-h">${esc(sc.title)}</h2><p>${esc(sc.intro)}</p></div>
+      <div class="head head--action" data-rv><h2 id="${id}-h">${esc(sc.title)}</h2><p>${esc(sc.intro)}</p><a class="btn head__action" href="${esc(t.path)}#contact">${esc(sc.cta)}</a></div>
       <div class="sc" data-showcase>
         <div class="sc-tabs" role="tablist" aria-label="${esc(sc.label)}" aria-orientation="vertical">${tabs}</div>
         <div class="sc-stage">${body}</div>
       </div>
-      <p class="sc-cta"><a class="btn" href="${esc(t.path)}#contact">${esc(sc.cta)}</a></p>
     </div>
   </section>`;
 }
@@ -508,7 +507,7 @@ function homeBody(t) {
 
   <section id="services" aria-labelledby="services-h">
     <div class="wrap">
-      <div class="head"><h2 id="services-h">${esc(t.services.title)}</h2><p>${esc(t.services.intro)}</p></div>
+      <div class="head head--action"><h2 id="services-h">${esc(t.services.title)}</h2><p>${esc(t.services.intro)}</p><a class="btn btn--ghost head__action" href="${servicesIndexPath(t)}">${esc(t.pages.connectLink)}</a></div>
       <div class="picker" data-picker>
         <div class="picker__list" role="tablist" aria-label="${esc(t.services.pick)}" aria-orientation="vertical" hidden>${tabs}
         </div>
@@ -519,7 +518,6 @@ function homeBody(t) {
         </div>
         <p class="picker__count" aria-live="polite" data-of="${esc(t.services.of)}"></p>
       </div>
-      <p class="picker__more"><a class="btn btn--ghost" href="${servicesIndexPath(t)}">${esc(t.pages.connectLink)}</a></p>
     </div>
   </section>
 
