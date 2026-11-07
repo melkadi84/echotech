@@ -84,6 +84,12 @@
   };
   menuBtn?.addEventListener("click", () => setMenu(!nav.classList.contains("is-open")));
   nav?.addEventListener("click", (e) => { if (e.target.closest("a")) setMenu(false); });
+  /* Services sub-list folds on small screens; it starts open only on a service page. */
+  $(".nav__toggle")?.addEventListener("click", (e) => {
+    const group = e.currentTarget.closest(".nav__group");
+    const open = group.classList.toggle("is-open");
+    e.currentTarget.setAttribute("aria-expanded", String(open));
+  });
   addEventListener("keydown", (e) => { if (e.key === "Escape") setMenu(false); });
 
   /* 5. Hero: tap or click spawns an echo ring at the pointer */

@@ -141,7 +141,9 @@ const navHtml = (t, ctx) => {
     if (n.id === "services") {
       const items = t.services.items.map((s) => `<a href="${svcPath(t, s.id)}"${ctx.serviceId === s.id ? ' aria-current="page"' : ""}>${iconSvg(s.id)}<span><strong>${esc(s.name)}</strong><small>${esc(s.summary)}</small></span></a>`).join("");
       const current = ctx.section === "services" ? ' aria-current="true"' : "";
-      return `<div class="nav__group"><a class="nav__link" href="${servicesIndexPath(t)}"${current}>${esc(n.label)}</a><div class="nav__menu" role="group" aria-label="${esc(t.pages.menuHint)}">${items}</div></div>`;
+      const open = ctx.serviceId ? " is-open" : "";
+      const chev = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg>';
+      return `<div class="nav__group${open}"><a class="nav__link" href="${servicesIndexPath(t)}"${current}>${esc(n.label)}</a><button class="nav__toggle" type="button" aria-expanded="${ctx.serviceId ? "true" : "false"}" aria-controls="nav-services" aria-label="${esc(t.services.pick)}">${chev}</button><div class="nav__menu" id="nav-services" role="group" aria-label="${esc(t.pages.menuHint)}">${items}</div></div>`;
     }
     if (n.id === "work") {
       const current = ctx.section === "work" ? ' aria-current="page"' : "";
@@ -646,21 +648,27 @@ function workPage(t) {
 
   <section class="work work--page" aria-labelledby="projects-h">
     <div class="wrap">
-      ${clientsBlock(t, ctx)}
       <h2 class="sr-only" id="projects-h">${esc(pg.workList)}</h2>
-      ${clientList(t).map((c) => `<article class="project">
+      ${clientsBlock(t, ctx)}
+    </div>
+  </section>
+
+  ${clientList(t).map((c) => `<section class="work work--page work--project" aria-label="${esc(c.name)}">
+    <div class="wrap"><article class="project">
         <div class="project__head"><span class="client__logo">${c.logo}</span><div><h3>${esc(c.name)}</h3><p class="project__kind">${esc(c.kind)}</p></div></div>
         <p class="project__text">${esc(c.summary)}</p>
         <div class="project__meta"><p>${esc(pg.delivered)}</p><ul class="case__list">${c.delivered.map((d) => `<li>${esc(d)}</li>`).join("")}</ul></div>
         <a class="btn btn--ghost" href="${c.url}" rel="noopener" target="_blank">${esc(c.visit)}</a>
-      </article>`).join("\n      ")}
-      <article class="project project--slot">
+      </article></div>
+  </section>`).join("\n")}
+
+  <section class="work work--page work--project" aria-label="${esc(t.work.strip.slotName)}">
+    <div class="wrap"><article class="project project--slot">
         <div class="project__head"><span class="client__logo">${markSvg("client__mark")}</span><div><h3>${esc(t.work.strip.slotName)}</h3><p class="project__kind">${esc(t.work.strip.slotKind)}</p></div></div>
         <p class="project__text">${esc(pg.slotText)}</p>
         <a class="btn btn--ghost" href="${t.path}#contact">${esc(t.cta)}</a>
       </article>
-      ${quotes}
-    </div>
+      ${quotes}</div>
   </section>
 
   ${showcaseSection(t, "concepts")}
