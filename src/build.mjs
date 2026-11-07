@@ -90,6 +90,7 @@ const url = (t) => site + t.path;
 const slugs = { network: "network-infrastructure", cctv: "cctv-surveillance", web: "web-development", apps: "mobile-apps", systems: "business-systems", automation: "workflow-automation", data: "data-analytics", hosting: "domains-hosting" };
 const svcPath = (t, id) => `${t.path}services/${slugs[id] || id}/`;
 const workPath = (t) => `${t.path}work/`;
+const projectPath = (t, slug) => `${t.path}work/${slug}/`;
 const servicesIndexPath = (t) => `${t.path}services/`;
 const aboutPath = (t) => `${t.path}about/`;
 const contactPath = (t) => `${t.path}contact/`;
@@ -183,8 +184,8 @@ const jzLogo = `<img src="${logoFile ? `/${logoFile}` : jzLogoRemote}" alt="" wi
 
 // Every client shown on the site. Logo: a real image URL, or null for an initials tile.
 const clientList = (t) => [
-  { name: t.work.joyZone.client, kind: t.work.joyZone.kind, summary: t.work.joyZone.summary, delivered: t.work.joyZone.delivered, visit: t.work.joyZone.visit, url: cfg.caseStudies.joyZoneUrl, logo: jzLogo },
-  { name: t.work.melkadi.client, kind: t.work.melkadi.kind, summary: t.work.melkadi.summary, delivered: t.work.melkadi.delivered, visit: t.work.melkadi.visit, url: cfg.caseStudies.melkadiUrl, logo: `<img class="client__photo" src="${melkadiPhoto}" alt="" width="84" height="84" loading="lazy">` },
+  { slug: "joy-zone", name: t.work.joyZone.client, kind: t.work.joyZone.kind, summary: t.work.joyZone.summary, delivered: t.work.joyZone.delivered, visit: t.work.joyZone.visit, url: cfg.caseStudies.joyZoneUrl, logo: jzLogo },
+  { slug: "mohamed-elkadi", name: t.work.melkadi.client, kind: t.work.melkadi.kind, summary: t.work.melkadi.summary, delivered: t.work.melkadi.delivered, visit: t.work.melkadi.visit, url: cfg.caseStudies.melkadiUrl, logo: `<img class="client__photo" src="${melkadiPhoto}" alt="" width="84" height="84" loading="lazy">` },
 ];
 
 const clientsBlock = (t, ctx) => {
@@ -192,7 +193,7 @@ const clientsBlock = (t, ctx) => {
   const contactHref = `${ctx.isHome ? "" : t.path}#contact`;
   const items = (hidden) => {
     const tab = hidden ? ' tabindex="-1"' : "";
-    const one = clientList(t).map((c) => `<li class="client"><a href="${c.url}" target="_blank" rel="noopener"${tab}><span class="client__logo">${c.logo}</span><span class="client__text"><strong>${esc(c.name)}</strong><small class="client__brief" data-brief-site="${c.url}">${esc(c.kind)}</small></span></a></li>`).join("");
+    const one = clientList(t).map((c) => `<li class="client"><a href="${projectPath(t, c.slug)}"${tab}><span class="client__logo">${c.logo}</span><span class="client__text"><strong>${esc(c.name)}</strong><small class="client__brief" data-brief-site="${c.url}">${esc(c.kind)}</small></span></a></li>`).join("");
     const slot = `<li class="client client--slot"><a href="${contactHref}"${tab}><span class="client__logo">${markSvg("client__mark")}</span><span class="client__text"><strong>${esc(st.slotName)}</strong><small>${esc(st.slotKind)}</small></span></a></li>`;
     const unit = one + slot;
     // Repeats exist only for the sliding strip; small screens show the first copy as a plain list.
@@ -201,12 +202,15 @@ const clientsBlock = (t, ctx) => {
   };
   return `<div class="clients" role="group" aria-label="${esc(st.label)}" data-clients>
         <button class="clients__toggle" type="button" aria-pressed="false" data-pause="${esc(st.pause)}" data-play="${esc(st.play)}" hidden>${esc(st.pause)}</button>
+        <button class="icon-btn slide-arrow slide-arrow--prev" type="button" data-step="-1" aria-label="${esc(st.prev)}"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <button class="icon-btn slide-arrow slide-arrow--next" type="button" data-step="1" aria-label="${esc(st.next)}"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7"/></svg></button>
         <div class="marquee" dir="ltr">
           <div class="marquee__track">
             <ul class="marquee__set">${items(false)}</ul>
             <ul class="marquee__set marquee__set--copy" aria-hidden="true">${items(true)}</ul>
           </div>
         </div>
+        <p class="slide-count" aria-live="polite" data-of="${esc(st.of)}"></p>
       </div>`;
 };
 
@@ -650,28 +654,41 @@ function workPage(t) {
     <div class="wrap">
       <h2 class="sr-only" id="projects-h">${esc(pg.workList)}</h2>
       ${clientsBlock(t, ctx)}
+      ${quotes}
     </div>
   </section>
 
-  ${clientList(t).map((c) => `<section class="work work--page work--project" aria-label="${esc(c.name)}">
-    <div class="wrap"><article class="project">
-        <div class="project__head"><span class="client__logo">${c.logo}</span><div><h3>${esc(c.name)}</h3><p class="project__kind">${esc(c.kind)}</p></div></div>
-        <p class="project__text">${esc(c.summary)}</p>
-        <div class="project__meta"><p>${esc(pg.delivered)}</p><ul class="case__list">${c.delivered.map((d) => `<li>${esc(d)}</li>`).join("")}</ul></div>
-        <a class="btn btn--ghost" href="${c.url}" rel="noopener" target="_blank">${esc(c.visit)}</a>
-      </article></div>
-  </section>`).join("\n")}
+  ${showcaseSection(t, "concepts")}
 
-  <section class="work work--page work--project" aria-label="${esc(t.work.strip.slotName)}">
-    <div class="wrap"><article class="project project--slot">
-        <div class="project__head"><span class="client__logo">${markSvg("client__mark")}</span><div><h3>${esc(t.work.strip.slotName)}</h3><p class="project__kind">${esc(t.work.strip.slotKind)}</p></div></div>
-        <p class="project__text">${esc(pg.slotText)}</p>
-        <a class="btn btn--ghost" href="${t.path}#contact">${esc(t.cta)}</a>
-      </article>
-      ${quotes}</div>
+  ${ctaBand(t)}`;
+  return shell(t, ctx, body);
+}
+
+function projectPage(t, c) {
+  const pg = t.pages;
+  const path = projectPath(t, c.slug);
+  const ctx = {
+    isHome: false, section: "work", path, otherPath: projectPath(otherLang(t), c.slug), defPath: projectPath(langs.en, c.slug),
+    title: `${c.name} — Echo Tech`, description: c.summary,
+    extra: [crumbLd(t, [[pg.home, t.path], [pg.workTitle, workPath(t)], [c.name, path]])],
+  };
+  const body = `
+  <section class="phero stage" aria-labelledby="page-h">
+    <div class="wrap">
+      ${crumbs(t, [[pg.home, t.path], [pg.workTitle, workPath(t)], [c.name, ""]])}
+      <h1 id="page-h">${esc(c.name)}</h1>
+      <p class="phero__lead">${esc(c.kind)}</p>
+    </div>
   </section>
 
-  ${showcaseSection(t, "concepts")}
+  <section class="work work--page work--project" aria-label="${esc(c.name)}">
+    <div class="wrap"><article class="project">
+      <div class="project__head"><span class="client__logo">${c.logo}</span></div>
+      <p class="project__text">${esc(c.summary)}</p>
+      <div class="project__meta"><p>${esc(pg.delivered)}</p><ul class="case__list">${c.delivered.map((d) => `<li>${esc(d)}</li>`).join("")}</ul></div>
+      <p class="project__actions"><a class="btn" href="${c.url}" rel="noopener" target="_blank">${esc(c.visit)}</a><a class="btn btn--ghost" href="${workPath(t)}">${esc(pg.allWork)}</a></p>
+    </article></div>
+  </section>
 
   ${ctaBand(t)}`;
   return shell(t, ctx, body);
@@ -782,6 +799,7 @@ const subPages = [];
 for (const t of [langs.ar, langs.en]) {
   t.services.items.forEach((s, i) => subPages.push({ path: svcPath(t, s.id), html: servicePage(t, s, i) }));
   subPages.push({ path: workPath(t), html: workPage(t) });
+  clientList(t).forEach((c) => subPages.push({ path: projectPath(t, c.slug), html: projectPage(t, c) }));
   subPages.push({ path: aboutPath(t), html: aboutPage(t) });
   subPages.push({ path: servicesIndexPath(t), html: servicesPage(t) });
   subPages.push({ path: contactPath(t), html: contactPage(t) });
@@ -801,7 +819,7 @@ ${alt("ar", site + arPath)}
 ${alt("en", site + enPath)}
 ${alt("x-default", site + enPath)}
   </url>`;
-const pairs = [["/ar/", "/"], [workPath(langs.ar), workPath(langs.en)], [aboutPath(langs.ar), aboutPath(langs.en)], [servicesIndexPath(langs.ar), servicesIndexPath(langs.en)], [contactPath(langs.ar), contactPath(langs.en)], ...langs.ar.services.items.map((s) => [svcPath(langs.ar, s.id), svcPath(langs.en, s.id)])];
+const pairs = [["/ar/", "/"], [workPath(langs.ar), workPath(langs.en)], [aboutPath(langs.ar), aboutPath(langs.en)], [servicesIndexPath(langs.ar), servicesIndexPath(langs.en)], [contactPath(langs.ar), contactPath(langs.en)], ...langs.ar.services.items.map((s) => [svcPath(langs.ar, s.id), svcPath(langs.en, s.id)]), ...clientList(langs.ar).map((c) => [projectPath(langs.ar, c.slug), projectPath(langs.en, c.slug)])];
 await out("public/sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${pairs.flatMap(([ar, en]) => [entry(ar, en, ar), entry(ar, en, en)]).join("\n")}

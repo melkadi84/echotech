@@ -417,7 +417,10 @@
       "label": "Our clients",
       "slotName": "Your business",
       "slotKind": "Our next project",
-      "more": "Project details"
+      "more": "Project details",
+      "prev": "Previous project",
+      "next": "Next project",
+      "of": "of"
     },
     "melkadi": {
       "client": "Mohamed Elkadi",

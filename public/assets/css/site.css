@@ -1004,3 +1004,29 @@ main > section.phero { padding-block: clamp(1.5rem, 5svh, 3rem) clamp(1.25rem, 4
   .dev--phone { padding: 0.4rem; border-radius: 30px; }
   .phone__row { padding-block: 0.55rem; }
 }
+
+/* Clients: one per slide on small screens, prev/next buttons at the middle of both sides. */
+.slide-arrow, .slide-count { display: none; }
+.project__actions { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 0; max-width: none; }
+.work--project .project { border-block-end: 0; }
+@media (max-width: 860px) {
+  .clients { position: relative; }
+  .marquee { overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; cursor: grab; touch-action: pan-x pan-y; }
+  .marquee::-webkit-scrollbar { display: none; }
+  .clients.is-dragging .marquee { scroll-snap-type: none; }
+  .marquee__track { display: block; }
+  .marquee__set { display: flex; flex-direction: row; gap: 0.75rem; }
+  .client { flex: 0 0 100%; scroll-snap-align: start; scroll-snap-stop: always; }
+  .client a { display: grid; justify-items: center; gap: 0.35rem; min-height: 0; padding: 1.5rem 3.25rem; text-align: center; border: 1px solid var(--line); border-radius: 22px; }
+  .client a .client__logo { margin: 0 0 0.6rem; width: 84px; height: 84px; }
+  .client a .client__text { justify-items: center; text-align: center; }
+  .slide-arrow { display: inline-flex; position: absolute; inset-block-start: 50%; translate: 0 -50%; z-index: 2; background: var(--bg); border: 1px solid var(--line); box-shadow: 0 2px 8px rgb(0 0 0 / 0.12); }
+  .slide-arrow--prev { inset-inline-start: 0.25rem; }
+  .slide-arrow--next { inset-inline-end: 0.25rem; }
+  .slide-arrow svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .slide-arrow--next svg { transform: scaleX(-1); }
+  [dir="rtl"] .slide-arrow--prev svg { transform: scaleX(-1); }
+  [dir="rtl"] .slide-arrow--next svg { transform: none; }
+  .slide-arrow:disabled { opacity: 0.35; cursor: default; }
+  .slide-count { display: block; margin: 0.6rem 0 0; text-align: center; color: var(--muted); font-variant-numeric: tabular-nums; }
+}

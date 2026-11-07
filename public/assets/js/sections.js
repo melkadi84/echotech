@@ -143,6 +143,52 @@ function initClients() {
     new IntersectionObserver(([entry]) => root.classList.toggle("is-offscreen", !entry.isIntersecting)).observe(root);
   }
   initClientsDrag(root);
+  initClientsSlides(root);
+}
+
+// Small screens: the clients form a one-per-slide carousel. Rect maths keeps it correct in RTL.
+function initClientsSlides(root) {
+  const small = matchMedia("(max-width: 860px)");
+  const motionOk = !matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const scroller = root.querySelector(".marquee");
+  const slides = [...root.querySelectorAll(".marquee__set:not(.marquee__set--copy) .client:not(.client--rep)")];
+  const count = root.querySelector(".slide-count");
+  const [prev, next] = root.querySelectorAll(".slide-arrow");
+  let current = 0;
+  const sync = () => {
+    count.textContent = `${current + 1} ${count.dataset.of} ${slides.length}`;
+    prev.disabled = current === 0;
+    next.disabled = current === slides.length - 1;
+  };
+  const go = (index) => {
+    current = Math.min(slides.length - 1, Math.max(0, index));
+    sync();
+    const t = slides[current].getBoundingClientRect();
+    const l = scroller.getBoundingClientRect();
+    scroller.scrollBy({ left: t.left - l.left, behavior: motionOk ? "smooth" : "auto" });
+  };
+  let frame = 0;
+  scroller.addEventListener("scroll", () => {
+    if (!small.matches) return;
+    cancelAnimationFrame(frame);
+    frame = requestAnimationFrame(() => {
+      const box = scroller.getBoundingClientRect();
+      const mid = box.left + box.width / 2;
+      let best = 0;
+      let gap = Infinity;
+      slides.forEach((p, i) => {
+        const r = p.getBoundingClientRect();
+        const d = Math.abs(r.left + r.width / 2 - mid);
+        if (d < gap) { gap = d; best = i; }
+      });
+      if (best !== current) { current = best; sync(); }
+    });
+  }, { passive: true });
+  root.addEventListener("click", (e) => {
+    const step = e.target.closest(".slide-arrow");
+    if (step) go(current + Number(step.dataset.step));
+  });
+  sync();
 }
 
 // Drag the strip left or right to pick a client. The marquee is a CSS animation, so dragging moves its clock:
