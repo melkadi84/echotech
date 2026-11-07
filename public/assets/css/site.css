@@ -1127,3 +1127,6 @@ main > section:not(.hero) { min-height: 0; padding-block: clamp(2.5rem, 7svh, 4.
 
 .client a[aria-current="true"] { background: var(--bg-2); }
 .project[hidden] { display: none; }
+
+/* The strip's repeated copy exists only for the desktop loop; it must never show in the small-screen carousel. */
+@media (max-width: 860px) { .marquee .marquee__set--copy, .marquee .client--rep { display: none; } }
