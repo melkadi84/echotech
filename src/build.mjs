@@ -474,7 +474,7 @@ function homeBody(t) {
           </button>`).join("");
   const services = t.services.items.map((s, i) => `
         <article class="panel" id="svc-${s.id}" role="tabpanel" aria-labelledby="tab-${s.id}" data-index="${i}">
-          <div class="panel__head">${iconSvg(s.id, "panel__icon")}<h3>${esc(s.name)}</h3><svg class="panel__chev" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6"/></svg></div>
+          ${iconSvg(s.id, "panel__icon")}<h3>${esc(s.name)}</h3>
           <p class="panel__summary">${esc(s.summary)}</p>
           <ul class="svc__points">${s.points.map((p) => `<li>${esc(p)}</li>`).join("")}</ul>
           <div class="panel__actions"><a class="btn" href="#contact" data-pick="${i}">${esc(t.services.cta)}</a><a class="btn btn--ghost" href="${svcPath(t, s.id)}">${esc(t.pages.learn)}</a></div>

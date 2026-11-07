@@ -31,43 +31,10 @@ function initPicker() {
     select(Math.min(last, Math.max(0, moves[e.key])), true);
   });
 
-  // Phones and tablets: the tabs are hidden and every service is an accordion row. One row is open at a time,
-  // so the section stays short and the visitor still reads the full detail without swiping sideways.
-  const small = matchMedia("(max-width: 860px)");
-  const heads = panels.map((p) => p.querySelector(".panel__head"));
-  let open = 0;
-  const paint = () => {
-    heads.forEach((head, i) => {
-      if (small.matches) {
-        const on = i === open;
-        head.setAttribute("role", "button");
-        head.tabIndex = 0;
-        head.setAttribute("aria-expanded", String(on));
-        panels[i].classList.toggle("is-collapsed", !on);
-      } else {
-        head.removeAttribute("role");
-        head.removeAttribute("tabindex");
-        head.removeAttribute("aria-expanded");
-        panels[i].classList.remove("is-collapsed");
-      }
-    });
-  };
-  const toggle = (i) => { open = open === i ? -1 : i; paint(); };
-  heads.forEach((head, i) => {
-    head.addEventListener("click", () => { if (small.matches) toggle(i); });
-    head.addEventListener("keydown", (e) => {
-      if (small.matches && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); toggle(i); }
-    });
-  });
-  tabs.forEach((tab, i) => tab.addEventListener("click", () => { open = i; paint(); }));
-  small.addEventListener("change", paint);
-  paint();
-  const go = (index) => { open = index; select(index); paint(); };
-
   // Hero links like #svc-cctv open that service.
   const openFromHash = (hash) => {
     const index = panels.findIndex((p) => `#${p.id}` === hash);
-    if (index >= 0) go(index);
+    if (index >= 0) select(index);
   };
   document.addEventListener("click", (e) => {
     const link = e.target.closest('a[href^="#svc-"]');
