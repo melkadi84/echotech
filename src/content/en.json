@@ -580,7 +580,12 @@
     "contactTitle": "Contact",
     "contactH1": "Contact us",
     "contactDescription": "Contact Echo Tech about networks, CCTV, websites, apps, business systems, automation, data and hosting. We reply to every new request within one week.",
-    "contactLead": "Tell us what you need. We reply to every new request within one week."
+    "contactLead": "Tell us what you need. We reply to every new request within one week.",
+    "servicesTitle": "Services",
+    "servicesH1": "Services that work together",
+    "servicesDescription": "Echo Tech's services connect: network, CCTV, websites, apps, business systems, automation, data and hosting. See how each one works with the others.",
+    "servicesLead": "Each service connects to the others. Pick one to see how.",
+    "connectLink": "See how our services connect"
   },
   "showcase": {
     "title": "Concepts you can try",

@@ -87,6 +87,7 @@ const url = (t) => site + t.path;
 const slugs = { network: "network-infrastructure", cctv: "cctv-surveillance", web: "web-development", apps: "mobile-apps", systems: "business-systems", automation: "workflow-automation", data: "data-analytics", hosting: "domains-hosting" };
 const svcPath = (t, id) => `${t.path}services/${slugs[id] || id}/`;
 const workPath = (t) => `${t.path}work/`;
+const servicesIndexPath = (t) => `${t.path}services/`;
 const aboutPath = (t) => `${t.path}about/`;
 const contactPath = (t) => `${t.path}contact/`;
 
@@ -446,9 +447,8 @@ function meshSection(t, current = "", idAttr = "mesh") {
   const chips = items.map((s) => `<button type="button" class="mesh__chip" data-id="${s.id}" aria-pressed="${s.id === current}">${iconSvg(s.id)}<span>${esc(s.name)}</span></button>`).join("");
   const data = { services: Object.fromEntries(items.map((s) => [s.id, { name: s.name, href: svcPath(t, s.id) }])), edges: meshEdges.map(([a, b]) => [a, b, m.edges[`${a}-${b}`]]), current, hint: m.hint, with: m.with, open: m.open };
   return `
-  <section id="${idAttr}" class="mesh" aria-labelledby="${idAttr}-h">
+  <section id="${idAttr}" class="mesh" aria-label="${esc(m.title)}">
     <div class="wrap">
-      <div class="head" data-rv><h2 id="${idAttr}-h">${esc(m.title)}</h2><p>${esc(m.intro)}</p></div>
       <div class="mesh__box" data-mesh data-config="${esc(JSON.stringify(data))}">
         <svg class="mesh__svg" viewBox="0 0 800 540" aria-hidden="true" focusable="false"><g class="mesh__edges">${lines}</g><g class="mesh__dots"></g>${nodes}</svg>
         <div class="mesh__chips" role="group" aria-label="${esc(m.label)}">${chips}</div>
@@ -501,10 +501,9 @@ function homeBody(t) {
         </div>
         <div class="picker__panels">${services}</div>
       </div>
+      <p class="picker__more"><a class="btn btn--ghost" href="${servicesIndexPath(t)}">${esc(t.pages.connectLink)}</a></p>
     </div>
   </section>
-
-  ${meshSection(t)}
 
   ${showcaseSection(t)}
 
@@ -599,7 +598,7 @@ function servicePage(t, s, idx) {
     </div>
   </section>
 
-  ${meshSection(t, s.id, "connects")}
+  <section class="connect" aria-label="${esc(t.pages.connectLink)}"><div class="wrap"><a class="btn btn--ghost" href="${servicesIndexPath(t)}">${esc(t.pages.connectLink)}</a></div></section>
 
   <section class="others" aria-labelledby="others-h">
     <div class="wrap">
@@ -680,6 +679,36 @@ function healthCheck(t) {
   </section>`;
 }
 
+function servicesPage(t) {
+  const pg = t.pages;
+  const ctx = {
+    isHome: false, section: "services", path: servicesIndexPath(t), otherPath: servicesIndexPath(otherLang(t)), defPath: servicesIndexPath(langs.en),
+    title: `${pg.servicesH1} — Echo Tech`, description: pg.servicesDescription,
+    extra: [crumbLd(t, [[pg.home, t.path], [pg.servicesTitle, servicesIndexPath(t)]])],
+  };
+  const list = t.services.items.map((o) => `<li><a href="${svcPath(t, o.id)}">${iconSvg(o.id)}<span><strong>${esc(o.name)}</strong><small>${esc(o.summary)}</small></span></a></li>`).join("");
+  const body = `
+  <section class="phero stage" aria-labelledby="page-h">
+    <div class="wrap">
+      ${crumbs(t, [[pg.home, t.path], [pg.servicesTitle, ""]])}
+      <h1 id="page-h">${esc(pg.servicesH1)}</h1>
+      <p class="phero__lead">${esc(pg.servicesLead)}</p>
+    </div>
+  </section>
+
+  ${meshSection(t)}
+
+  <section class="others" aria-labelledby="all-h">
+    <div class="wrap">
+      <div class="head"><h2 id="all-h">${esc(pg.allServices)}</h2></div>
+      <ul class="others__list">${list}</ul>
+    </div>
+  </section>
+
+  ${ctaBand(t)}`;
+  return shell(t, ctx, body);
+}
+
 function aboutPage(t) {
   const pg = t.pages;
   const ctx = {
@@ -741,6 +770,7 @@ for (const t of [langs.ar, langs.en]) {
   t.services.items.forEach((s, i) => subPages.push({ path: svcPath(t, s.id), html: servicePage(t, s, i) }));
   subPages.push({ path: workPath(t), html: workPage(t) });
   subPages.push({ path: aboutPath(t), html: aboutPage(t) });
+  subPages.push({ path: servicesIndexPath(t), html: servicesPage(t) });
   subPages.push({ path: contactPath(t), html: contactPage(t) });
 }
 for (const p of subPages) await out(`public${p.path}index.html`, p.html);
@@ -758,7 +788,7 @@ ${alt("ar", site + arPath)}
 ${alt("en", site + enPath)}
 ${alt("x-default", site + enPath)}
   </url>`;
-const pairs = [["/ar/", "/"], [workPath(langs.ar), workPath(langs.en)], [aboutPath(langs.ar), aboutPath(langs.en)], [contactPath(langs.ar), contactPath(langs.en)], ...langs.ar.services.items.map((s) => [svcPath(langs.ar, s.id), svcPath(langs.en, s.id)])];
+const pairs = [["/ar/", "/"], [workPath(langs.ar), workPath(langs.en)], [aboutPath(langs.ar), aboutPath(langs.en)], [servicesIndexPath(langs.ar), servicesIndexPath(langs.en)], [contactPath(langs.ar), contactPath(langs.en)], ...langs.ar.services.items.map((s) => [svcPath(langs.ar, s.id), svcPath(langs.en, s.id)])];
 await out("public/sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${pairs.flatMap(([ar, en]) => [entry(ar, en, ar), entry(ar, en, en)]).join("\n")}

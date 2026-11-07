@@ -727,3 +727,6 @@ html:not(.js) .boot { display: none; }
 .mesh__info li span { color: var(--muted); font-size: 0.92rem; }
 @media (max-width: 720px) { .mesh__svg { display: none; } }
 @media (prefers-reduced-motion: reduce) { .mesh__dot { display: none; } }
+.connect { padding-block: 0 clamp(3rem, 6vw, 5rem); }
+.picker__more { margin-block-start: clamp(1.5rem, 3vw, 2.5rem); max-width: none; }
+.phero + .mesh { padding-block-start: clamp(2rem, 4vw, 3rem); }
