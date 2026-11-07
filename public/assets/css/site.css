@@ -128,7 +128,7 @@ html:not(.js) .boot { display: none; }
 }
 .header.is-scrolled { border-block-end-color: var(--line); }
 /* On the home page the header sits on the dark hero until the page scrolls. */
-.header--stage:not(.is-scrolled) {
+[data-theme="dark"] .header--stage:not(.is-scrolled) {
   --bg: #050a1c; --bg-2: #0b1433; --ink: #eaf0ff; --muted: #a6b4dc; --line: #1d2a5a; --link: #8cbcfc; --ring: #60a5fa; --focus: #8cbcfc; --primary: #2f5fe6;
   background: var(--bg); color: var(--ink);
 }
@@ -197,16 +197,16 @@ html:not(.js) .boot { display: none; }
 .btn .spinner { display: none; }
 .btn[aria-busy="true"] .spinner { display: inline-block; }
 
-/* ---------- Stage (dark surface in both themes: hero and work) ---------- */
-.stage {
+/* ---------- Stage: the theme decides. Light mode is light everywhere, dark mode is dark everywhere. ---------- */
+[data-theme="dark"] .stage {
   --bg: #050a1c; --bg-2: #0b1433; --ink: #eaf0ff; --muted: #a6b4dc; --line: #1d2a5a;
   --link: #8cbcfc; --ring: #60a5fa; --focus: #8cbcfc; --primary: #2f5fe6;
-  background-color: var(--bg); color: var(--ink);
 }
+.stage { background-color: var(--bg); color: var(--ink); }
 .stage .btn--ghost:hover { background: var(--bg-2); }
-.stage .field .err, .stage .form__status.bad { color: #ff9b95; }
-.stage .field.is-bad input, .stage .field.is-bad select, .stage .field.is-bad textarea { border-color: #ff9b95; }
-.stage .form__status.ok { color: #6ee7a0; }
+[data-theme="dark"] .stage .field .err, [data-theme="dark"] .stage .form__status.bad { color: #ff9b95; }
+[data-theme="dark"] .stage .field.is-bad input, [data-theme="dark"] .stage .field.is-bad select, [data-theme="dark"] .stage .field.is-bad textarea { border-color: #ff9b95; }
+[data-theme="dark"] .stage .form__status.ok { color: #6ee7a0; }
 
 /* ---------- Hero ---------- */
 .hero { position: relative; overflow: hidden; padding-block: clamp(1rem, 3vw, 2.5rem) clamp(3rem, 7vw, 6rem); isolation: isolate; }
@@ -236,7 +236,7 @@ html:not(.js) .boot { display: none; }
 .sig-dot { fill: #bcd8ff; opacity: 0; --x: 0px; --y: 0px; animation: sig-travel 10s linear infinite; }
 .sig-node { cursor: pointer; }
 .sig-disc { fill: var(--bg-2); stroke: var(--ring); stroke-width: 1.6; transition: fill 0.25s; }
-.sig-icon { fill: none; stroke: #eaf0ff; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; pointer-events: none; }
+.sig-icon { fill: none; stroke: var(--ink); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; pointer-events: none; }
 .sig-flash { fill: none; stroke: var(--ring); stroke-width: 2; opacity: 0; transform-box: fill-box; transform-origin: center; animation: sig-flash 10s linear infinite; }
 .sig-node:hover .sig-disc, .sig-node.is-on .sig-disc { fill: var(--cobalt); }
 
