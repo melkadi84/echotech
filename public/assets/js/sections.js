@@ -211,12 +211,12 @@ function initClientsDrag(root) {
     moved = false;
     startX = e.clientX;
     startTime = Number(animation.currentTime);
-    marquee.setPointerCapture(e.pointerId);
   });
   marquee.addEventListener("pointermove", (e) => {
     if (!active) return;
     const dx = e.clientX - startX;
     if (!moved && Math.abs(dx) < 6) return;
+    if (!moved) marquee.setPointerCapture(e.pointerId);
     moved = true;
     root.classList.add("is-dragging");
     // Dragging right pulls earlier content into view, so it rewinds the clock.
@@ -278,13 +278,15 @@ function initProjects() {
       if (a.dataset.project === slug) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current");
     });
   };
-  links.forEach((a) => a.addEventListener("click", (e) => {
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest("a[data-project]");
+    if (!a) return;
     e.preventDefault();
     show(a.dataset.project);
     const target = document.getElementById("project-details");
     const motionOk = !matchMedia("(prefers-reduced-motion: reduce)").matches;
     target.scrollIntoView({ behavior: motionOk ? "smooth" : "auto", block: "start" });
-  }));
+  });
   const slug = location.hash.slice(1);
   show(panels.some((p) => p.dataset.project === slug) ? slug : panels[0].dataset.project);
 }
