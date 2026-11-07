@@ -11,7 +11,7 @@
     const chips = [...box.querySelectorAll(".mesh__chip")];
     const info = box.querySelector(".mesh__info");
     const dotLayer = box.querySelector(".mesh__dots");
-    const anims = [];
+    let onSelect = () => {};
 
     const link = (id, label) => {
       const a = document.createElement("a");
@@ -56,6 +56,7 @@
         ul.append(li);
       });
       info.append(head, label, ul);
+      onSelect(id);
     };
 
     chips.forEach((c) => c.addEventListener("click", () => select(c.dataset.id)));
@@ -64,22 +65,64 @@
       n.addEventListener("pointerenter", () => select(n.dataset.id));
     });
 
-    if (!reduce && "animate" in Element.prototype) {
-      edges.forEach((e, i) => {
-        const dot = document.createElementNS(NS, "circle");
-        dot.setAttribute("r", "4.5");
-        dot.setAttribute("class", "mesh__dot");
-        dot.dataset.a = e.dataset.a;
-        dot.dataset.b = e.dataset.b;
-        dotLayer.append(dot);
-        const p = (k) => `translate(${e.getAttribute("x" + k)}px, ${e.getAttribute("y" + k)}px)`;
-        anims.push(dot.animate(
-          [{ transform: p(1), opacity: 0 }, { opacity: 1, offset: 0.15 }, { opacity: 1, offset: 0.85 }, { transform: p(2), opacity: 0 }],
-          { duration: 3200 + (i % 4) * 600, delay: i * 350, iterations: Infinity, direction: i % 2 ? "alternate" : "normal", easing: "ease-in-out" },
-        ));
+    /* Pulses: a dot leaves the selected service, the peer flashes when it arrives and answers with a dot back,
+       so every link visibly talks in both directions. Same look as the hero map: transform and opacity only. */
+    let generation = 0;
+    let running = false;
+    const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+    const pos = (id) => {
+      const d = box.querySelector(`.mesh__node[data-id="${id}"] .mesh__disc`);
+      return { x: Number(d.getAttribute("cx")), y: Number(d.getAttribute("cy")), r: Number(d.getAttribute("r")) };
+    };
+    const flash = (id) => {
+      const f = box.querySelector(`.mesh__node[data-id="${id}"] .mesh__flash`);
+      f.animate([{ transform: "scale(1)", opacity: 0.9 }, { transform: "scale(1.8)", opacity: 0 }], { duration: 900, easing: "ease-out" });
+    };
+    const travel = (from, to, cls) => {
+      const dot = document.createElementNS(NS, "circle");
+      dot.setAttribute("r", "4.5");
+      dot.setAttribute("class", `mesh__dot ${cls}`);
+      dotLayer.append(dot);
+      const a = pos(from), b = pos(to);
+      const done = dot.animate(
+        [{ transform: `translate(${a.x}px, ${a.y}px)`, opacity: 0 }, { opacity: 1, offset: 0.12 }, { opacity: 1, offset: 0.88 }, { transform: `translate(${b.x}px, ${b.y}px)`, opacity: 0 }],
+        { duration: 1100, easing: "ease-in-out", fill: "forwards" },
+      ).finished;
+      return done.then(() => dot.remove());
+    };
+    const loop = async (from, to, delay, gen) => {
+      await wait(delay);
+      while (gen === generation) {
+        if (!running) { await wait(400); continue; }
+        await travel(from, to, "is-out");
+        flash(to);
+        await wait(250);
+        await travel(to, from, "is-back");
+        flash(from);
+        await wait(1400);
+      }
+    };
+    const startPulses = (id) => {
+      generation += 1;
+      const mine = cfg.edges.filter(([a, b]) => a === id || b === id);
+      const list = mine.length ? mine : cfg.edges;
+      list.forEach(([a, b], i) => {
+        const from = a === id || !mine.length ? a : b;
+        loop(from, from === a ? b : a, i * 420, generation);
       });
-      /* Pause while off-screen so the page stays light. */
-      new IntersectionObserver(([en]) => anims.forEach((a) => (en.isIntersecting ? a.play() : a.pause()))).observe(box);
+    };
+
+    if (!reduce && "animate" in Element.prototype) {
+      nodes.forEach((n) => {
+        const d = n.querySelector(".mesh__disc");
+        const ring = document.createElementNS(NS, "circle");
+        ring.setAttribute("class", "mesh__flash");
+        ["cx", "cy", "r"].forEach((k) => ring.setAttribute(k, d.getAttribute(k)));
+        n.insertBefore(ring, d);
+      });
+      new IntersectionObserver(([en]) => { running = en.isIntersecting; }).observe(box);
+      onSelect = startPulses;
+      startPulses(cfg.current || "systems");
     }
 
     if (cfg.current) select(cfg.current);

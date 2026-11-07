@@ -218,8 +218,8 @@ html:not(.js) .boot { display: none; }
 }
 .hero__grid { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: clamp(1.5rem, 4vw, 4rem); align-items: start; }
 .hero__content { position: relative; z-index: 2; }
-.hero h1 { font-size: clamp(2.5rem, 4.6vw + 0.8rem, 5.4rem); font-weight: 700; max-width: 14ch; line-height: 1.06; }
-[lang="ar"] .hero h1 { max-width: 13ch; line-height: 1.25; font-size: clamp(2.4rem, 4.4vw + 0.8rem, 5rem); }
+.hero h1 { font-size: clamp(2rem, 3vw + 0.9rem, 3.9rem); font-weight: 700; max-width: 14ch; line-height: 1.06; }
+[lang="ar"] .hero h1 { max-width: 14ch; line-height: 1.3; font-size: clamp(1.9rem, 2.8vw + 0.9rem, 3.5rem); }
 .hero__sub { margin-block-start: 1.75rem; font-size: clamp(1.05rem, 1.1vw + 0.7rem, 1.3rem); color: var(--muted); max-width: 44ch; }
 .hero__actions { margin-block-start: 2.25rem; display: flex; flex-wrap: wrap; gap: 0.9rem; }
 
@@ -706,6 +706,12 @@ html:not(.js) .boot { display: none; }
 [data-theme="dark"] .mesh__edge.is-on { stroke: var(--sky); }
 .mesh__edge.is-dim { opacity: 0.35; }
 .mesh__dot { fill: var(--cobalt); opacity: 0; }
+.mesh__dot.is-back { fill: var(--sky); }
+.mesh__flash { fill: none; stroke: var(--cobalt); stroke-width: 2; opacity: 0; transform-box: fill-box; transform-origin: center; pointer-events: none; }
+[data-theme="dark"] .mesh__flash { stroke: var(--sky); }
+.mesh__echo { fill: none; stroke: var(--cobalt); stroke-width: 1.4; vector-effect: non-scaling-stroke; opacity: 0; transform-box: fill-box; transform-origin: center; animation: sig-echo 6s linear infinite; pointer-events: none; }
+.mesh__echo:nth-of-type(2) { animation-delay: -2s; } .mesh__echo:nth-of-type(3) { animation-delay: -4s; }
+[data-theme="dark"] .mesh__echo { stroke: var(--sky); }
 [data-theme="dark"] .mesh__dot { fill: var(--sky); }
 .mesh__node { cursor: pointer; }
 .mesh__disc { fill: var(--bg); stroke: var(--cobalt); stroke-width: 1.6; transition: fill 0.3s, stroke-width 0.3s; }
@@ -729,7 +735,7 @@ html:not(.js) .boot { display: none; }
 .mesh__info li { display: grid; gap: 0.15rem; padding-block-start: 0.75rem; border-block-start: 1px solid var(--line); }
 .mesh__info li span { color: var(--muted); font-size: 0.92rem; }
 @media (max-width: 720px) { .mesh__svg { display: none; } }
-@media (prefers-reduced-motion: reduce) { .mesh__dot { display: none; } }
+@media (prefers-reduced-motion: reduce) { .mesh__dot, .mesh__flash, .mesh__echo { display: none; } }
 .connect { padding-block: 0 clamp(3rem, 6vw, 5rem); }
 .picker__more { margin-block-start: clamp(1.5rem, 3vw, 2.5rem); max-width: none; }
 .phero + .mesh { padding-block-start: clamp(2rem, 4vw, 3rem); }
@@ -754,3 +760,6 @@ html:not(.js) .boot { display: none; }
   .mesh__chip { justify-content: flex-start; width: 100%; }
   .mesh__info { grid-area: info; }
 }
+
+/* 44px touch targets for the header controls on touch screens */
+@media (max-width: 880px) { .icon-btn, .lang { min-width: 44px; min-height: 44px; } }
