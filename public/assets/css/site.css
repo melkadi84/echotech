@@ -811,3 +811,53 @@ html:not(.js) .boot { display: none; }
 @media (min-width: 721px) { .mesh__box { grid-template-columns: minmax(0, 1fr) 21rem; } .mesh__chips { gap: 0.4rem; } }
 @media (max-width: 720px) { .mesh__chips { flex-direction: column; flex-wrap: nowrap; align-items: stretch; } .mesh__chip small { display: block; } .mesh__chip:hover, [dir="rtl"] .mesh__chip:hover { transform: none; } }
 @media (prefers-reduced-motion: reduce) { .mesh__chip:hover { transform: none; } }
+
+/* ---------- Mobile-first screens (≤860px) ----------
+   Each section fills one screen, so a visitor sees a whole idea without scrolling inside it.
+   Long lists become swipeable carousels: the next card peeks in to show there is more. */
+@media (max-width: 860px) {
+  html { scroll-padding-block-start: 4.25rem; scroll-snap-type: y proximity; }
+  main > section { min-height: calc(100svh - 4.25rem); display: flex; flex-direction: column; justify-content: center; padding-block: 2rem 2.5rem; scroll-snap-align: start; }
+  main > section > .wrap { width: min(100% - 2 * var(--gutter), var(--max)); }
+  .head { margin-block-end: 1.25rem; }
+  .head h2 { font-size: clamp(1.7rem, 6vw, 2.2rem); }
+  .head p { font-size: 1rem; }
+
+  .steps, .principles, .others__list, .mesh__chips, .footer ul { display: flex; flex-wrap: nowrap; flex-direction: row; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); scroll-padding-inline: var(--gutter); padding-block: 0.25rem; align-items: stretch; justify-content: flex-start; }
+  .steps::-webkit-scrollbar, .principles::-webkit-scrollbar, .others__list::-webkit-scrollbar, .mesh__chips::-webkit-scrollbar, .footer ul::-webkit-scrollbar, .sc-tabs::-webkit-scrollbar { display: none; }
+
+  .steps { gap: 0.9rem; }
+  .steps::before { display: none; }
+  .step { flex: 0 0 78%; scroll-snap-align: start; padding: 3.5rem 1.25rem 1.25rem; border: 1px solid var(--line); border-radius: 20px; background: var(--bg-2); }
+  .step::before { inset-inline-start: 1.25rem; inset-block-start: 1.25rem; box-shadow: none; background: var(--bg-2); }
+  .step::after { inset-inline-start: calc(1.25rem + 7px); inset-block-start: calc(1.25rem + 7px); }
+
+  .principles { gap: 0.9rem; }
+  .principles > div { flex: 0 0 78%; scroll-snap-align: start; padding: 1.25rem; border: 1px solid var(--line); border-block-start: 2px solid var(--cobalt); border-radius: 20px; background: var(--bg-2); }
+
+  .others__list > * { flex: 0 0 82%; scroll-snap-align: start; }
+  .mesh__chips { gap: 0.75rem; }
+  .mesh__chips > * { flex: 0 0 80%; scroll-snap-align: start; }
+
+  .sc { grid-template-columns: 1fr; gap: 1rem; margin-block-start: 1rem; }
+  .sc-tabs { display: flex; gap: 0.5rem; overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: none; margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); }
+  .sc-tab { flex: none; width: 13.5rem; scroll-snap-align: start; min-height: 56px; }
+  .sc-tab small { display: none; }
+  .sc-tab[aria-selected="true"], [dir="rtl"] .sc-tab[aria-selected="true"] { transform: none; }
+
+  .panel { padding: 1.25rem; border-radius: 22px; }
+  .panel__icon { width: 44px; height: 44px; margin-block-end: 0.75rem; }
+  .panel h3 { font-size: 1.5rem; }
+  .panel__summary { margin-block: 0.4rem 1rem; font-size: 1rem; }
+  .svc__points { gap: 0.45rem; font-size: 0.96rem; }
+  .panel .btn { margin-block-start: 1rem; }
+  .panel__actions { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+  .picker { gap: 1rem; }
+  .picker__more { margin-block-start: 1rem; }
+
+  /* Footer lists: one swipeable row of 44px chips instead of a long column of small links. */
+  .footer__grid { grid-template-columns: 1fr; gap: 1.5rem; }
+  .footer ul { gap: 0.5rem; }
+  .footer ul a { display: flex; align-items: center; min-height: 44px; padding-inline: 1rem; border: 1px solid var(--line); border-radius: 999px; white-space: nowrap; }
+  .footer__h { margin-block-end: 0.6rem; }
+}
