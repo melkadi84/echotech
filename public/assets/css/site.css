@@ -1063,3 +1063,46 @@ main > section:not(.hero) { min-height: 0; padding-block: clamp(2.5rem, 7svh, 4.
   .kpi { padding-block: 0.6rem; }
   .chart__bars { height: 5.5rem; }
 }
+
+/* Desktop, short windows: trim headings and paddings so whole sections show at once. */
+@media (min-width: 861px) {
+  main > section:not(.hero) { padding-block: clamp(1rem, 3svh, 2rem); }
+  .head { margin-block-end: 0.75rem; }
+  .head h2 { font-size: clamp(1.9rem, 4.2svh + 0.6rem, 2.6rem); }
+  .picker .panel { padding: 1.25rem 1.75rem; }
+  .picker .tab { padding-block: 0.55rem; }
+  .check .head p { display: none; }
+  .check__item { padding-block: 0.5rem; }
+  .check__grid { margin-block-start: 0.75rem; }
+  .mesh__chip small { display: none; }
+  .mesh__chip { min-height: 40px; }
+  .mesh__svg { max-height: 20rem; }
+  .mesh__box { margin-block-start: 0.5rem; gap: 0.75rem; }
+  .mesh__info { min-height: 0; padding: 1rem 1.25rem; }
+  .mesh .head p { display: none; }
+  .phero + .mesh { padding-block-start: 1rem; }
+}
+
+@media (min-width: 861px) {
+  .mesh .mesh__box { grid-template-columns: minmax(0, 1fr) 24rem; }
+  .mesh .mesh__chips { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.4rem; }
+  .mesh .mesh__chip { min-height: 44px; padding-block: 0; }
+  .mesh .mesh__chip-text small { display: none; }
+  .mesh .mesh__svg { max-height: 17rem; }
+  .mesh__info ul { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.5rem 1.25rem; }
+  .mesh__info li span { font-size: 0.85rem; line-height: 1.4; }
+  .mesh__with { margin-block: 0.5rem 0.25rem; }
+}
+
+@media (min-width: 861px) {
+  .mesh__with { display: none; }
+  .mesh__info li { padding: 0.5rem 0.7rem; }
+  .mesh__info li span span, .mesh__info li > span > span { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .mesh__info .mesh__head { margin-block-end: 0.5rem; }
+}
+
+@media (min-width: 861px) {
+  .mesh__card { padding: 0.6rem 0.8rem; gap: 0.6rem; }
+  .mesh__card .mesh__body span { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-size: 0.85rem; line-height: 1.4; }
+  .mesh__card svg { width: 28px; height: 28px; }
+}
