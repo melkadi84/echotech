@@ -138,7 +138,7 @@ const navHtml = (t, ctx) => {
     if (n.id === "services") {
       const items = t.services.items.map((s) => `<a href="${svcPath(t, s.id)}">${iconSvg(s.id)}<span><strong>${esc(s.name)}</strong><small>${esc(s.summary)}</small></span></a>`).join("");
       const current = ctx.section === "services" ? ' aria-current="true"' : "";
-      return `<div class="nav__group"><a class="nav__link" href="${base}#services"${current}>${esc(n.label)}</a><div class="nav__menu" role="group" aria-label="${esc(t.pages.menuHint)}">${items}</div></div>`;
+      return `<div class="nav__group"><a class="nav__link" href="${servicesIndexPath(t)}"${current}>${esc(n.label)}</a><div class="nav__menu" role="group" aria-label="${esc(t.pages.menuHint)}">${items}</div></div>`;
     }
     if (n.id === "work") {
       const current = ctx.section === "work" ? ' aria-current="page"' : "";
