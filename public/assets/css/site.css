@@ -1146,3 +1146,13 @@ main > section:not(.hero) { min-height: 0; padding-block: clamp(2.5rem, 7svh, 4.
   .mesh__slide p { color: var(--muted); max-width: none; }
   .mesh__slide .btn { margin-block-start: 0.5rem; }
 }
+
+/* Desktop: service buttons back to one readable column with their one-line descriptions. */
+@media (min-width: 861px) {
+  .mesh .mesh__box { grid-template-columns: minmax(0, 1fr) 22rem; }
+  .mesh .mesh__chips { display: flex; flex-direction: column; flex-wrap: nowrap; gap: 0.4rem; }
+  .mesh .mesh__chip { min-height: 44px; padding-block: 0.45rem; }
+  .mesh .mesh__chip small { display: block; font-size: 0.82rem; line-height: 1.35; }
+  .mesh .mesh__chip-text small { display: block; }
+}
+@media (min-width: 861px) { .mesh .mesh__box { column-gap: 3rem; } .mesh .mesh__svg { margin-inline-end: 1rem; } }
