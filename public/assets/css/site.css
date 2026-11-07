@@ -169,10 +169,10 @@ html:not(.js) .boot { display: none; }
   .nav {
     position: fixed; inset: 4.25rem 0 auto 0; flex-direction: column; align-items: stretch; gap: 0;
     background: var(--bg); padding: 1rem var(--gutter) 1.5rem; border-block-end: 1px solid var(--line);
-    transform: translateY(-1rem); opacity: 0; visibility: hidden; transition: all 0.25s var(--ease);
+    transform: translateY(-1rem); opacity: 0; visibility: hidden; pointer-events: none; transition: all 0.25s var(--ease);
     margin: 0;
   }
-  .nav.is-open { transform: none; opacity: 1; visibility: visible; }
+  .nav.is-open { transform: none; opacity: 1; visibility: visible; pointer-events: auto; }
   .nav a.nav__link { padding: 0.9rem 0; border-radius: 0; border-block-end: 1px solid var(--line); font-size: 1.05rem; }
   .nav .btn { margin-block-start: 1rem; margin-inline-start: 0; padding: 0.85rem 1.5rem; font-size: 1rem; justify-content: center; }
   .tools { margin-inline-start: auto; }
@@ -354,7 +354,7 @@ html:not(.js) .boot { display: none; }
   .nav a.nav__link { font-weight: 500; }
   .nav__group { display: block; border-block-end: 1px solid var(--line); padding-block-end: 0.6rem; }
   .nav .nav__group a.nav__link { border-block-end: 0; padding-block-end: 0.5rem; }
-  .nav__menu { position: static; width: auto; margin-inline-start: 0.25rem; padding: 0 0 0 0; padding-inline-start: 0.9rem; border: 0; border-inline-start: 1px solid var(--line); border-radius: 0; box-shadow: none; opacity: 1; visibility: visible; transform: none; background: none; }
+  .nav__menu { position: static; width: auto; margin-inline-start: 0.25rem; padding: 0 0 0 0; padding-inline-start: 0.9rem; border: 0; border-inline-start: 1px solid var(--line); border-radius: 0; box-shadow: none; opacity: 1; visibility: inherit; transform: none; background: none; }
   .nav__menu a { padding: 0.5rem 0.25rem; min-height: 44px; align-items: center; color: var(--muted); }
   .nav__menu a:hover { color: var(--ink); }
   .nav__menu strong { font-weight: 400; font-size: 0.98rem; }
@@ -890,3 +890,12 @@ main > section > .wrap { width: min(100% - 2 * var(--gutter), var(--max)); }
   [dir="rtl"] .nav a.nav__link[aria-current] { box-shadow: inset -3px 0 0 var(--ring); }
 }
 .nav a.nav__link { white-space: nowrap; }
+
+/* Phones and tablets scroll by touch: snap only when a swipe ends near a section edge, so a tall section can never trap the page. */
+@media (max-width: 860px), (pointer: coarse) {
+  html { scroll-snap-type: y proximity; }
+}
+
+/* 44px touch targets for the brand and direct-contact links. */
+.brand { min-height: 44px; }
+.contact a[href^="mailto:"], .contact a[href*="wa.me"] { display: inline-flex; align-items: center; min-height: 44px; }
