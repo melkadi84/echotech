@@ -1115,3 +1115,12 @@ main > section:not(.hero) { min-height: 0; padding-block: clamp(2.5rem, 7svh, 4.
   .head--action { grid-template-columns: minmax(0, 1fr); gap: 0.6rem; }
   .head--action > .head__action { grid-column: 1; grid-row: auto; justify-self: start; min-height: 44px; padding-block: 0.55rem; }
 }
+
+/* With the details panel gone the diagram can use the room. */
+@media (min-width: 861px) { .mesh .mesh__svg { max-height: min(32rem, 62svh); } }
+
+@media (max-width: 860px) {
+  .mesh .mesh__chips { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.4rem; }
+  .mesh .mesh__chip { min-height: 52px; padding-block: 0.3rem; }
+  .mesh .mesh__chip small { display: none; }
+}

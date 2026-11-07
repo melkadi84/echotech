@@ -35,6 +35,8 @@
       chips.forEach((c) => c.setAttribute("aria-pressed", String(c.dataset.id === id)));
       box.querySelectorAll(".mesh__dot").forEach((d) => d.classList.toggle("is-on", d.dataset.a === id || d.dataset.b === id));
 
+      // The details panel was removed from the page; the diagram and buttons carry the message.
+      if (!info) { onSelect(id); return; }
       info.textContent = "";
       const icon = (key) => {
         const span = document.createElement("span");

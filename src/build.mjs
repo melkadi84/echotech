@@ -468,7 +468,6 @@ function meshSection(t, current = "systems", idAttr = "mesh") {
       <div class="mesh__box" data-mesh data-config="${esc(JSON.stringify(data))}">
         <svg class="mesh__svg" viewBox="-70 0 940 540" aria-hidden="true" focusable="false"><g class="mesh__echoes"><circle class="mesh__echo" cx="${cx}" cy="${cy}" r="34"/><circle class="mesh__echo" cx="${cx}" cy="${cy}" r="34"/><circle class="mesh__echo" cx="${cx}" cy="${cy}" r="34"/></g><g class="mesh__edges">${lines}</g><g class="mesh__dots"></g>${nodes}</svg>
         <div class="mesh__chips" role="group" aria-label="${esc(m.label)}">${chips}</div>
-        <div class="mesh__info" role="status" aria-live="polite"><p class="mesh__hint">${esc(m.hint)}</p></div>
       </div>
     </div>
   </section>`;
