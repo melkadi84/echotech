@@ -31,6 +31,45 @@ function initPicker() {
     select(Math.min(last, Math.max(0, moves[e.key])), true);
   });
 
+  // Small screens: the tab row is a swipeable strip that advances on its own until the visitor touches it.
+  const small = matchMedia("(max-width: 880px)");
+  const motionOk = !matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let current = 0;
+  const show = (index, focus) => { current = index; select(index, focus); };
+  let timer = 0;
+  let stopped = !motionOk;
+  let visible = false;
+  const stop = () => { stopped = true; clearInterval(timer); };
+  const tick = () => {
+    if (stopped || !visible || !small.matches) return;
+    show((current + 1) % tabs.length);
+    // Rect maths keeps this correct in RTL and never scrolls the page itself.
+    const t = tabs[current].getBoundingClientRect();
+    const l = list.getBoundingClientRect();
+    list.scrollBy({ left: t.left + t.width / 2 - (l.left + l.width / 2), behavior: "smooth" });
+  };
+  tabs.forEach((tab, i) => tab.addEventListener("click", () => { current = i; }));
+  if (motionOk) {
+    timer = setInterval(tick, 4500);
+    new IntersectionObserver(([en]) => { visible = en.isIntersecting; }).observe(root);
+    ["pointerdown", "keydown", "focusin", "wheel"].forEach((ev) => root.addEventListener(ev, stop, { once: true }));
+  }
+
+  // Mouse users can drag the strip like a touch screen; touch and trackpads already scroll natively.
+  let drag = null;
+  list.addEventListener("pointerdown", (e) => {
+    if (e.pointerType !== "mouse" || !small.matches) return;
+    drag = { x: e.clientX, left: list.scrollLeft, moved: false };
+  });
+  window.addEventListener("pointermove", (e) => {
+    if (!drag) return;
+    const dx = e.clientX - drag.x;
+    if (Math.abs(dx) > 5) { drag.moved = true; list.classList.add("is-dragging"); }
+    if (drag.moved) list.scrollLeft = drag.left - dx;
+  });
+  window.addEventListener("pointerup", () => { list.classList.remove("is-dragging"); setTimeout(() => { drag = null; }, 0); });
+  list.addEventListener("click", (e) => { if (drag && drag.moved) { e.preventDefault(); e.stopPropagation(); } }, true);
+
   // Hero links like #svc-cctv open that service.
   const openFromHash = (hash) => {
     const index = panels.findIndex((p) => `#${p.id}` === hash);
