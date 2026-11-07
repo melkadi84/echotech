@@ -286,20 +286,9 @@ html:not(.js) .boot { display: none; }
 .svc__points li::before { content: ""; position: absolute; inset-inline-start: 0; inset-block-start: 0.78em; width: 6px; height: 6px; border-radius: 50%; background: var(--ring); }
 @media (max-width: 860px) {
   .picker { grid-template-columns: 1fr; gap: 1.75rem; }
-  .picker__list, .picker__list[hidden] { display: none; }
-  .picker__panels { display: flex; gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); scroll-padding-inline: var(--gutter); cursor: grab; }
-  .picker__panels::-webkit-scrollbar { display: none; }
-  .picker__panels.is-dragging { cursor: grabbing; scroll-snap-type: none; user-select: none; }
-  .picker.is-ready .panel, .picker.is-ready .panel[hidden] { display: block; flex: 0 0 100%; scroll-snap-align: start; scroll-snap-stop: always; animation: none; }
-  .picker__nav:not([hidden]) { display: flex; align-items: center; justify-content: center; gap: 1.25rem; margin-block-start: -0.5rem; }
 }
-.picker__nav { display: none; }
-.picker__btn svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.picker__btn--next svg { transform: scaleX(-1); }
-[dir="rtl"] .picker__btn svg { transform: scaleX(-1); }
-[dir="rtl"] .picker__btn--next svg { transform: none; }
-.picker__btn:disabled { opacity: 0.35; cursor: default; }
-.picker__count { min-width: 5rem; text-align: center; color: var(--muted); font-variant-numeric: tabular-nums; }
+.panel__chev { display: none; }
+@media (max-width: 860px) { .panel__chev { display: block; } }
 
 /* ---------- Sub pages ---------- */
 .crumbs ol { display: flex; flex-wrap: wrap; align-items: center; gap: 0; color: var(--muted); font-size: 0.95rem; }
@@ -669,7 +658,6 @@ html:not(.js) .boot { display: none; }
 .crm__btn { justify-self: end; min-height: 44px; padding-inline: 1rem; font-size: 0.875rem; }
 @media (max-width: 960px) {
   .sc { grid-template-columns: minmax(0, 1fr); }
-  .sc-tabs { grid-auto-flow: column; grid-auto-columns: minmax(13rem, 1fr); overflow-x: auto; padding-block-end: 0.5rem; scroll-snap-type: x proximity; }
   .sc-tab { scroll-snap-align: start; }
   .sc-tab[aria-selected="true"], [dir="rtl"] .sc-tab[aria-selected="true"] { transform: none; }
 }
@@ -817,61 +805,64 @@ html:not(.js) .boot { display: none; }
 @media (max-width: 720px) { .mesh__chips { flex-direction: column; flex-wrap: nowrap; align-items: stretch; } .mesh__chip small { display: block; } .mesh__chip:hover, [dir="rtl"] .mesh__chip:hover { transform: none; } }
 @media (prefers-reduced-motion: reduce) { .mesh__chip:hover { transform: none; } }
 
-/* ---------- Mobile-first screens (≤860px) ----------
-   Each section fills one screen, so a visitor sees a whole idea without scrolling inside it.
-   Long lists become swipeable carousels: the next card peeks in to show there is more. */
+/* ---------- Phones and tablets (≤860px) ----------
+   Everything stacks vertically so the visitor reads the full detail without swiping sideways.
+   Services open and close inside one section (an accordion), so the section stays short. */
 @media (max-width: 860px) {
-  main > section { padding-block: 2rem 2.5rem; }
+  main > section { padding-block: 2.5rem 3rem; }
   .head { margin-block-end: 1.25rem; }
   .head h2 { font-size: clamp(1.7rem, 6vw, 2.2rem); }
   .head p { font-size: 1rem; }
-
-  .steps, .principles, .others__list, .mesh__chips, .footer ul { display: flex; flex-wrap: nowrap; flex-direction: row; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); scroll-padding-inline: var(--gutter); padding-block: 0.25rem; align-items: stretch; justify-content: flex-start; }
-  .steps::-webkit-scrollbar, .principles::-webkit-scrollbar, .others__list::-webkit-scrollbar, .mesh__chips::-webkit-scrollbar, .footer ul::-webkit-scrollbar, .sc-tabs::-webkit-scrollbar { display: none; }
-
-  .steps { gap: 0.9rem; }
-  .steps::before { display: none; }
-  .step { flex: 0 0 78%; scroll-snap-align: start; padding: 3.5rem 1.25rem 1.25rem; border: 1px solid var(--line); border-radius: 20px; background: var(--bg-2); }
-  .step::before { inset-inline-start: 1.25rem; inset-block-start: 1.25rem; box-shadow: none; background: var(--bg-2); }
-  .step::after { inset-inline-start: calc(1.25rem + 7px); inset-block-start: calc(1.25rem + 7px); }
-
-  .principles { gap: 0.9rem; }
-  .principles > div { flex: 0 0 78%; scroll-snap-align: start; padding: 1.25rem; border: 1px solid var(--line); border-block-start: 2px solid var(--cobalt); border-radius: 20px; background: var(--bg-2); }
-
-  .others__list > * { flex: 0 0 82%; scroll-snap-align: start; }
-  .mesh__chips { gap: 0.75rem; }
-  .mesh__chips > * { flex: 0 0 80%; scroll-snap-align: start; }
+  .footer__grid > *, .mesh__box > *, .picker > *, .sc > * { min-width: 0; }
 
   .sc { grid-template-columns: 1fr; gap: 1rem; margin-block-start: 1rem; }
-  .sc-tabs { display: flex; gap: 0.5rem; overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: none; margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); }
-  .sc-tab { flex: none; width: 13.5rem; scroll-snap-align: start; min-height: 56px; }
-  .sc-tab small { display: none; }
   .sc-tab[aria-selected="true"], [dir="rtl"] .sc-tab[aria-selected="true"] { transform: none; }
 
-  .panel { padding: 1.25rem; border-radius: 22px; }
-  .panel__icon { width: 44px; height: 44px; margin-block-end: 0.75rem; }
-  .panel h3 { font-size: 1.5rem; }
-  .panel__summary { margin-block: 0.4rem 1rem; font-size: 1rem; }
+  /* Service accordion */
+  .picker { gap: 1rem; }
+  .picker__list, .picker__list[hidden] { display: none; }
+  .picker__panels { display: grid; gap: 0.75rem; }
+  .picker.is-ready .panel, .picker.is-ready .panel[hidden] { display: block; animation: none; padding: 0; border-radius: 18px; overflow: hidden; }
+  .panel > :not(.panel__head) { margin-inline: 1.25rem; }
+  .panel > .panel__actions { margin-block-end: 1.25rem; }
+  .panel__head { display: flex; align-items: center; gap: 0.9rem; width: 100%; min-height: 64px; padding: 0.75rem 1.25rem; cursor: pointer; text-align: start; }
+  .panel__head .panel__icon { width: 36px; height: 36px; margin: 0; flex: none; }
+  .panel__head h3 { flex: 1; margin: 0; font-size: 1.25rem; }
+  .panel__chev { flex: none; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.25s var(--ease); }
+  .panel__head[aria-expanded="true"] .panel__chev { transform: rotate(180deg); }
+  .panel.is-collapsed > :not(.panel__head) { display: none; }
+  .panel__summary { margin-block: 0.25rem 1rem; font-size: 1rem; }
   .svc__points { gap: 0.45rem; font-size: 0.96rem; }
   .panel .btn { margin-block-start: 1rem; }
   .panel__actions { display: flex; flex-wrap: wrap; gap: 0.6rem; }
-  .picker { gap: 1rem; }
   .picker__more { margin-block-start: 1rem; }
 
-  /* Footer lists: one swipeable row of 44px chips instead of a long column of small links. */
+  /* Clients: a plain vertical list on small screens instead of a sliding strip. */
+  .marquee { overflow: visible; -webkit-mask-image: none; mask-image: none; cursor: auto; }
+  [dir="rtl"] .marquee { direction: rtl; }
+  .marquee__track { display: block; width: auto; animation: none; transform: none; }
+  .marquee__set { flex-direction: column; }
+  .marquee__set--copy, .client--rep, .clients__toggle { display: none; }
+  .client a { display: flex; align-items: center; gap: 1rem; width: auto; min-height: 0; padding: 1rem 0; text-align: start; border-block-end: 1px solid var(--line); border-radius: 0; }
+  .client a .client__logo { margin: 0; flex: none; width: 64px; height: 64px; }
+  .client a .client__text { display: grid; justify-items: start; text-align: start; }
+
+  /* Footer lists: two columns of 44px links instead of long columns of small ones. */
   .footer__grid { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
-  .footer__grid > *, .mesh__box > *, .picker > *, .sc > * { min-width: 0; }
-  .footer ul { gap: 0.5rem; }
-  .footer ul a { display: flex; align-items: center; min-height: 44px; padding-inline: 1rem; border: 1px solid var(--line); border-radius: 999px; white-space: nowrap; }
-  .footer__h { margin-block-end: 0.6rem; }
+  .footer ul { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 1rem; }
+  .footer ul a { display: flex; align-items: center; min-height: 44px; }
+  .footer__h { margin-block-end: 0.4rem; }
 }
 
 /* ---------- Section-by-section scrolling (all sizes) ----------
    Scrolling never runs free: each wheel flick or swipe lands on the next section, with a smooth glide.
    A section taller than the screen (a long form, say) still scrolls inside itself before it snaps on. */
 html { scroll-padding-block-start: 4.25rem; scroll-snap-type: y mandatory; scroll-behavior: smooth; }
-main > section { min-height: calc(100svh - 4.25rem); display: flex; flex-direction: column; justify-content: center; scroll-snap-align: start; }
-main > section > .wrap { width: min(100% - 2 * var(--gutter), var(--max)); }
+main > section { scroll-snap-align: start; }
+@media (min-width: 861px) {
+  main > section { min-height: calc(100svh - 4.25rem); display: flex; flex-direction: column; justify-content: center; }
+  main > section > .wrap { width: min(100% - 2 * var(--gutter), var(--max)); }
+}
 .footer { scroll-snap-align: end; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; scroll-snap-type: y proximity; } }
 

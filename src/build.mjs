@@ -189,7 +189,10 @@ const clientsBlock = (t, ctx) => {
     const tab = hidden ? ' tabindex="-1"' : "";
     const one = clientList(t).map((c) => `<li class="client"><a href="${c.url}" target="_blank" rel="noopener"${tab}><span class="client__logo">${c.logo}</span><span class="client__text"><strong>${esc(c.name)}</strong><small class="client__brief" data-brief-site="${c.url}">${esc(c.kind)}</small></span></a></li>`).join("");
     const slot = `<li class="client client--slot"><a href="${contactHref}"${tab}><span class="client__logo">${markSvg("client__mark")}</span><span class="client__text"><strong>${esc(st.slotName)}</strong><small>${esc(st.slotKind)}</small></span></a></li>`;
-    return (one + slot).repeat(3);
+    const unit = one + slot;
+    // Repeats exist only for the sliding strip; small screens show the first copy as a plain list.
+    const repeat = unit.replaceAll('class="client"', 'class="client client--rep"').replaceAll('class="client client--slot"', 'class="client client--slot client--rep"');
+    return unit + repeat + repeat;
   };
   return `<div class="clients" role="group" aria-label="${esc(st.label)}" data-clients>
         <button class="clients__toggle" type="button" aria-pressed="false" data-pause="${esc(st.pause)}" data-play="${esc(st.play)}" hidden>${esc(st.pause)}</button>
@@ -469,10 +472,9 @@ function homeBody(t) {
           <button class="tab" type="button" role="tab" id="tab-${s.id}" aria-controls="svc-${s.id}" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}" data-index="${i}">
             ${iconSvg(s.id)}<span>${esc(s.name)}</span>
           </button>`).join("");
-  const chev = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7"/></svg>';
   const services = t.services.items.map((s, i) => `
         <article class="panel" id="svc-${s.id}" role="tabpanel" aria-labelledby="tab-${s.id}" data-index="${i}">
-          ${iconSvg(s.id, "panel__icon")}<h3>${esc(s.name)}</h3>
+          <div class="panel__head">${iconSvg(s.id, "panel__icon")}<h3>${esc(s.name)}</h3><svg class="panel__chev" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6"/></svg></div>
           <p class="panel__summary">${esc(s.summary)}</p>
           <ul class="svc__points">${s.points.map((p) => `<li>${esc(p)}</li>`).join("")}</ul>
           <div class="panel__actions"><a class="btn" href="#contact" data-pick="${i}">${esc(t.services.cta)}</a><a class="btn btn--ghost" href="${svcPath(t, s.id)}">${esc(t.pages.learn)}</a></div>
@@ -502,11 +504,6 @@ function homeBody(t) {
         <div class="picker__list" role="tablist" aria-label="${esc(t.services.pick)}" aria-orientation="vertical" hidden>${tabs}
         </div>
         <div class="picker__panels" data-track>${services}</div>
-        <div class="picker__nav" hidden>
-          <button class="icon-btn picker__btn" type="button" data-step="-1" aria-label="${esc(t.services.prev)}">${chev}</button>
-          <span class="picker__count" aria-live="polite" data-of="${esc(t.services.of)}"></span>
-          <button class="icon-btn picker__btn picker__btn--next" type="button" data-step="1" aria-label="${esc(t.services.next)}">${chev}</button>
-        </div>
       </div>
       <p class="picker__more"><a class="btn btn--ghost" href="${servicesIndexPath(t)}">${esc(t.pages.connectLink)}</a></p>
     </div>

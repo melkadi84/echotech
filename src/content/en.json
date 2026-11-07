@@ -389,9 +389,6 @@
       }
     ],
     "pick": "Choose a service",
-    "prev": "Previous service",
-    "next": "Next service",
-    "of": "of",
     "cta": "Request a quote for this service"
   },
   "work": {
