@@ -426,7 +426,6 @@ html:not(.js) .boot { display: none; }
 }
 [data-theme="dark"] .step::after { background: var(--sky); }
 .rv-ready .step:not(.is-in)::after { transform: scale(0); }
-.rv-ready .step { transition-delay: var(--rv-delay, 0s); }
 .rv-ready .step::after { transition-delay: calc(var(--rv-delay, 0s) + 0.2s); }
 .step h3 { font-size: 1.2rem; margin-block-end: 0.4rem; }
 .step p { color: var(--muted); font-size: 0.97rem; }
@@ -669,7 +668,8 @@ html:not(.js) .boot { display: none; }
 
 /* ---------- Motion system ---------- */
 .rv-ready [data-rv]:not(.is-in) { opacity: 0; transform: translateY(1.25rem); }
-.rv-ready [data-rv] { transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); transition-delay: var(--rv-delay, 0s); }
+.rv-ready [data-rv] { transition: opacity 0.6s var(--ease), transform 0.6s var(--ease); }
+.rv-ready [data-rv].is-in { transition-delay: var(--rv-delay, 0s); }
 [data-tilt] { transform: perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)); }
 
 /* ---------- About: story and health check ---------- */
