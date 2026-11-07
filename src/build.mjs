@@ -193,7 +193,7 @@ const clientsBlock = (t, ctx) => {
   const contactHref = `${ctx.isHome ? "" : t.path}#contact`;
   const items = (hidden) => {
     const tab = hidden ? ' tabindex="-1"' : "";
-    const one = clientList(t).map((c) => `<li class="client"><a href="${projectPath(t, c.slug)}"${tab}><span class="client__logo">${c.logo}</span><span class="client__text"><strong>${esc(c.name)}</strong><small class="client__brief" data-brief-site="${c.url}">${esc(c.kind)}</small></span></a></li>`).join("");
+    const one = clientList(t).map((c) => `<li class="client"><a href="${projectPath(t, c.slug)}"${ctx.inlineProjects ? ` data-project="${c.slug}"` : ""}${tab}><span class="client__logo">${c.logo}</span><span class="client__text"><strong>${esc(c.name)}</strong><small class="client__brief" data-brief-site="${c.url}">${esc(c.kind)}</small></span></a></li>`).join("");
     const slot = `<li class="client client--slot"><a href="${contactHref}"${tab}><span class="client__logo">${markSvg("client__mark")}</span><span class="client__text"><strong>${esc(st.slotName)}</strong><small>${esc(st.slotKind)}</small></span></a></li>`;
     const unit = one + slot;
     // Repeats exist only for the sliding strip; small screens show the first copy as a plain list.
@@ -631,7 +631,7 @@ function workPage(t) {
   const pg = t.pages;
   const trail = [[pg.home, t.path], [pg.workTitle, ""]];
   const ctx = {
-    isHome: false, section: "work", path: workPath(t), otherPath: workPath(otherLang(t)), defPath: workPath(langs.en),
+    isHome: false, section: "work", inlineProjects: true, path: workPath(t), otherPath: workPath(otherLang(t)), defPath: workPath(langs.en),
     title: `${pg.workH1} — Echo Tech`, description: pg.workDescription,
     extra: [crumbLd(t, [[pg.home, t.path], [pg.workTitle, workPath(t)]])],
   };
@@ -655,7 +655,16 @@ function workPage(t) {
     </div>
   </section>
 
-  ${showcaseSection(t, "concepts")}
+  <section class="work work--page work--project" id="project-details" aria-live="polite" aria-label="${esc(pg.workList)}">
+    <div class="wrap">
+      ${clientList(t).map((c, i) => `<article class="project" data-project="${c.slug}"${i ? " hidden" : ""}>
+        <div class="project__head"><span class="client__logo">${c.logo}</span><div><h3>${esc(c.name)}</h3><p class="project__kind">${esc(c.kind)}</p></div></div>
+        <p class="project__text">${esc(c.summary)}</p>
+        <div class="project__meta"><p>${esc(pg.delivered)}</p><ul class="case__list">${c.delivered.map((d) => `<li>${esc(d)}</li>`).join("")}</ul></div>
+        <p class="project__actions"><a class="btn" href="${c.url}" rel="noopener" target="_blank">${esc(c.visit)}</a><a class="btn btn--ghost" href="${projectPath(t, c.slug)}">${esc(t.work.strip.more)}</a></p>
+      </article>`).join("\n      ")}
+    </div>
+  </section>
 
   ${ctaBand(t)}`;
   return shell(t, ctx, body);

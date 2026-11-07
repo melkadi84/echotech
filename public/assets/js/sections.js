@@ -267,5 +267,28 @@ function initNavSpy() {
 
 initPicker();
 initNavSpy();
+// Work page: picking a client shows that project's details below instead of leaving the page.
+function initProjects() {
+  const links = [...document.querySelectorAll("[data-project]")].filter((a) => a.matches("a"));
+  const panels = [...document.querySelectorAll("article[data-project]")];
+  if (!links.length || !panels.length) return;
+  const show = (slug) => {
+    panels.forEach((p) => { p.hidden = p.dataset.project !== slug; });
+    document.querySelectorAll(".client:not(.client--rep) a[data-project], .client--rep a[data-project]").forEach((a) => {
+      if (a.dataset.project === slug) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current");
+    });
+  };
+  links.forEach((a) => a.addEventListener("click", (e) => {
+    e.preventDefault();
+    show(a.dataset.project);
+    const target = document.getElementById("project-details");
+    const motionOk = !matchMedia("(prefers-reduced-motion: reduce)").matches;
+    target.scrollIntoView({ behavior: motionOk ? "smooth" : "auto", block: "start" });
+  }));
+  const slug = location.hash.slice(1);
+  show(panels.some((p) => p.dataset.project === slug) ? slug : panels[0].dataset.project);
+}
+
 initClients();
+initProjects();
 initBriefs();

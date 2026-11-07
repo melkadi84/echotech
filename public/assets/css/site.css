@@ -1124,3 +1124,6 @@ main > section:not(.hero) { min-height: 0; padding-block: clamp(2.5rem, 7svh, 4.
   .mesh .mesh__chip { min-height: 52px; padding-block: 0.3rem; }
   .mesh .mesh__chip small { display: none; }
 }
+
+.client a[aria-current="true"] { background: var(--bg-2); }
+.project[hidden] { display: none; }
