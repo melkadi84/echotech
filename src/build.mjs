@@ -593,7 +593,7 @@ function servicePage(t, s, idx) {
   const body = `
   <section class="phero stage" aria-labelledby="page-h">
     <div class="wrap">
-      ${crumbs(t, trail.map(([n, h], i) => [n, i === trail.length - 1 ? "" : h]))}
+
       <div class="phero__title">${iconSvg(s.id, "phero__icon")}<h1 id="page-h">${esc(s.name)}</h1></div>
       <p class="phero__lead">${esc(s.page.lead)}</p>
       <div class="hero__actions"><a class="btn" href="#contact">${esc(t.pages.quote)}</a><a class="btn btn--ghost" href="${t.path}#services">${esc(t.pages.allServices)}</a></div>
@@ -649,7 +649,7 @@ function workPage(t) {
   const body = `
   <section class="phero stage" aria-labelledby="page-h">
     <div class="wrap">
-      ${crumbs(t, trail)}
+
       <h1 id="page-h">${esc(pg.workH1)}</h1>
       <p class="phero__lead">${esc(pg.workIntro)}</p>
     </div>
@@ -689,7 +689,7 @@ function projectPage(t, c) {
   const body = `
   <section class="phero stage" aria-labelledby="page-h">
     <div class="wrap">
-      ${crumbs(t, [[pg.home, t.path], [pg.workTitle, workPath(t)], [c.name, ""]])}
+
       <h1 id="page-h">${esc(c.name)}</h1>
       <p class="phero__lead">${esc(c.kind)}</p>
     </div>
@@ -740,7 +740,7 @@ function servicesPage(t) {
   const body = `
   <section class="phero stage" aria-labelledby="page-h">
     <div class="wrap">
-      ${crumbs(t, [[pg.home, t.path], [pg.servicesTitle, ""]])}
+
       <h1 id="page-h">${esc(pg.servicesH1)}</h1>
       <p class="phero__lead">${esc(pg.servicesLead)}</p>
     </div>
@@ -764,7 +764,7 @@ function aboutPage(t) {
   const body = `
   <section class="phero stage" aria-labelledby="page-h">
     <div class="wrap">
-      ${crumbs(t, [[pg.home, t.path], [pg.aboutTitle, ""]])}
+
       <h1 id="page-h">${esc(pg.aboutH1)}</h1>
       <p class="phero__lead">${esc(pg.aboutLead)}</p>
     </div>
@@ -800,7 +800,7 @@ function contactPage(t) {
   const body = `
   <section class="phero stage" aria-labelledby="page-h">
     <div class="wrap">
-      ${crumbs(t, [[pg.home, t.path], [pg.contactTitle, ""]])}
+
       <h1 id="page-h">${esc(pg.contactH1)}</h1>
       <p class="phero__lead">${esc(pg.contactLead)}</p>
     </div>
