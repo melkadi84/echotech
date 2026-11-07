@@ -583,9 +583,9 @@ html:not(.js) .boot { display: none; }
 .sc-hint { margin-block-start: 1rem; color: var(--muted); font-size: 0.95rem; text-align: center; max-width: none; }
 .sc-cta { margin-block-start: clamp(2rem, 5vw, 3rem); text-align: center; max-width: none; }
 
-/* Device frames keep the dark stage palette in both themes so contrast stays fixed. */
+/* Device frames follow the theme like everything else; only the dark theme swaps in the stage palette. */
+[data-theme="dark"] .dev { --bg: #050a1c; --bg-2: #0b1433; --ink: #eaf0ff; --muted: #a6b4dc; --line: #1d2a5a; --link: #8cbcfc; }
 .dev {
-  --bg: #050a1c; --bg-2: #0b1433; --ink: #eaf0ff; --muted: #a6b4dc; --line: #1d2a5a; --link: #8cbcfc;
   background: var(--bg); color: var(--ink); border: 1px solid var(--line); border-radius: 16px; overflow: hidden;
   box-shadow: 0 40px 80px -40px rgba(10, 18, 48, 0.6), 0 0 0 1px rgba(96, 165, 250, 0.06);
   transition: transform 0.4s var(--ease); will-change: transform;
