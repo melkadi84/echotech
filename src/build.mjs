@@ -468,7 +468,7 @@ function meshSection(t, current = "systems", idAttr = "mesh") {
         <ul class="mesh__slides" data-scroller>${slides}</ul>
         <p class="slide-count" aria-live="polite" data-of="${esc(t.services.of)}"></p>
       </div>`;
-  const data = { services: Object.fromEntries(items.map((s) => [s.id, { name: s.name, href: svcPath(t, s.id), icon: icons[s.id] || icons.generic }])), edges: meshEdges.map(([a, b]) => [a, b, m.edges[`${a}-${b}`]]), current, hint: m.hint, with: m.with, open: m.open };
+  const data = { services: Object.fromEntries(items.map((s) => [s.id, { name: s.name, summary: s.summary, href: svcPath(t, s.id), icon: icons[s.id] || icons.generic }])), edges: meshEdges.map(([a, b]) => [a, b, m.edges[`${a}-${b}`]]), current, hint: m.hint, with: m.with, open: m.open };
   return `
   <section id="${idAttr}" class="mesh" aria-label="${esc(m.title)}">
     <div class="wrap">

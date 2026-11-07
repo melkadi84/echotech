@@ -1175,3 +1175,20 @@ main > section:not(.hero) { min-height: 0; padding-block: clamp(2.5rem, 7svh, 4.
   .mesh .mesh__chip:hover .mesh__chip-text small, .mesh .mesh__chip:focus-visible .mesh__chip-text small { opacity: 1; visibility: visible; transform: none; }
 }
 @media (prefers-reduced-motion: reduce) { .mesh .mesh__chip-text small { transition: none; } }
+
+/* The description bubble now floats above the diagram node, not above the side buttons. */
+@media (min-width: 861px) {
+  .mesh .mesh__chip-text small { display: none; }
+  .mesh .mesh__box { position: relative; }
+  .mesh__tip {
+    position: absolute; z-index: 6; width: max-content; max-width: 16rem; padding: 0.65rem 0.9rem; border-radius: 14px;
+    background: var(--ink); color: var(--bg); font-size: 0.85rem; line-height: 1.45; text-align: start; pointer-events: none;
+    box-shadow: 0 14px 28px -14px rgba(10, 18, 48, 0.55);
+    transform: translate(-50%, calc(-100% - 14px) ) translateY(6px); opacity: 0; visibility: hidden;
+    transition: opacity 0.2s, transform 0.25s var(--ease), visibility 0.2s;
+  }
+  .mesh__tip.is-on { opacity: 1; visibility: visible; transform: translate(-50%, calc(-100% - 14px)); }
+  .mesh__tip::after { content: ""; position: absolute; inset-inline-start: var(--tip-arrow, 50%); inset-block-end: -5px; width: 10px; height: 10px; margin-inline-start: -5px; background: var(--ink); transform: rotate(45deg); }
+}
+@media (prefers-reduced-motion: reduce) { .mesh__tip { transition: none; } }
+@media (max-width: 860px) { .mesh__tip { display: none; } }

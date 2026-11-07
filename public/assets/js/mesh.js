@@ -13,6 +13,37 @@
     const dotLayer = box.querySelector(".mesh__dots");
     let onSelect = () => {};
 
+    // Speech bubble above a diagram node; it is shown from the node itself or from its button.
+    const tip = document.createElement("div");
+    tip.className = "mesh__tip";
+    tip.setAttribute("aria-hidden", "true");
+    box.append(tip);
+    const showTip = (id) => {
+      const node = nodes.find((n) => n.dataset.id === id);
+      if (!node) return;
+      tip.textContent = cfg.services[id].summary;
+      tip.classList.add("is-on");
+      const b = box.getBoundingClientRect();
+      const r = node.querySelector(".mesh__disc").getBoundingClientRect();
+      const center = r.left - b.left + r.width / 2;
+      const half = tip.offsetWidth / 2;
+      const left = Math.min(Math.max(center, half + 4), b.width - half - 4);
+      tip.style.left = `${left}px`;
+      tip.style.top = `${r.top - b.top}px`;
+      tip.style.setProperty("--tip-arrow", `${center - left + half}px`);
+    };
+    const hideTip = () => tip.classList.remove("is-on");
+    nodes.forEach((n) => {
+      n.addEventListener("pointerenter", () => showTip(n.dataset.id));
+      n.addEventListener("pointerleave", hideTip);
+    });
+    chips.forEach((c) => {
+      c.addEventListener("pointerenter", () => showTip(c.dataset.id));
+      c.addEventListener("pointerleave", hideTip);
+      c.addEventListener("focus", () => showTip(c.dataset.id));
+      c.addEventListener("blur", hideTip);
+    });
+
     const link = (id, label) => {
       const a = document.createElement("a");
       a.href = cfg.services[id].href;
