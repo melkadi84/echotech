@@ -306,7 +306,7 @@ function shell(t, ctx, body) {
     <a class="brand" href="${t.path}" aria-label="${esc(u.home)}">${markSvg()}<span class="brand__name">${t.lang === "ar" ? "إيكو تك" : "ECHO TECH"}</span></a>
     <nav class="nav" id="nav" aria-label="${esc(u.menu)}">
       ${navHtml(t, ctx)}
-      <a class="btn" href="${ctx.isHome ? "" : t.path}#contact">${esc(t.cta)}</a>
+      ${ctx.isHome ? "" : `<a class="btn" href="${t.path}#contact">${esc(t.cta)}</a>`}
     </nav>
     <div class="tools">
       <a class="lang" href="${ctx.otherPath}" hreflang="${other.lang}" lang="${other.lang}" title="${esc(u.langName)}">${esc(u.langLabel)}</a>
