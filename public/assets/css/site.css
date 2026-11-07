@@ -1156,3 +1156,22 @@ main > section:not(.hero) { min-height: 0; padding-block: clamp(2.5rem, 7svh, 4.
   .mesh .mesh__chip-text small { display: block; }
 }
 @media (min-width: 861px) { .mesh .mesh__box { column-gap: 3rem; } .mesh .mesh__svg { margin-inline-end: 1rem; } }
+
+/* Desktop: service buttons show only the name; the one-line description floats above as a speech bubble. */
+@media (min-width: 861px) {
+  .mesh .mesh__chip { position: relative; min-height: 48px; padding-block: 0; }
+  .mesh .mesh__chip-text small {
+    display: block; position: absolute; inset-inline: 0.25rem; inset-block-end: calc(100% + 12px); z-index: 6;
+    padding: 0.65rem 0.9rem; border-radius: 14px; background: var(--ink); color: var(--bg);
+    font-size: 0.85rem; line-height: 1.45; font-weight: 400; text-align: start; pointer-events: none;
+    box-shadow: 0 14px 28px -14px rgba(10, 18, 48, 0.55);
+    opacity: 0; visibility: hidden; transform: translateY(6px);
+    transition: opacity 0.2s, transform 0.25s var(--ease), visibility 0.2s;
+  }
+  .mesh .mesh__chip-text small::after {
+    content: ""; position: absolute; inset-inline-start: 2rem; inset-block-end: -5px; width: 10px; height: 10px;
+    background: var(--ink); transform: rotate(45deg);
+  }
+  .mesh .mesh__chip:hover .mesh__chip-text small, .mesh .mesh__chip:focus-visible .mesh__chip-text small { opacity: 1; visibility: visible; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) { .mesh .mesh__chip-text small { transition: none; } }
