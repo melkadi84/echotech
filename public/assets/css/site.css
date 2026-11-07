@@ -1030,3 +1030,36 @@ main > section.phero { padding-block: clamp(1.5rem, 5svh, 3rem) clamp(1.25rem, 4
   .slide-arrow:disabled { opacity: 0.35; cursor: default; }
   .slide-count { display: block; margin: 0.6rem 0 0; text-align: center; color: var(--muted); font-variant-numeric: tabular-nums; }
 }
+
+/* Sections size to their content (never beyond one screen); only the home hero claims a full screen. */
+main > section:not(.hero) { min-height: 0; padding-block: clamp(2.5rem, 7svh, 4.5rem); }
+@media (max-width: 860px) { main > section:not(.hero) { padding-block: 1.25rem 1.5rem; } }
+
+/* Desktop: keep the two heaviest sections inside one screen. */
+@media (min-width: 861px) {
+  #services .head p, .showcase .head p { display: none; }
+  #services .head, .showcase .head { margin-block-end: 1rem; }
+  .picker .panel__icon { display: none; }
+  .svc__points { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.4rem 1.5rem; }
+  .sc { margin-block-start: 1rem; }
+  .sc-tab { padding-block: 0.6rem; }
+  .sc-tab small { display: none; }
+  .sc-panel .feed { display: none; }
+  .chart__bars { height: 7rem; }
+  .sc-hint { display: none; }
+}
+
+@media (min-width: 861px) {
+  main > section:not(.hero) { padding-block: clamp(1.5rem, 4svh, 2.5rem); }
+  .flow__step { min-height: 0; padding-block: 0.4rem; }
+  .flow__step small { display: none; }
+  .flow__ico { width: 32px; height: 32px; }
+  .flow__steps { gap: 0.3rem; }
+  .phone { min-height: 0; }
+  .phone__screen { padding: 2.2rem 0.9rem 0.7rem; gap: 0.5rem; }
+  .phone__hello { display: none; }
+  .crm__row { padding-block: 0.4rem; }
+  .crm__rows { gap: 0.4rem; }
+  .kpi { padding-block: 0.6rem; }
+  .chart__bars { height: 5.5rem; }
+}
