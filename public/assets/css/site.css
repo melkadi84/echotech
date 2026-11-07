@@ -1130,3 +1130,19 @@ main > section:not(.hero) { min-height: 0; padding-block: clamp(2.5rem, 7svh, 4.
 
 /* The strip's repeated copy exists only for the desktop loop; it must never show in the small-screen carousel. */
 @media (max-width: 860px) { .marquee .marquee__set--copy, .marquee .client--rep { display: none; } }
+
+/* Services diagram on small screens: one service per slide with arrows at the middle of both sides. */
+.mesh__slider { display: none; }
+@media (max-width: 860px) {
+  .mesh .mesh__chips { display: none; }
+  .mesh__slider { display: block; position: relative; }
+  .mesh__slides { list-style: none; margin: 0; padding: 0; display: flex; gap: 0.75rem; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; }
+  .mesh__slides::-webkit-scrollbar { display: none; }
+  .mesh__slide { flex: 0 0 100%; min-width: 0; scroll-snap-align: start; scroll-snap-stop: always; display: grid; justify-items: center; align-content: center; gap: 0.5rem; padding: 1.5rem 3.5rem; text-align: center; border: 1px solid var(--line); border-radius: 22px; background: var(--bg-2); }
+  .mesh__slide-ico { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 50%; border: 2px solid var(--cobalt); color: var(--cobalt); }
+  [data-theme="dark"] .mesh__slide-ico { border-color: var(--sky); color: var(--sky); }
+  .mesh__slide-ico svg { width: 30px; height: 30px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .mesh__slide h3 { font-size: 1.4rem; }
+  .mesh__slide p { color: var(--muted); max-width: none; }
+  .mesh__slide .btn { margin-block-start: 0.5rem; }
+}

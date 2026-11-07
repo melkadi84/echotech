@@ -143,15 +143,15 @@ function initClients() {
     new IntersectionObserver(([entry]) => root.classList.toggle("is-offscreen", !entry.isIntersecting)).observe(root);
   }
   initClientsDrag(root);
-  initClientsSlides(root);
+  initSlides(root, ".marquee", ".marquee__set:not(.marquee__set--copy) .client:not(.client--rep)");
 }
 
 // Small screens: the clients form a one-per-slide carousel. Rect maths keeps it correct in RTL.
-function initClientsSlides(root) {
+function initSlides(root, scrollerSel, slidesSel) {
   const small = matchMedia("(max-width: 860px)");
   const motionOk = !matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const scroller = root.querySelector(".marquee");
-  const slides = [...root.querySelectorAll(".marquee__set:not(.marquee__set--copy) .client:not(.client--rep)")];
+  const scroller = root.querySelector(scrollerSel);
+  const slides = [...root.querySelectorAll(slidesSel)];
   const count = root.querySelector(".slide-count");
   const [prev, next] = root.querySelectorAll(".slide-arrow");
   let current = 0;
@@ -292,5 +292,6 @@ function initProjects() {
 }
 
 initClients();
+document.querySelectorAll("[data-slides]").forEach((el) => initSlides(el, "[data-scroller]", ".mesh__slide"));
 initProjects();
 initBriefs();

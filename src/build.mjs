@@ -461,12 +461,20 @@ function meshSection(t, current = "systems", idAttr = "mesh") {
     return `<g class="mesh__node${p.hub ? " mesh__node--hub" : ""}" data-id="${s.id}"><circle class="mesh__disc" cx="${p.x}" cy="${p.y}" r="${r}"/><svg x="${p.x - ic / 2}" y="${p.y - ic / 2}" width="${ic}" height="${ic}" viewBox="0 0 24 24" class="mesh__icon">${icons[s.id] || icons.generic}</svg><text class="mesh__label" x="${lx}" y="${ly}" text-anchor="${anchor}">${esc(s.name)}</text></g>`;
   }).join("");
   const chips = items.map((s) => `<button type="button" class="mesh__chip" data-id="${s.id}" aria-pressed="${s.id === current}">${iconSvg(s.id)}<span class="mesh__chip-text"><strong>${esc(s.name)}</strong><small>${esc(s.summary)}</small></span></button>`).join("");
+  const slides = items.map((s) => `<li class="mesh__slide"><span class="mesh__slide-ico">${iconSvg(s.id)}</span><h3>${esc(s.name)}</h3><p>${esc(s.summary)}</p><a class="btn btn--ghost" href="${svcPath(t, s.id)}">${esc(m.open)}</a></li>`).join("");
+  const slider = `<div class="mesh__slider" data-slides>
+        <button class="icon-btn slide-arrow slide-arrow--prev" type="button" data-step="-1" aria-label="${esc(t.services.prev)}"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <button class="icon-btn slide-arrow slide-arrow--next" type="button" data-step="1" aria-label="${esc(t.services.next)}"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <ul class="mesh__slides" data-scroller>${slides}</ul>
+        <p class="slide-count" aria-live="polite" data-of="${esc(t.services.of)}"></p>
+      </div>`;
   const data = { services: Object.fromEntries(items.map((s) => [s.id, { name: s.name, href: svcPath(t, s.id), icon: icons[s.id] || icons.generic }])), edges: meshEdges.map(([a, b]) => [a, b, m.edges[`${a}-${b}`]]), current, hint: m.hint, with: m.with, open: m.open };
   return `
   <section id="${idAttr}" class="mesh" aria-label="${esc(m.title)}">
     <div class="wrap">
       <div class="mesh__box" data-mesh data-config="${esc(JSON.stringify(data))}">
         <svg class="mesh__svg" viewBox="-70 0 940 540" aria-hidden="true" focusable="false"><g class="mesh__echoes"><circle class="mesh__echo" cx="${cx}" cy="${cy}" r="34"/><circle class="mesh__echo" cx="${cx}" cy="${cy}" r="34"/><circle class="mesh__echo" cx="${cx}" cy="${cy}" r="34"/></g><g class="mesh__edges">${lines}</g><g class="mesh__dots"></g>${nodes}</svg>
+        ${slider}
         <div class="mesh__chips" role="group" aria-label="${esc(m.label)}">${chips}</div>
       </div>
     </div>
