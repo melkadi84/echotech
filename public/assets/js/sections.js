@@ -31,49 +31,90 @@ function initPicker() {
     select(Math.min(last, Math.max(0, moves[e.key])), true);
   });
 
-  // Small screens: the tab row is a swipeable strip that advances on its own until the visitor touches it.
-  const small = matchMedia("(max-width: 880px)");
+  // Small screens: the tabs are hidden and the panels form a swipeable carousel with previous/next buttons.
+  // Rect maths keeps scrolling correct in RTL and never scrolls the page itself.
+  const small = matchMedia("(max-width: 860px)");
   const motionOk = !matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const track = root.querySelector("[data-track]");
+  const nav = root.querySelector(".picker__nav");
+  const count = nav.querySelector(".picker__count");
+  const [prev, next] = nav.querySelectorAll(".picker__btn");
+  nav.hidden = false;
   let current = 0;
-  const show = (index, focus) => { current = index; select(index, focus); };
+
+  const nearest = () => {
+    const box = track.getBoundingClientRect();
+    const mid = box.left + box.width / 2;
+    let best = 0;
+    let gap = Infinity;
+    panels.forEach((p, i) => {
+      const r = p.getBoundingClientRect();
+      const d = Math.abs(r.left + r.width / 2 - mid);
+      if (d < gap) { gap = d; best = i; }
+    });
+    return best;
+  };
+  const sync = () => {
+    count.textContent = `${current + 1} ${count.dataset.of} ${panels.length}`;
+    prev.disabled = current === 0;
+    next.disabled = current === panels.length - 1;
+  };
+  const go = (index, smooth = true) => {
+    current = Math.min(panels.length - 1, Math.max(0, index));
+    select(current);
+    sync();
+    if (!small.matches) return;
+    const t = panels[current].getBoundingClientRect();
+    const l = track.getBoundingClientRect();
+    track.scrollBy({ left: t.left - l.left, behavior: smooth && motionOk ? "smooth" : "auto" });
+  };
+  let frame = 0;
+  track.addEventListener("scroll", () => {
+    if (!small.matches) return;
+    cancelAnimationFrame(frame);
+    frame = requestAnimationFrame(() => {
+      const index = nearest();
+      if (index !== current) { current = index; select(index); sync(); }
+    });
+  }, { passive: true });
+  nav.addEventListener("click", (e) => {
+    const step = e.target.closest("[data-step]");
+    if (step) go(current + Number(step.dataset.step));
+  });
+  tabs.forEach((tab, i) => tab.addEventListener("click", () => { current = i; sync(); }));
+  small.addEventListener("change", () => go(current, false));
+  sync();
+
   let timer = 0;
   let stopped = !motionOk;
   let visible = false;
   const stop = () => { stopped = true; clearInterval(timer); };
-  const tick = () => {
-    if (stopped || !visible || !small.matches) return;
-    show((current + 1) % tabs.length);
-    // Rect maths keeps this correct in RTL and never scrolls the page itself.
-    const t = tabs[current].getBoundingClientRect();
-    const l = list.getBoundingClientRect();
-    list.scrollBy({ left: t.left + t.width / 2 - (l.left + l.width / 2), behavior: "smooth" });
-  };
-  tabs.forEach((tab, i) => tab.addEventListener("click", () => { current = i; }));
   if (motionOk) {
-    timer = setInterval(tick, 4500);
+    timer = setInterval(() => {
+      if (!stopped && visible && small.matches) go((current + 1) % panels.length);
+    }, 5000);
     new IntersectionObserver(([en]) => { visible = en.isIntersecting; }).observe(root);
     ["pointerdown", "keydown", "focusin", "wheel"].forEach((ev) => root.addEventListener(ev, stop, { once: true }));
   }
 
-  // Mouse users can drag the strip like a touch screen; touch and trackpads already scroll natively.
+  // Mouse users can drag the carousel like a touch screen; touch and trackpads already scroll natively.
   let drag = null;
-  list.addEventListener("pointerdown", (e) => {
-    if (e.pointerType !== "mouse" || !small.matches) return;
-    drag = { x: e.clientX, left: list.scrollLeft, moved: false };
+  track.addEventListener("pointerdown", (e) => {
+    if (e.pointerType !== "mouse" || !small.matches || e.target.closest("a, button")) return;
+    drag = { x: e.clientX, left: track.scrollLeft, moved: false };
   });
   window.addEventListener("pointermove", (e) => {
     if (!drag) return;
     const dx = e.clientX - drag.x;
-    if (Math.abs(dx) > 5) { drag.moved = true; list.classList.add("is-dragging"); }
-    if (drag.moved) list.scrollLeft = drag.left - dx;
+    if (Math.abs(dx) > 5) { drag.moved = true; track.classList.add("is-dragging"); }
+    if (drag.moved) track.scrollLeft = drag.left - dx;
   });
-  window.addEventListener("pointerup", () => { list.classList.remove("is-dragging"); setTimeout(() => { drag = null; }, 0); });
-  list.addEventListener("click", (e) => { if (drag && drag.moved) { e.preventDefault(); e.stopPropagation(); } }, true);
+  window.addEventListener("pointerup", () => { track.classList.remove("is-dragging"); setTimeout(() => { drag = null; }, 0); });
 
   // Hero links like #svc-cctv open that service.
   const openFromHash = (hash) => {
     const index = panels.findIndex((p) => `#${p.id}` === hash);
-    if (index >= 0) select(index);
+    if (index >= 0) go(index, false);
   };
   document.addEventListener("click", (e) => {
     const link = e.target.closest('a[href^="#svc-"]');

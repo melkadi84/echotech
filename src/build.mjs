@@ -469,6 +469,7 @@ function homeBody(t) {
           <button class="tab" type="button" role="tab" id="tab-${s.id}" aria-controls="svc-${s.id}" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}" data-index="${i}">
             ${iconSvg(s.id)}<span>${esc(s.name)}</span>
           </button>`).join("");
+  const chev = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7"/></svg>';
   const services = t.services.items.map((s, i) => `
         <article class="panel" id="svc-${s.id}" role="tabpanel" aria-labelledby="tab-${s.id}" data-index="${i}">
           ${iconSvg(s.id, "panel__icon")}<h3>${esc(s.name)}</h3>
@@ -500,7 +501,12 @@ function homeBody(t) {
       <div class="picker" data-picker>
         <div class="picker__list" role="tablist" aria-label="${esc(t.services.pick)}" aria-orientation="vertical" hidden>${tabs}
         </div>
-        <div class="picker__panels">${services}</div>
+        <div class="picker__panels" data-track>${services}</div>
+        <div class="picker__nav" hidden>
+          <button class="icon-btn picker__btn" type="button" data-step="-1" aria-label="${esc(t.services.prev)}">${chev}</button>
+          <span class="picker__count" aria-live="polite" data-of="${esc(t.services.of)}"></span>
+          <button class="icon-btn picker__btn picker__btn--next" type="button" data-step="1" aria-label="${esc(t.services.next)}">${chev}</button>
+        </div>
       </div>
       <p class="picker__more"><a class="btn btn--ghost" href="${servicesIndexPath(t)}">${esc(t.pages.connectLink)}</a></p>
     </div>
