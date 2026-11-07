@@ -816,9 +816,7 @@ html:not(.js) .boot { display: none; }
    Each section fills one screen, so a visitor sees a whole idea without scrolling inside it.
    Long lists become swipeable carousels: the next card peeks in to show there is more. */
 @media (max-width: 860px) {
-  html { scroll-padding-block-start: 4.25rem; scroll-snap-type: y proximity; }
-  main > section { min-height: calc(100svh - 4.25rem); display: flex; flex-direction: column; justify-content: center; padding-block: 2rem 2.5rem; scroll-snap-align: start; }
-  main > section > .wrap { width: min(100% - 2 * var(--gutter), var(--max)); }
+  main > section { padding-block: 2rem 2.5rem; }
   .head { margin-block-end: 1.25rem; }
   .head h2 { font-size: clamp(1.7rem, 6vw, 2.2rem); }
   .head p { font-size: 1rem; }
@@ -861,3 +859,12 @@ html:not(.js) .boot { display: none; }
   .footer ul a { display: flex; align-items: center; min-height: 44px; padding-inline: 1rem; border: 1px solid var(--line); border-radius: 999px; white-space: nowrap; }
   .footer__h { margin-block-end: 0.6rem; }
 }
+
+/* ---------- Section-by-section scrolling (all sizes) ----------
+   Scrolling never runs free: each wheel flick or swipe lands on the next section, with a smooth glide.
+   A section taller than the screen (a long form, say) still scrolls inside itself before it snaps on. */
+html { scroll-padding-block-start: 4.25rem; scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+main > section { min-height: calc(100svh - 4.25rem); display: flex; flex-direction: column; justify-content: center; scroll-snap-align: start; }
+main > section > .wrap { width: min(100% - 2 * var(--gutter), var(--max)); }
+.footer { scroll-snap-align: end; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; scroll-snap-type: y proximity; } }

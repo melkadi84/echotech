@@ -49,6 +49,8 @@ Commands: `npm run build` (regenerate HTML), `npm run dev` (build + local Worker
 9. **Secrets never enter the repo.** Turnstile secret, webhook URLs and D1 ids live in Cloudflare settings or `.dev.vars` (git-ignored). `src/site.config.json` holds only public values.
 10. **No new dependencies** without a clear reason. The site has none at runtime.
 
+11. **Section-by-section scrolling.** Scroll is never free, in any mode: `html` uses `scroll-snap-type: y mandatory` with smooth gliding, and every `main > section` is at least one screen tall (`min-height: calc(100svh - 4.25rem)`) with `scroll-snap-align: start`; the footer snaps to its end. Keep new sections to one idea per screen. On screens up to 860px, long lists (steps, principles, services, chips, footer links) are swipeable carousels with the next card peeking in, not tall columns. Under reduced motion the glide is off.
+
 ## Brand (details in `docs/BRAND.md`)
 
 The mark is a solid disc with two fading rings trailing behind it: an echo. Primary **Cobalt `#1D4ED8`**, secondary **Sky `#60A5FA`**. Font: **Readex Pro** (Arabic and Latin). Do not recolour, rotate, outline or add effects to the logo. Wordmark is "ECHO TECH" in Latin, "إيكو تك" in Arabic.
