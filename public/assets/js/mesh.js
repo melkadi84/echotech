@@ -36,11 +36,22 @@
       box.querySelectorAll(".mesh__dot").forEach((d) => d.classList.toggle("is-on", d.dataset.a === id || d.dataset.b === id));
 
       info.textContent = "";
+      const icon = (key) => {
+        const span = document.createElement("span");
+        span.className = "mesh__ico";
+        span.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">${cfg.services[key].icon}</svg>`;
+        return span;
+      };
       const head = document.createElement("div");
       head.className = "mesh__head";
+      const title = document.createElement("div");
+      title.className = "mesh__title";
       const h = document.createElement("h3");
       h.textContent = cfg.services[id].name;
-      head.append(h, link(id, cfg.open));
+      title.append(icon(id), h);
+      const open = link(id, cfg.open);
+      open.className = "btn btn--ghost";
+      head.append(title, open);
       const label = document.createElement("p");
       label.className = "mesh__with";
       label.textContent = cfg.with;
@@ -48,11 +59,18 @@
       related.forEach(([a, b, text]) => {
         const peer = a === id ? b : a;
         const li = document.createElement("li");
-        const strong = document.createElement("strong");
-        strong.append(link(peer));
+        const card = document.createElement("a");
+        card.href = cfg.services[peer].href;
+        card.className = "mesh__card";
+        const name = document.createElement("strong");
+        name.textContent = cfg.services[peer].name;
         const p = document.createElement("span");
         p.textContent = text;
-        li.append(strong, p);
+        const body = document.createElement("span");
+        body.className = "mesh__body";
+        body.append(name, p);
+        card.append(icon(peer), body);
+        li.append(card);
         ul.append(li);
       });
       info.append(head, label, ul);

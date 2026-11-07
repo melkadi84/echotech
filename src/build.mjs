@@ -449,8 +449,8 @@ function meshSection(t, current = "systems", idAttr = "mesh") {
     const ic = p.hub ? 34 : 26;
     return `<g class="mesh__node${p.hub ? " mesh__node--hub" : ""}" data-id="${s.id}"><circle class="mesh__disc" cx="${p.x}" cy="${p.y}" r="${r}"/><svg x="${p.x - ic / 2}" y="${p.y - ic / 2}" width="${ic}" height="${ic}" viewBox="0 0 24 24" class="mesh__icon">${icons[s.id] || icons.generic}</svg><text class="mesh__label" x="${lx}" y="${ly}" text-anchor="${anchor}">${esc(s.name)}</text></g>`;
   }).join("");
-  const chips = items.map((s) => `<button type="button" class="mesh__chip" data-id="${s.id}" aria-pressed="${s.id === current}">${iconSvg(s.id)}<span>${esc(s.name)}</span></button>`).join("");
-  const data = { services: Object.fromEntries(items.map((s) => [s.id, { name: s.name, href: svcPath(t, s.id) }])), edges: meshEdges.map(([a, b]) => [a, b, m.edges[`${a}-${b}`]]), current, hint: m.hint, with: m.with, open: m.open };
+  const chips = items.map((s) => `<button type="button" class="mesh__chip" data-id="${s.id}" aria-pressed="${s.id === current}">${iconSvg(s.id)}<span class="mesh__chip-text"><strong>${esc(s.name)}</strong><small>${esc(s.summary)}</small></span></button>`).join("");
+  const data = { services: Object.fromEntries(items.map((s) => [s.id, { name: s.name, href: svcPath(t, s.id), icon: icons[s.id] || icons.generic }])), edges: meshEdges.map(([a, b]) => [a, b, m.edges[`${a}-${b}`]]), current, hint: m.hint, with: m.with, open: m.open };
   return `
   <section id="${idAttr}" class="mesh" aria-label="${esc(m.title)}">
     <div class="wrap">
@@ -687,7 +687,6 @@ function servicesPage(t) {
     title: `${pg.servicesH1} — Echo Tech`, description: pg.servicesDescription,
     extra: [crumbLd(t, [[pg.home, t.path], [pg.servicesTitle, servicesIndexPath(t)]])],
   };
-  const list = t.services.items.map((o) => `<li><a href="${svcPath(t, o.id)}">${iconSvg(o.id)}<span><strong>${esc(o.name)}</strong><small>${esc(o.summary)}</small></span></a></li>`).join("");
   const body = `
   <section class="phero stage" aria-labelledby="page-h">
     <div class="wrap">
@@ -699,12 +698,6 @@ function servicesPage(t) {
 
   ${meshSection(t)}
 
-  <section class="others" aria-labelledby="all-h">
-    <div class="wrap">
-      <div class="head"><h2 id="all-h">${esc(pg.allServices)}</h2></div>
-      <ul class="others__list">${list}</ul>
-    </div>
-  </section>
 
   ${ctaBand(t)}`;
   return shell(t, ctx, body);
