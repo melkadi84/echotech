@@ -302,13 +302,18 @@ html:not(.js) .boot { display: none; }
 .picker__count { min-width: 5rem; text-align: center; color: var(--muted); font-variant-numeric: tabular-nums; }
 
 /* ---------- Sub pages ---------- */
-.crumbs ol { display: flex; flex-wrap: wrap; gap: 0.25rem 0.6rem; color: var(--muted); font-size: 0.95rem; }
-.crumbs li + li::before { content: "/"; margin-inline-end: 0.6rem; color: var(--muted); opacity: 0.6; }
+.crumbs ol { display: flex; flex-wrap: wrap; align-items: center; gap: 0; color: var(--muted); font-size: 0.95rem; }
+.crumbs li { display: flex; align-items: center; }
+.crumbs li + li::before { content: "/"; color: var(--muted); opacity: 0.6; pointer-events: none; }
 /* A slash leans toward the reading direction; mirror it in RTL so the trail reads right to left. */
 [dir="rtl"] .crumbs li + li::before { content: "\005C"; }
+.crumbs a { display: inline-flex; align-items: center; min-height: 44px; padding-inline: 0.7rem; }
+.crumbs li:first-child a { padding-inline-start: 0; }
 .crumbs a { color: var(--muted); text-decoration: none; }
 .crumbs a:hover { color: var(--ink); text-decoration: underline; }
 .crumbs [aria-current] { color: var(--ink); }
+.crumbs li[aria-current] { min-height: 44px; }
+.crumbs li[aria-current]::before { margin-inline-end: 0.7rem; }
 .phero { position: relative; overflow: hidden; isolation: isolate; padding-block: clamp(2.5rem, 6vw, 5rem) clamp(3rem, 6vw, 5rem); }
 .phero::before {
   content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
@@ -854,7 +859,8 @@ html:not(.js) .boot { display: none; }
   .picker__more { margin-block-start: 1rem; }
 
   /* Footer lists: one swipeable row of 44px chips instead of a long column of small links. */
-  .footer__grid { grid-template-columns: 1fr; gap: 1.5rem; }
+  .footer__grid { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
+  .footer__grid > *, .mesh__box > *, .picker > *, .sc > * { min-width: 0; }
   .footer ul { gap: 0.5rem; }
   .footer ul a { display: flex; align-items: center; min-height: 44px; padding-inline: 1rem; border: 1px solid var(--line); border-radius: 999px; white-space: nowrap; }
   .footer__h { margin-block-end: 0.6rem; }
@@ -868,3 +874,19 @@ main > section { min-height: calc(100svh - 4.25rem); display: flex; flex-directi
 main > section > .wrap { width: min(100% - 2 * var(--gutter), var(--max)); }
 .footer { scroll-snap-align: end; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; scroll-snap-type: y proximity; } }
+
+/* ---------- Active and hovered navigation ----------
+   The page you are on, the section in view and the link under your finger each get the brand blue,
+   so the current place is clear at a glance in both themes. */
+.nav a.nav__link:hover, .nav a.nav__link:focus-visible { color: var(--link); }
+.nav a.nav__link[aria-current] { color: var(--link); background: var(--bg-2); font-weight: 600; }
+.nav__menu a:hover strong, .nav__menu a[aria-current] strong { color: var(--link); }
+.nav__menu a[aria-current] { background: var(--bg-2); box-shadow: inset 3px 0 0 var(--ring); }
+[dir="rtl"] .nav__menu a[aria-current] { box-shadow: inset -3px 0 0 var(--ring); }
+.nav__menu a[aria-current] svg { color: var(--link); }
+.footer a[aria-current] { color: var(--link); }
+@media (max-width: 880px) {
+  .nav a.nav__link[aria-current] { background: none; box-shadow: inset 3px 0 0 var(--ring); padding-inline-start: 0.75rem; }
+  [dir="rtl"] .nav a.nav__link[aria-current] { box-shadow: inset -3px 0 0 var(--ring); }
+}
+.nav a.nav__link { white-space: nowrap; }

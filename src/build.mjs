@@ -136,7 +136,7 @@ const navHtml = (t, ctx) => {
   const base = ctx.isHome ? "" : t.path;
   return t.nav.map((n) => {
     if (n.id === "services") {
-      const items = t.services.items.map((s) => `<a href="${svcPath(t, s.id)}">${iconSvg(s.id)}<span><strong>${esc(s.name)}</strong><small>${esc(s.summary)}</small></span></a>`).join("");
+      const items = t.services.items.map((s) => `<a href="${svcPath(t, s.id)}"${ctx.serviceId === s.id ? ' aria-current="page"' : ""}>${iconSvg(s.id)}<span><strong>${esc(s.name)}</strong><small>${esc(s.summary)}</small></span></a>`).join("");
       const current = ctx.section === "services" ? ' aria-current="true"' : "";
       return `<div class="nav__group"><a class="nav__link" href="${servicesIndexPath(t)}"${current}>${esc(n.label)}</a><div class="nav__menu" role="group" aria-label="${esc(t.pages.menuHint)}">${items}</div></div>`;
     }
@@ -564,7 +564,7 @@ function servicePage(t, s, idx) {
   const path = svcPath(t, s.id);
   const trail = [[t.pages.home, t.path], [t.pages.services, `${t.path}#services`], [s.name, ""]];
   const ctx = {
-    isHome: false, section: "services", path, otherPath: svcPath(otherLang(t), s.id), defPath: svcPath(langs.en, s.id),
+    isHome: false, section: "services", serviceId: s.id, path, otherPath: svcPath(otherLang(t), s.id), defPath: svcPath(langs.en, s.id),
     title: `${s.page.title} — Echo Tech`, description: s.page.description,
     extra: [
       { "@type": "Service", "@id": `${site}${path}#service`, name: s.name, description: s.page.description, serviceType: s.name, url: site + path, provider: { "@id": `${site}/#org` }, areaServed: "Worldwide", inLanguage: t.lang },

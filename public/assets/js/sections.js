@@ -208,6 +208,20 @@ async function initBriefs() {
   }));
 }
 
+// Home page: the nav link for the section in view (How we work, Questions) takes the active colour.
+function initNavSpy() {
+  const links = [...document.querySelectorAll('.nav a.nav__link[href*="#"]')];
+  const pairs = links.map((a) => [a, document.getElementById(a.getAttribute("href").split("#")[1])]).filter(([, el]) => el);
+  if (!pairs.length || !("IntersectionObserver" in window)) return;
+  const seen = new Map();
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => seen.set(e.target, e.isIntersecting));
+    pairs.forEach(([a, el]) => (seen.get(el) ? a.setAttribute("aria-current", "true") : a.removeAttribute("aria-current")));
+  }, { rootMargin: "-45% 0px -45% 0px" });
+  pairs.forEach(([, el]) => io.observe(el));
+}
+
 initPicker();
+initNavSpy();
 initClients();
 initBriefs();
